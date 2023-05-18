@@ -64,4 +64,15 @@
     <string name="truck_open">영업중</string>
     <string name="truck_close">휴업중</string>
     <string name="truck_manage">가게 정보 관리</string>
+
+    <!-- truck item page -->
+    <!--게시글 보기-->
+    <string name="read_title">이름</string>
+    <string name="read_content">소개</string>
+    <string name="read_appointment_place">가게 위치</string>
+    <string name="read_truck_item">판매하는 것</string>
+    <string name="read_report">신고하기</string>
+    <string name="read_participate">참가하기</string>
+    <string name="read_cancel">취소하기</string>
+    <string name="read_delete">삭제하기</string>
 </resources>
