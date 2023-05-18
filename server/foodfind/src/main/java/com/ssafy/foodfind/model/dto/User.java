@@ -53,4 +53,10 @@ public class User {
 		this.userType = userType;
 	}
 
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", phoneNumber="
+				+ phoneNumber + ", userType=" + userType + "]";
+	}
+
 }

@@ -3,9 +3,11 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- name space는 BookRepo의 fully qualified name으로 설정한다. -->
 <mapper namespace="com.ssafy.foodfind.model.dao.UserDao">
+
+	<!-- 유저 정보 반환 -->
 	<select id="select" parameterType="string" resultType="User">
 		select * from user
-		where userId = #{userId}
+		where phoneNumber = #{phoneNumber}
 	</select>
 	
 	<!-- 회원가입 -->
@@ -14,5 +16,20 @@
 		value(#{username}, #{password}, #{phoneNumber}, #{userType});
 	</insert>
 	
+	<!-- 전화번호 중복 확인 -->
+	<select id="checkPhoneNumber" parameterType="string" resultType="User">
+		select * from user 
+		where phoneNumber = #{phoneNumber};
+	</select>
 	
+	<!-- 회원 정보 변경 -->
+	<update id="update" parameterType="User">
+		update user
+		set 
+			username =#{username},
+			password =#{password},
+			phoneNumber =#{phoneNumber},
+			userType =#{userType}
+		where userId = #{userId}
+	</update>
 </mapper>
