@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- name space는 BookRepo의 fully qualified name으로 설정한다. -->
+<mapper namespace="com.ssafy.foodfind.model.dao.CommentDao">
+	<!-- 트럭별 코멘트 조회 -->
+	<select id="selectCommentByTruck" parameterType="string" resultType="Comment">
+		select * from comment
+		where truckId = truckId;
+	</select>
+	
+	<!-- 유저별 코멘트 조회 -->
+	<select id="select" parameterType="string" resultType="Comment">
+		select * from user
+		where phoneNumber = #{phoneNumber}
+	</select>
+	
+	<!-- 코멘트 추가-->
+	<insert id="insert" parameterType="Comment">
+		insert into comment (userId, truckId, rating, content)
+		value(#{userId}, #{truckId}, #{rating}, #{content});
+	</insert>
+	
+	<!-- 코멘트 수정 -->
+	<update id="update" parameterType="User">
+		update user
+		set 
+			username =#{username},
+			password =#{password},
+			phoneNumber =#{phoneNumber},
+			userType =#{userType}
+		where userId = #{userId}
+	</update>
+</mapper>
