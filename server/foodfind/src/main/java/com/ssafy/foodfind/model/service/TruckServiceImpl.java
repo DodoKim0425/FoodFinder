@@ -2,6 +2,8 @@ package com.ssafy.foodfind.model.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +15,9 @@ import com.ssafy.foodfind.model.dto.Truck;
 @Service
 public class TruckServiceImpl implements TruckService {
 
+	
+	private static final Logger log = LoggerFactory.getLogger(TruckServiceImpl.class);
+
 
 	@Autowired
 	private TruckDao truckDao;
@@ -22,7 +27,13 @@ public class TruckServiceImpl implements TruckService {
 	
 	@Override
 	public Truck selectMyTruckInfo(String ownerId) {
-		return truckDao.selectMyTruckInfo(ownerId);
+		Truck truck = truckDao.selectMyTruckInfo(ownerId);
+		
+		if(truck==null) {
+			return new Truck();
+		}
+
+		return truck;
 	}
 	
 	@Override
