@@ -3,16 +3,35 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- name space는 BookRepo의 fully qualified name으로 설정한다. -->
 <mapper namespace="com.ssafy.foodfind.model.dao.CommentDao">
+
 	<!-- 트럭별 코멘트 조회 -->
 	<select id="selectCommentByTruck" parameterType="string" resultType="Comment">
-		select * from comment
-		where truckId = truckId;
+		select 
+			commentId,
+		    comment.userId,
+		    truckId,
+		    rating,
+		    content,
+		    username
+		from comment
+		join user
+		on comment.userId = user.userId
+		where truckId = #{truckId};
 	</select>
 	
 	<!-- 유저별 코멘트 조회 -->
-	<select id="select" parameterType="string" resultType="Comment">
-		select * from user
-		where phoneNumber = #{phoneNumber}
+	<select id="selectCommentByUser" parameterType="string" resultType="Comment">
+		select 
+			commentId,
+		    comment.userId,
+		    truckId,
+		    rating,
+		    content,
+		    username
+		from comment
+		join user
+		on comment.userId = user.userId
+		where comment.userId = #{userId};
 	</select>
 	
 	<!-- 코멘트 추가-->
@@ -22,13 +41,11 @@
 	</insert>
 	
 	<!-- 코멘트 수정 -->
-	<update id="update" parameterType="User">
-		update user
-		set 
-			username =#{username},
-			password =#{password},
-			phoneNumber =#{phoneNumber},
-			userType =#{userType}
-		where userId = #{userId}
+	<update id="update" parameterType="Comment">
+		update comment
+		set
+			rating =#{rating},
+		    content=#{content}
+		where commentId=#{commentId};
 	</update>
 </mapper>
