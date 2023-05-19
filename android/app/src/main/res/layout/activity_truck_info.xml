@@ -164,7 +164,7 @@
                 android:gravity="center">
 
                 <ImageView
-                    android:id="@+id/btn_create_ok"
+                    android:id="@+id/btn_back"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_gravity="center"
@@ -184,7 +184,7 @@
                     android:textSize="18sp"/>
 
                 <ImageView
-                    android:id="@+id/btn_create_update"
+                    android:id="@+id/btn_shopping_cart"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_gravity="center"

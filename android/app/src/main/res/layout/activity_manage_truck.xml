@@ -64,7 +64,7 @@
                     android:textSize="18sp"/>
 
                 <ImageView
-                    android:id="@+id/btn_create_update"
+                    android:id="@+id/btn_delete_ok"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_gravity="center"

@@ -52,7 +52,7 @@
                     android:layout_gravity="center"
                     android:text="@string/app_name"
                     android:textColor="@color/white"
-                    android:background="@drawable/logo_background"/>
+                    android:background="@drawable/background_logo"/>
 
                 <ImageView
                     android:id="@+id/btn_notification"

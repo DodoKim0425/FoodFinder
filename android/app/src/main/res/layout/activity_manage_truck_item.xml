@@ -223,12 +223,11 @@
                 android:gravity="center">
 
                 <ImageView
-                    android:id="@+id/btn_create_ok"
+                    android:id="@+id/btn_back"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_gravity="center"
                     android:src="@drawable/baseline_check_circle_24"
-                    android:layout_marginEnd="15dp"
                     app:tint="@color/white"/>
 
                 <TextView
@@ -243,7 +242,7 @@
                     android:textSize="18sp"/>
 
                 <ImageView
-                    android:id="@+id/btn_create_update"
+                    android:id="@+id/btn_update_truck"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_gravity="center"

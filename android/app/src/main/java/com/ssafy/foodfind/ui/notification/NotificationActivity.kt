@@ -1,24 +1,25 @@
-package com.ssafy.foodfind.ui.customerorderlist
+package com.ssafy.foodfind.ui.notification
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.ssafy.foodfind.R
-import com.ssafy.foodfind.databinding.ActivityCustomerOrderListBinding
+import com.ssafy.foodfind.databinding.ActivityMainBinding
 import com.ssafy.foodfind.databinding.ActivityNotificationBinding
 
-class CustomerOrderListActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityCustomerOrderListBinding
+class NotificationActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityNotificationBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        binding = ActivityCustomerOrderListBinding.inflate(layoutInflater)
+        binding = ActivityNotificationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         initButton()
     }
 
     private fun initButton() {
-        binding.buttonBack.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             finish()
         }
     }

@@ -49,6 +49,7 @@
     <string name="about">문의하기</string>
     <string name="terms_conditions">이용약관</string>
     <string name="developers">개발자정보</string>
+    <string name="notification">알림</string>
 
     <!-- truck page -->
     <string name="text_map_search">현재 가게 위치 정보</string>

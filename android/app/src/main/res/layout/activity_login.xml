@@ -49,7 +49,7 @@
                         android:paddingEnd="30dp"
                         android:text="@string/app_name"
                         android:textColor="@color/white"
-                        android:background="@drawable/logo_background"/>
+                        android:background="@drawable/background_logo"/>
                 </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
