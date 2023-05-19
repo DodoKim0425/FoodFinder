@@ -24,16 +24,12 @@ public class SwaggerConfiguration {
 	    @Bean
 	    public Docket postsApi() {
 	       final ApiInfo apiInfo = new ApiInfoBuilder()
-	               .title("SSAFY GuestBook API")
-	               .description("<h3>SSAFY API Reference for Developers</h3>Swagger를 이용한 GuestBook API<br><img src=\"webimg/ssafy_logo.png\" width=\"150\">")
-	               .contact(new Contact("SSAFY", "https://edu.ssafy.com", "ssafy@ssafy.com"))
-	               .license("SSAFY License")
-				   .licenseUrl("https://www.ssafy.com/ksp/jsp/swp/etc/swpPrivacy.jsp")
+	               .title("Food Find API")
+	               .description("")
 	               .version("1.0")
 	               .build();
 	       
 	        Docket docket = new Docket(DocumentationType.SWAGGER_2)
-	                .groupName("ssafyGustbookApi")
 	                .apiInfo(apiInfo)
 	                .select()
 	                .apis(RequestHandlerSelectors.basePackage("com.ssafy.foodfind.controller"))
