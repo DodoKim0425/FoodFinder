@@ -1,8 +1,8 @@
-package com.ssafy.foodfind.data
+package com.ssafy.foodfind.data.entity
 
 data class User(
     val userId: Int,
     val username: String,
-    val phoneNumber: Long,
+    val phoneNumber: String,
     val userType: String
 )

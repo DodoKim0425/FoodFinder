@@ -1,4 +1,4 @@
-package com.ssafy.foodfind.data
+package com.ssafy.foodfind.data.entity
 
 import com.ssafy.foodfind.R
 import java.io.Serializable

@@ -6,7 +6,9 @@ import android.os.Bundle
 import com.ssafy.foodfind.R
 import com.ssafy.foodfind.databinding.ActivityManageTruckBinding
 import com.ssafy.foodfind.databinding.ActivityManageTruckItemBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ManageTruckActivity : AppCompatActivity() {
     private lateinit var binding: ActivityManageTruckBinding
     override fun onCreate(savedInstanceState: Bundle?) {

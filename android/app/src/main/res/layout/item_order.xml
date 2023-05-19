@@ -5,7 +5,7 @@
     <data>
         <variable
             name="order"
-            type="com.ssafy.foodfind.data.Order" />
+            type="com.ssafy.foodfind.data.entity.Order" />
     </data>
 
     <androidx.cardview.widget.CardView

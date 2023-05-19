@@ -7,8 +7,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.ssafy.foodfind.R
-import com.ssafy.foodfind.data.OrderDetail
+import com.ssafy.foodfind.data.entity.OrderDetail
 import com.ssafy.foodfind.databinding.BottomSheetOrdrDetailBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 class OrderDetailBottomSheet : BottomSheetDialogFragment() {
     private lateinit var binding: BottomSheetOrdrDetailBinding

@@ -5,7 +5,9 @@ import android.os.Bundle
 import com.ssafy.foodfind.R
 import com.ssafy.foodfind.databinding.ActivityMainBinding
 import com.ssafy.foodfind.databinding.ActivityNotificationBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class NotificationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNotificationBinding

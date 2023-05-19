@@ -4,9 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable
-            name="login"
-            type="com.ssafy.foodfind.ui.signup.SignupViewModel" />
     </data>
 
     <ScrollView

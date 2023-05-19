@@ -5,7 +5,9 @@ import android.os.Bundle
 import com.ssafy.foodfind.R
 import com.ssafy.foodfind.databinding.ActivityCustomerOrderListBinding
 import com.ssafy.foodfind.databinding.ActivityNotificationBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CustomerOrderListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCustomerOrderListBinding
     override fun onCreate(savedInstanceState: Bundle?) {
