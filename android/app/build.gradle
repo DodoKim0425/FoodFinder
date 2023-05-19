@@ -77,4 +77,7 @@ dependencies {
 
     // gson이용
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    //naver map
+    implementation 'com.naver.maps:map-sdk:3.16.0'
 }

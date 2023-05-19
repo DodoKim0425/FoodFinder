@@ -134,6 +134,7 @@
                 android:id="@+id/agree_all"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:textColor="@color/main_color1"
                 android:text="@string/allAgree" />
 

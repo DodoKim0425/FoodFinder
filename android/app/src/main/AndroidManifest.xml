@@ -11,20 +11,40 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Foodfind"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="res43n0bzr" />
+
+        <activity
+            android:name=".ui.map.MapActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.shoppingcart.ShoppingCartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.customerorderlist.CustomerOrderListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.truckinfo.TruckInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.orderdetail.OrderDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.ownerorderlist.OwnerOrderListActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.managetruck.ManageTruckItemActivity"
-            android:exported="false" />
+            android:exported="true"/>
         <activity
             android:name=".ui.managetruck.ManageTruckActivity"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".ui.signup.SignupActivity"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".ui.login.LoginActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ui.home.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,6 +52,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.home.MainActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
