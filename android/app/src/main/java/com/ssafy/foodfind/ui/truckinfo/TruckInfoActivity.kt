@@ -8,7 +8,9 @@ import com.ssafy.foodfind.databinding.ActivityCustomerOrderListBinding
 import com.ssafy.foodfind.databinding.ActivityTruckInfoBinding
 import com.ssafy.foodfind.ui.map.MapActivity
 import com.ssafy.foodfind.ui.shoppingcart.ShoppingCartActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class TruckInfoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTruckInfoBinding
     override fun onCreate(savedInstanceState: Bundle?) {

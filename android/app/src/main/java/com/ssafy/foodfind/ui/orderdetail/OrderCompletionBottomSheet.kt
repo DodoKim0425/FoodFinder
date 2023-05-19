@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.ssafy.foodfind.R
 import com.ssafy.foodfind.databinding.BottomSheetOrderCompletionBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 class OrderCompletionBottomSheet : BottomSheetDialogFragment() {
     private lateinit var binding: BottomSheetOrderCompletionBinding

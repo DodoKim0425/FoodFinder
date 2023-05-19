@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.ssafy.foodfind.R
-import com.ssafy.foodfind.data.Truck
+import com.ssafy.foodfind.data.entity.Truck
 import com.ssafy.foodfind.databinding.BottomSheetTruckBinding
-
+import dagger.hilt.android.AndroidEntryPoint
 
 class TruckBottomSheet(context: Context, private val truck: Truck) : BottomSheetDialog(context) {
     private lateinit var binding: BottomSheetTruckBinding

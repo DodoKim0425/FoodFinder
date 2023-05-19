@@ -1,4 +1,4 @@
-package com.ssafy.foodfind.data
+package com.ssafy.foodfind.data.entity
 
 data class Food(val name: String, val price: String)
 

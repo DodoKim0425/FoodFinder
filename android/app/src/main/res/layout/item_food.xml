@@ -4,7 +4,7 @@
     <data>
         <variable
             name="food"
-            type="com.ssafy.foodfind.data.Food" />
+            type="com.ssafy.foodfind.data.entity.Food" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

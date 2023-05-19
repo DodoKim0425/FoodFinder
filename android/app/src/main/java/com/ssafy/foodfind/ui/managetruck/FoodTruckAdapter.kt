@@ -2,7 +2,7 @@ package com.ssafy.foodfind.ui.managetruck
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.ssafy.foodfind.data.Food
+import com.ssafy.foodfind.data.entity.Food
 import com.ssafy.foodfind.databinding.ItemFoodBinding
 
 class FoodTruckAdapter(private val foodList: List<Food>) :

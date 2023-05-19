@@ -14,9 +14,11 @@ import com.ssafy.foodfind.ui.managetruck.ManageTruckActivity
 import com.ssafy.foodfind.ui.managetruck.ManageTruckItemActivity
 import com.ssafy.foodfind.ui.map.MapActivity
 import com.ssafy.foodfind.ui.notification.NotificationActivity
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.Math.abs
 import java.util.*
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var currentPage = 0
