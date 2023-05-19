@@ -32,4 +32,12 @@
 			userType =#{userType}
 		where userId = #{userId}
 	</update>
+	
+	<!-- 회원 Owner로 타입 변경 -->
+	<update id="updateUserToOwner" parameterType="String">
+		update user
+		set 
+			userType ="OWNER"
+		where userId = #{userId};
+	</update>
 </mapper>
