@@ -9,4 +9,5 @@ public interface CommentService {
 	public List<Comment> selectCommentByUser(String userId);
 	public Boolean insert(Comment comment);
 	public Boolean update(Comment comment);
+	public void delete(String commentId);
 }
