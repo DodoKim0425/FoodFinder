@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.ssafy.foodfind.data.entity.Event
 import com.ssafy.foodfind.data.entity.User
 import com.ssafy.foodfind.data.network.NetworkResponse
-import com.ssafy.foodfind.data.repository.login.LoginRepository
+import com.ssafy.foodfind.data.repository.user.UserRepository
 import com.ssafy.foodfind.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val repository: LoginRepository
+    private val repository: UserRepository
 ): BaseViewModel() {
 
     private val _msg = MutableLiveData<Event<String>>()
@@ -22,21 +22,6 @@ class LoginViewModel @Inject constructor(
 
     private val _user = MutableLiveData<User>()
     val user : LiveData<User> = _user
-
-
-    private fun postValueEvent(value : Int, type: String) {
-        val msgArrayList = arrayOf("Api 오류 : $type 실패했습니다.",
-            "서버 오류 : $type 실패했습니다.",
-            "알 수 없는 오류 : $type 실패했습니다."
-        )
-
-        when(value) {
-            0 -> _msg.postValue(Event(msgArrayList[0]))
-            1 -> _msg.postValue(Event(msgArrayList[1]))
-            2 -> _msg.postValue(Event(msgArrayList[2]))
-        }
-    }
-
 
     fun login(phoneNumber: String, password: String) {
         if(validation(phoneNumber, password)) {
@@ -74,5 +59,19 @@ class LoginViewModel @Inject constructor(
             return false
         }
         return true
+    }
+
+
+    private fun postValueEvent(value : Int, type: String) {
+        val msgArrayList = arrayOf("Api 오류 : $type 실패했습니다.",
+            "서버 오류 : $type 실패했습니다.",
+            "알 수 없는 오류 : $type 실패했습니다."
+        )
+
+        when(value) {
+            0 -> _msg.postValue(Event(msgArrayList[0]))
+            1 -> _msg.postValue(Event(msgArrayList[1]))
+            2 -> _msg.postValue(Event(msgArrayList[2]))
+        }
     }
 }
