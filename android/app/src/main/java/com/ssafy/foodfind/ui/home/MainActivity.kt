@@ -6,11 +6,10 @@ import android.os.Bundle
 import androidx.core.view.GravityCompat
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
-import androidx.viewpager2.widget.ViewPager2
-import com.ssafy.foodfind.R
+import com.ssafy.foodfind.SharedPrefs
+import com.ssafy.foodfind.data.entity.User
 import com.ssafy.foodfind.databinding.ActivityMainBinding
 import com.ssafy.foodfind.ui.customerorderlist.CustomerOrderListActivity
-import com.ssafy.foodfind.ui.managetruck.ManageTruckActivity
 import com.ssafy.foodfind.ui.managetruck.ManageTruckItemActivity
 import com.ssafy.foodfind.ui.map.MapActivity
 import com.ssafy.foodfind.ui.notification.NotificationActivity
@@ -21,8 +20,9 @@ import java.util.*
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private var currentPage = 0
     private lateinit var timer: Timer
+    private lateinit var user: User
+    private var currentPage = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         initViewPager()
         initButton()
+        initUser()
     }
 
     private fun initButton() {
@@ -55,6 +56,14 @@ class MainActivity : AppCompatActivity() {
         binding.btnNotification.setOnClickListener {
             val intent = Intent(this, NotificationActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+
+    private fun initUser() {
+        if(SharedPrefs.getUserInfo() != null) {
+            user = SharedPrefs.getUserInfo()!!
+            binding.username.text = user.username
         }
     }
 
