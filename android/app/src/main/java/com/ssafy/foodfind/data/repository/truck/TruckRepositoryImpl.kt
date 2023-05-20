@@ -28,5 +28,4 @@ class TruckRepositoryImpl @Inject constructor(
     override suspend fun updateTruck(truck: Truck): NetworkResponse<Boolean, ErrorResponse> {
         return apiService.updateTruckResponse(truck)
     }
-
 }

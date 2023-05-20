@@ -12,9 +12,9 @@ object SharedPrefs {
         return context.getSharedPreferences(LOGIN_SESSION, Context.MODE_PRIVATE)
     }
 
-    fun getToken() = user
+    fun getUserInfo() = user
 
-    fun saveToken(user: User) {
+    fun saveUserInfo(user: User) {
         this.user = user
         val editor = App.prefs.edit()
         editor.putInt("userId", user.userId)

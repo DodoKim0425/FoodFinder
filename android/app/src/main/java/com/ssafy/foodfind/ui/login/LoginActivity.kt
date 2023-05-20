@@ -1,13 +1,8 @@
 package com.ssafy.foodfind.ui.login
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat.startActivity
-import androidx.databinding.DataBindingUtil
-import com.ssafy.foodfind.App
 import com.ssafy.foodfind.R
 import com.ssafy.foodfind.SharedPrefs
 import com.ssafy.foodfind.databinding.ActivityLoginBinding
@@ -60,7 +55,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
 
             user.observe(this@LoginActivity) {
                 if(it != null) {
-                    SharedPrefs.saveToken(it)
+                    SharedPrefs.saveUserInfo(it)
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     startActivity(intent)
                 }
