@@ -4,6 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="truck"
+            type="com.ssafy.foodfind.data.entity.Truck" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -61,8 +66,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:ems="10"
+                        android:text="@{truck.name}"
                         android:textColor="@color/main_color1"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        tools:text="도도의 타꼬야끼"/>
 
                     <TextView
                         android:id="@+id/tv_content"
@@ -77,9 +84,11 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:gravity="start"
+                        android:text="@{truck.description}"
                         android:minHeight="30dp"
                         android:textColor="@color/main_color1"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        tools:text="한국식 타꼬야끼 판매하고 있습니다 ~"/>
 
                     <TextView
                         android:id="@+id/line_part1"
@@ -154,12 +163,12 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/main_color1" />
 
-                    <androidx.fragment.app.FragmentContainerView
+                    <!--<androidx.fragment.app.FragmentContainerView
                         android:id="@+id/map"
                         android:layout_width="match_parent"
                         android:layout_height="300dp"
                         android:name="com.naver.maps.map.MapFragment">
-                    </androidx.fragment.app.FragmentContainerView>
+                    </androidx.fragment.app.FragmentContainerView>-->
 
                     <Button
                         android:id="@+id/btn_search"
