@@ -76,9 +76,9 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <TextView
+                        android:id="@+id/username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="도연"
                         android:layout_marginStart="20dp"
                         android:textColor="@color/main_color1"
                         android:textSize="27sp"/>
