@@ -33,12 +33,12 @@ interface ApiService {
     suspend fun insertTruckResponse(@Body truck : Truck): NetworkResponse<Boolean, ErrorResponse>
 
     @GET("/rest/truck/myTruckInfo")
-    suspend fun getMyTruckInfo(@Query("ownerId") ownerId : Int): NetworkResponse<Truck, ErrorResponse>
+    suspend fun getMyTruckInfoResponse(@Query("ownerId") ownerId : Int): NetworkResponse<Truck, ErrorResponse>
 
     @GET("/rest/truck/selectAllTruck")
-    suspend fun getAllTruck(): NetworkResponse<List<Truck>, ErrorResponse>
+    suspend fun getAllTruckResponse(): NetworkResponse<List<Truck>, ErrorResponse>
 
     @POST("/rest/truck/update")
-    suspend fun updateTruck(@Body truck : Truck): NetworkResponse<Boolean, ErrorResponse>
+    suspend fun updateTruckResponse(@Body truck : Truck): NetworkResponse<Boolean, ErrorResponse>
 
 }
