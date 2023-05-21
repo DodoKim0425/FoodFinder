@@ -7,7 +7,13 @@
 		values (#{userId}, #{truckId}, #{description}, #{totalPrice}, now(), "RECEIVED");
 	</insert>
 	
-	<select id="selectOrderByOrderId" parameterType="String" resultType="UserOrderItemDetail">
+	<select id="selectOrderByUser" parameterType="String" resultType="Order">
+		select * 
+		from food_find.order
+		where userId = #{userId};
+	</select>
+	
+	<select id="selectOrderItemDetailByOrderId" parameterType="String" resultType="UserOrderItemDetail">
 		select 
 			o.orderId,
 		    o.userId,
@@ -33,4 +39,22 @@
 		on fi.itemId=oi.itemId
 		where o.orderId=#{orderId};
 	</select>
+	
+	<update id="updateOrderToCancel" parameterType="String">
+		update food_find.order
+		set 
+			orderStatus ="CANCEL"
+		where orderId = #{orderId};
+	</update>
+	
+	<select id="selectOrder" parameterType="String" resultType="Order">
+		select * from food_find.order where orderId = #{orderId};
+	</select>
+	
+	<update id="updateOrderStatus" parameterType="Order">
+		update food_find.order
+		set 
+			orderStatus =#{orderStatus}
+		where orderId = #{orderId};
+	</update>
 </mapper>

@@ -7,5 +7,9 @@ import com.ssafy.foodfind.model.dto.UserOrderItemDetail;
 
 public interface OrderDao {
 	int insert(Order order);
-	List<UserOrderItemDetail> selectOrderByOrderId(String orderId);
+	List<UserOrderItemDetail> selectOrderItemDetailByOrderId(String orderId);
+	List<Order> selectOrderByUser(String orderId);
+	int updateOrderToCancel(String orderId);
+	Order selectOrder(String orderId);
+	int updateOrderStatus(Order order);
 }

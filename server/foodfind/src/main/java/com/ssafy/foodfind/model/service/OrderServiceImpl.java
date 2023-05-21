@@ -34,8 +34,45 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<UserOrderItemDetail> selectOrderTotalInfo(String orderId) {
-		return orderDao.selectOrderByOrderId(orderId);
+	public List<UserOrderItemDetail> selectOrderItemDetailByOrderId(String orderId) {
+		return orderDao.selectOrderItemDetailByOrderId(orderId);
+	}
+
+	@Override
+	public List<Order> getOrderByUser(String orderId) {
+		return orderDao.selectOrderByUser(orderId);
+	}
+
+	@Override
+	@Transactional
+	public boolean updateOrderToCancel(String orderId) {
+		int res = orderDao.updateOrderToCancel(orderId);
+		if(res==1) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	@Override
+	public Order selectOrder(String orderId) {
+		Order order= orderDao.selectOrder(orderId);
+		if(order==null) {
+			return  new Order();
+		}else {
+			return order;
+		}
+	}
+
+	@Override
+	@Transactional
+	public boolean updateOrderStatus(Order order) {
+		int res = orderDao.updateOrderStatus(order);
+		if(res==1) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 	
 }
