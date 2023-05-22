@@ -3,8 +3,11 @@ package com.ssafy.foodfind.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,9 +43,16 @@ public class CommentRestController {
 		return cService.insert(comment);
 	}
 	
-	@PostMapping("/update")
+	@PutMapping("/update")
     @ApiOperation(value="코멘트를 수정, 성공하면 true반환 실패하면 false반환", response = Boolean.class)
 	public boolean update(@RequestBody Comment comment) {
 		return cService.update(comment);
+	}
+	
+	@DeleteMapping("/delete/{id}")
+	@ApiOperation(value="코멘트를 삭제", response = Boolean.class)
+	public boolean delete(@PathVariable String id) {
+		cService.delete(id);
+		return true;
 	}
 }

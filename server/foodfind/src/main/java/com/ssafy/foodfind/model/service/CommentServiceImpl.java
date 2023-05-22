@@ -55,5 +55,9 @@ public class CommentServiceImpl implements CommentService {
 			return false;
 		}
 	}
+	@Override
+	public void delete(String commentId) {
+		commentDao.delete(commentId);
+	}
 
 }

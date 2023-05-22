@@ -48,4 +48,9 @@
 		    content=#{content}
 		where commentId=#{commentId};
 	</update>
+	
+	<!-- 코멘트 삭제 -->
+	<delete id="delete" parameterType="String">
+		delete from comment where commentId = #{commentId};
+	</delete>
 </mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- name space는 BookRepo의 fully qualified name으로 설정한다. -->
+<mapper namespace="com.ssafy.foodfind.model.dao.FoodItemDao">
+
+	<!-- 트럭별 foodItem정보 조회, 사용하지 않는 fooditem제외하고 반환 -->
+	<select id="selectFoodItemByTruck" parameterType="string" resultType="FoodItem">
+		select * from fooditem where truckId =#{truckId} and usingYN=1;
+	</select>
+
+	<!-- foodItem하나의 정보 조회 -->
+	<select id="selectFoodItemById" parameterType="string" resultType="FoodItem">
+		select * from fooditem where itemId =#{itemId};
+	</select>
+	
+	<!--fooditem 추가-->
+	<insert id="insert" parameterType="FoodItem">
+		insert into fooditem (truckId, name, description, price, status) 
+		values (#{truckId},#{name}, #{description}, #{price}, #{status});
+	</insert>
+	
+	<!-- foodItem을 사용하지 않음으로 변경, 삭제하는것으로 볼수있음 -->
+	<update id="updateFoodItemToNotUse" parameterType="String">
+		UPDATE FoodItem
+		SET usingYN = false
+		WHERE itemId = #{itemId};
+	</update>
+	
+	
+	<!-- foodItem 정보 수정 -->
+	<update id="updateFoodItem" parameterType="FoodItem">
+		update FoodItem
+		set 
+			name = #{name},
+            description = #{description},
+            price = #{price},
+            status = #{status}
+		where itemId = #{itemId};
+	</update>
+</mapper>

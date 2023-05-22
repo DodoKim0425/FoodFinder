@@ -9,4 +9,5 @@ public interface CommentDao {
 	 List<Comment> selectCommentByUser(String userId);
 	 int insert(Comment comment);
 	 int update(Comment comment);
+	 int delete(String commentId);
 }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/setting"
+        android:title="@string/setting" />
+    <item
+        android:id="@+id/logout"
+        android:title="@string/logout" />
+    <item
+        android:id="@+id/delete_user"
+        android:title="@string/delete_user" />
+    <item
+        android:id="@+id/about"
+        android:title="@string/about" />
+    <item
+        android:id="@+id/developers"
+        android:title="@string/developers" />
+    <item
+        android:id="@+id/button_terms_conditions"
+        android:title="@string/terms_conditions" />
+</menu>
