@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.foodfind.model.dao.OrderDao">
+	<insert id="insert" parameterType="Order" useGeneratedKeys="true" keyProperty="orderId">
+		insert into food_find.order (userId, truckId, description, totalPrice, orderTime, orderStatus)
+		values (#{userId}, #{truckId}, #{description}, #{totalPrice}, now(), "RECEIVED");
+	</insert>
+	
+	<select id="selectOrderByUser" parameterType="String" resultType="Order">
+		select * 
+		from food_find.order
+		where userId = #{userId};
+	</select>
+	
+	<select id="selectOrderItemDetailByOrderId" parameterType="String" resultType="UserOrderItemDetail">
+		select 
+			o.orderId,
+		    o.userId,
+		    o.truckId,
+		    o.description,
+		    totalPrice,
+		    orderTime,
+		    orderStatus,
+		    orderItemId,
+		    oi.itemId,
+		    quantity,
+		    t.name truckName,
+		    u.username customerName,
+		    fi.name itemName
+		from food_find.order o
+		join orderitem oi
+		on o.orderId = oi.orderid
+		join foodtruck t
+		on o.truckId=t.truckId
+		join user u
+		on u.userId=o.userId
+		join fooditem fi
+		on fi.itemId=oi.itemId
+		where o.orderId=#{orderId};
+	</select>
+	
+	<update id="updateOrderToCancel" parameterType="String">
+		update food_find.order
+		set 
+			orderStatus ="CANCEL"
+		where orderId = #{orderId};
+	</update>
+	
+	<select id="selectOrder" parameterType="String" resultType="Order">
+		select * from food_find.order where orderId = #{orderId};
+	</select>
+	
+	<update id="updateOrderStatus" parameterType="Order">
+		update food_find.order
+		set 
+			orderStatus =#{orderStatus}
+		where orderId = #{orderId};
+	</update>
+</mapper>

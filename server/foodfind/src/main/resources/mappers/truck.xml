@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- name space는 BookRepo의 fully qualified name으로 설정한다. -->
+<mapper namespace="com.ssafy.foodfind.model.dao.TruckDao">
+
+	<!-- 트럭 전체 정보 조회 -->
+	<select id="selectAllTruck" parameterType="string" resultType="Truck">
+		select 
+			t.truckId,
+		    ownerId,
+		    name,
+		    description,
+		    location,
+		    currentStatus,
+		    IFNULL(avg(c.rating), 0) rating
+		from foodtruck t
+		left join comment c
+		on t.truckId = c.truckId
+        group by t.truckId;
+	</select>
+
+	<!-- 유저 트럭 정보 조회 -->
+	<select id="selectMyTruckInfo" parameterType="string" resultType="Truck">
+		select 
+			t.truckId,
+		    ownerId,
+		    name,
+		    description,
+		    location,
+		    currentStatus,
+		    IFNULL(avg(c.rating), 0) rating
+		from foodtruck t
+		left join comment c
+		on t.truckId = c.truckId
+        group by t.truckId
+        having ownerId = #{ownerId};
+	</select>
+	
+	<!-- 유저가 보유중인 트럭 수 반환 -->
+	<select id="selectTruckCountByUser" parameterType="string" resultType="int">
+		select count(truckId)
+		from foodtruck 
+		where ownerId=#{ownerId};
+	</select>
+	
+	<!--트럭 추가-->
+	<insert id="insert" parameterType="Truck">
+		insert into foodtruck (ownerId, name, description, location, currentStatus)
+		value(#{ownerId}, #{name}, #{description}, #{location}, #{currentStatus});
+	</insert>
+	
+	
+	<!-- 트럭 정보 수정 -->
+	<update id="update" parameterType="Truck">
+		update foodtruck
+		set 
+			name = #{name},
+            description = #{description},
+            location = #{location},
+            currentStatus = #{currentStatus}
+		where truckId = #{truckId};
+	</update>
+</mapper>

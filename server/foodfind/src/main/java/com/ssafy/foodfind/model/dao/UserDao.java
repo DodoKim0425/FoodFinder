@@ -7,4 +7,5 @@ public interface UserDao {
 	 User checkPhoneNumber(String phoneNumber);
 	 int insert(User user);
 	 int update(User user);
+	 int updateUserToOwner(String userId);
 }

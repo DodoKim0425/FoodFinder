@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp">
+
+        <TextView
+            android:id="@+id/tvCompletionTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tvCompletionTime"
+            android:gravity="center"
+            android:padding="16dp" />
+
+        <EditText
+            android:id="@+id/etCompletionTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="@string/etCompletionTime"
+            android:padding="16dp" />
+
+        <Button
+            android:id="@+id/btnConfirm"
+            android:text="@string/textViewCompleteCook"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:backgroundTint="@color/main_color5"/>
+    </LinearLayout>
+</layout>
