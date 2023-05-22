@@ -1,5 +1,7 @@
 package com.ssafy.foodfind.ui.managetruck
 
+import android.util.Log
+import androidx.databinding.ObservableInt
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -12,6 +14,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val TAG = "TruckViewModel_싸피"
 @HiltViewModel
 class TruckViewModel @Inject constructor(
     private val repository: TruckRepository
@@ -22,8 +25,6 @@ class TruckViewModel @Inject constructor(
 
     private val _truck = MutableLiveData<Event<Truck>>()
     val truck: LiveData<Event<Truck>> = _truck
-
-
     fun getMyTruckInfo(ownerId: Int) {
         showProgress()
         viewModelScope.launch {
@@ -46,8 +47,28 @@ class TruckViewModel @Inject constructor(
             hideProgress()
         }
     }
+    fun updateTruck(truck:Truck){
+        showProgress()
+        viewModelScope.launch {
+            val response = repository.updateTruck(truck)
+            val type = "업데이트에"
+            when(response){
+                is NetworkResponse.Success -> {
 
-
+                }
+                is NetworkResponse.ApiError -> {
+                    postValueEvent(0, type)
+                }
+                is NetworkResponse.NetworkError -> {
+                    postValueEvent(1, type)
+                }
+                is NetworkResponse.UnknownError -> {
+                    postValueEvent(2, type)
+                }
+            }
+            hideProgress()
+        }
+    }
     private fun postValueEvent(value: Int, type: String) {
         val msgArrayList = arrayOf(
             "Api 오류 : $type 실패했습니다.",

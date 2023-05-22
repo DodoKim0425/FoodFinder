@@ -4,6 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import androidx.activity.viewModels
 import com.ssafy.foodfind.R
 import com.ssafy.foodfind.SharedPrefs
@@ -25,6 +28,7 @@ class ManageTruckItemActivity :
     BaseActivity<ActivityManageTruckItemBinding>(R.layout.activity_manage_truck_item) {
 
     private val viewModel by viewModels<TruckViewModel>()
+    private lateinit var truckInfo : Truck
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -35,6 +39,7 @@ class ManageTruckItemActivity :
 
     private fun initTruck() {
         binding.truck = Truck()
+        binding.viewModel=viewModel
         if (SharedPrefs.getUserInfo() != null) {
             val userId = SharedPrefs.getUserInfo()!!.userId
             viewModel.getMyTruckInfo(userId)
@@ -43,6 +48,13 @@ class ManageTruckItemActivity :
 
     private fun initButton() {
         binding.btnBack.setOnClickListener {
+            truckInfo.apply {
+                when(binding.radioGroupStatus.checkedRadioButtonId){
+                    R.id.truck_open -> this.currentStatus="OPEN"
+                    else -> this.currentStatus ="CLOSED"
+                }
+            }
+            viewModel.updateTruck(truckInfo)
             finish()
         }
 
@@ -50,6 +62,8 @@ class ManageTruckItemActivity :
             val intent = Intent(this, ManageTruckActivity::class.java)
             startActivity(intent)
         }
+
+
     }
 
     private fun observeData() {
@@ -81,6 +95,7 @@ class ManageTruckItemActivity :
                     } else {
                         Log.d(TAG, "observeData: ")
                         binding.truck = truck
+                        truckInfo = truck
                     }
                 }
             }
