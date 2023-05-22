@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.activity.viewModels
 import com.ssafy.foodfind.R
 import com.ssafy.foodfind.SharedPrefs
+import com.ssafy.foodfind.data.entity.Truck
 import com.ssafy.foodfind.databinding.ActivityCustomerOrderListBinding
 import com.ssafy.foodfind.databinding.ActivityLoginBinding
 import com.ssafy.foodfind.databinding.ActivityManageTruckItemBinding
@@ -33,6 +34,7 @@ class ManageTruckItemActivity :
     }
 
     private fun initTruck() {
+        binding.truck = Truck()
         if (SharedPrefs.getUserInfo() != null) {
             val userId = SharedPrefs.getUserInfo()!!.userId
             viewModel.getMyTruckInfo(userId)
