@@ -6,8 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.ssafy.foodfind.data.entity.Event
+import com.ssafy.foodfind.data.entity.FoodItem
 import com.ssafy.foodfind.data.entity.Truck
 import com.ssafy.foodfind.data.network.NetworkResponse
+import com.ssafy.foodfind.data.repository.foodItem.FoodItemRepository
 import com.ssafy.foodfind.data.repository.truck.TruckRepository
 import com.ssafy.foodfind.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +19,8 @@ import javax.inject.Inject
 private const val TAG = "TruckViewModel_싸피"
 @HiltViewModel
 class TruckViewModel @Inject constructor(
-    private val repository: TruckRepository
+    private val truckRepository: TruckRepository,
+    private val foodItemRepository: FoodItemRepository
 ) : BaseViewModel() {
 
     private val _msg = MutableLiveData<Event<String>>()
@@ -25,10 +28,13 @@ class TruckViewModel @Inject constructor(
 
     private val _truck = MutableLiveData<Event<Truck>>()
     val truck: LiveData<Event<Truck>> = _truck
+
+    private val _foodItemList = MutableLiveData<Event<List<FoodItem>>>()
+    val foodItemList : LiveData<Event<List<FoodItem>>> = _foodItemList
     fun getMyTruckInfo(ownerId: Int) {
         showProgress()
         viewModelScope.launch {
-            val response = repository.getMyTruckInfo(ownerId)
+            val response = truckRepository.getMyTruckInfo(ownerId)
             val type = "정보 조회에"
             when (response) {
                 is NetworkResponse.Success -> {
@@ -47,10 +53,33 @@ class TruckViewModel @Inject constructor(
             hideProgress()
         }
     }
+
+    fun getFoodItem(truckId : Int){
+        showProgress()
+        viewModelScope.launch {
+            val response = foodItemRepository.getFoodItemResponseByTruckId(truckId)
+            val type = "정보 조회에"
+            when (response) {
+                is NetworkResponse.Success -> {
+                    _foodItemList.postValue(Event(response.body))
+                }
+                is NetworkResponse.ApiError -> {
+                    postValueEvent(0, type)
+                }
+                is NetworkResponse.NetworkError -> {
+                    postValueEvent(1, type)
+                }
+                is NetworkResponse.UnknownError -> {
+                    postValueEvent(2, type)
+                }
+            }
+            hideProgress()
+        }
+    }
     fun updateTruck(truck:Truck){
         showProgress()
         viewModelScope.launch {
-            val response = repository.updateTruck(truck)
+            val response = truckRepository.updateTruck(truck)
             val type = "업데이트에"
             when(response){
                 is NetworkResponse.Success -> {

@@ -1,5 +1,7 @@
 package com.ssafy.foodfind.di
 
+import com.ssafy.foodfind.data.repository.foodItem.FoodItemRepository
+import com.ssafy.foodfind.data.repository.foodItem.FoodItemRepositoryImpl
 import com.ssafy.foodfind.data.repository.truck.TruckRepository
 import com.ssafy.foodfind.data.repository.truck.TruckRepositoryImpl
 import com.ssafy.foodfind.data.repository.user.UserRepository
@@ -22,4 +24,9 @@ abstract class RepositoryModule {
     abstract fun bindsTruckRepository(
         repositoryImpl: TruckRepositoryImpl
     ): TruckRepository
+
+    @Binds
+    abstract fun bindsFoodItemRepository(
+        foodItemRepository: FoodItemRepositoryImpl
+    ): FoodItemRepository
 }

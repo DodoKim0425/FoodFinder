@@ -8,8 +8,10 @@ import android.view.View
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.activity.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.foodfind.R
 import com.ssafy.foodfind.SharedPrefs
+import com.ssafy.foodfind.data.entity.FoodItem
 import com.ssafy.foodfind.data.entity.Truck
 import com.ssafy.foodfind.databinding.ActivityCustomerOrderListBinding
 import com.ssafy.foodfind.databinding.ActivityLoginBinding
@@ -29,17 +31,24 @@ class ManageTruckItemActivity :
 
     private val viewModel by viewModels<TruckViewModel>()
     private lateinit var truckInfo : Truck
+    private lateinit var foodTruckAdapter: FoodTruckAdapter
+    private var list : MutableList<FoodItem> = mutableListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        initRecyclerView()
         initButton()
         initTruck()
         observeData()
     }
 
+    private fun initRecyclerView(){
+        foodTruckAdapter = FoodTruckAdapter(list)
+        binding.rvMember.adapter=foodTruckAdapter
+        binding.rvMember.layoutManager = LinearLayoutManager(this)
+    }
+
     private fun initTruck() {
         binding.truck = Truck()
-        binding.viewModel=viewModel
         if (SharedPrefs.getUserInfo() != null) {
             val userId = SharedPrefs.getUserInfo()!!.userId
             viewModel.getMyTruckInfo(userId)
@@ -96,7 +105,17 @@ class ManageTruckItemActivity :
                         Log.d(TAG, "observeData: ")
                         binding.truck = truck
                         truckInfo = truck
+                        viewModel.getFoodItem(truck.truckId)
                     }
+                }
+            }
+
+            foodItemList.observe(this@ManageTruckItemActivity){ event ->
+                event.getContentIfNotHandled()?.let {
+                    Log.d(TAG, "observeData: ${it.size}")
+                    list.clear()
+                    list.addAll(it)
+                    foodTruckAdapter.notifyDataSetChanged()
                 }
             }
         }

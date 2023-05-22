@@ -4,10 +4,11 @@
     <data>
         <variable
             name="food"
-            type="com.ssafy.foodfind.data.entity.Food" />
+            type="com.ssafy.foodfind.data.entity.FoodItem" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         xmlns:tools="http://schemas.android.com/tools"
@@ -32,7 +33,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:gravity="center"
-            android:text="@{food.price}"
+            app:bigDecimalToPriceString="@{food.price}"
             tools:text="5,000원" />
 
     </LinearLayout>

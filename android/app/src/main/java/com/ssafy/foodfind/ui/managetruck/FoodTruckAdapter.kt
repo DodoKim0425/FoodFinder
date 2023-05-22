@@ -3,9 +3,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.foodfind.data.entity.Food
+import com.ssafy.foodfind.data.entity.FoodItem
 import com.ssafy.foodfind.databinding.ItemFoodBinding
 
-class FoodTruckAdapter(private val foodList: List<Food>) :
+class FoodTruckAdapter(private val foodList: List<FoodItem>) :
     RecyclerView.Adapter<FoodTruckAdapter.FoodViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodViewHolder {
@@ -22,11 +23,10 @@ class FoodTruckAdapter(private val foodList: List<Food>) :
     override fun getItemCount(): Int {
         return foodList.size
     }
-
     inner class FoodViewHolder(private val binding: ItemFoodBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(food: Food) {
+        fun bind(food: FoodItem) {
             binding.food = food
             binding.executePendingBindings()
         }
