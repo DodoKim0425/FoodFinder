@@ -54,7 +54,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
             }
 
             user.observe(this@LoginActivity) {
-                if(it != null) {
+                if(it.userId != -1) {
                     SharedPrefs.saveUserInfo(it)
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     startActivity(intent)
