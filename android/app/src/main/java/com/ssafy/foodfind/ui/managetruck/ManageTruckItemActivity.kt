@@ -75,6 +75,7 @@ class ManageTruckItemActivity :
                         val intent =
                             Intent(this@ManageTruckItemActivity, ManageTruckActivity::class.java)
                         startActivity(intent)
+                        finish()
                     } else {
                         Log.d(TAG, "observeData: ")
                         binding.truck = truck
