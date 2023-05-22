@@ -18,6 +18,7 @@ object ApiModule {
 
     private const val baseUrl = "http://127.0.0.1:9999"
     private const val baseUrl2 = "http://10.0.2.2:9999"
+    private const val baseUrl3 = "http://192.168.33.129:9999"
 
     @Provides
     @Singleton
@@ -34,10 +35,9 @@ object ApiModule {
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl(baseUrl2)
+            .baseUrl(baseUrl3)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(NetworkResponseAdapterFactory())
-            .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
