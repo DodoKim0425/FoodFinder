@@ -10,7 +10,6 @@ import com.ssafy.foodfind.R
 import com.ssafy.foodfind.data.entity.Truck
 import com.ssafy.foodfind.databinding.BottomSheetTruckBinding
 import com.ssafy.foodfind.ui.truckinfo.TruckInfoActivity
-import dagger.hilt.android.AndroidEntryPoint
 
 class TruckBottomSheet(context: Context, private val truck: Truck) : BottomSheetDialog(context) {
     private lateinit var binding: BottomSheetTruckBinding

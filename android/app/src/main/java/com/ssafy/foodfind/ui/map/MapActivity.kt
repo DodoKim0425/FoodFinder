@@ -20,10 +20,8 @@ import dagger.hilt.android.AndroidEntryPoint
 private const val TAG = "MapActivity_싸피"
 
 @AndroidEntryPoint
-class MapActivity : BaseActivity<ActivityMapBinding>(R.layout.activity_map),
-    OnMapReadyCallback, Overlay.OnClickListener {
+class MapActivity : BaseActivity<ActivityMapBinding>(R.layout.activity_map) {
     private val viewModel by viewModels<MapViewModel>()
-    private lateinit var naverMap: NaverMap
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -32,13 +30,8 @@ class MapActivity : BaseActivity<ActivityMapBinding>(R.layout.activity_map),
     }
 
     private fun initMap() {
-        val fm = supportFragmentManager
-        val mapFragment = fm.findFragmentById(R.id.map_fragment) as MapFragment?
-            ?: MapFragment.newInstance().also {
-                fm.beginTransaction().add(R.id.map_fragment, it).commit()
-            }
-
-        mapFragment.getMapAsync(this)
+        supportFragmentManager.beginTransaction().add(R.id.mapContainer, MapFragmentWrapper).commit()
+        viewModel.getAllTruckLocation()
     }
 
     private fun observeData() {
@@ -60,7 +53,7 @@ class MapActivity : BaseActivity<ActivityMapBinding>(R.layout.activity_map),
 
             locations.observe(this@MapActivity) {
                 for (document in it) {
-                    addMarkers(document)
+                    MapFragmentWrapper.addMarker(document)
                 }
             }
 
@@ -68,34 +61,22 @@ class MapActivity : BaseActivity<ActivityMapBinding>(R.layout.activity_map),
                 val truckBottomSheet = TruckBottomSheet(this@MapActivity, it)
                 truckBottomSheet.show()
                 val location = TruckLocation(it.truckId, it.location)
-                setPosition(location.latitude, location.longitude)
+                MapFragmentWrapper.setPosition(location)
+            }
+
+            MapFragmentWrapper.setMarkerClickListener { truckId ->
+                viewModel.getTruckInfo(truckId)
             }
         }
     }
 
-    override fun onMapReady(p0: NaverMap) {
-        this.naverMap = p0
-        viewModel.getAllTruckLocation()
-    }
 
-    private fun addMarkers(item: TruckLocation) {
-        val marker = Marker()
-        marker.position = LatLng(item.latitude, item.longitude)
-        marker.map = naverMap
-        marker.onClickListener = this
-        marker.tag = item.truckId
-    }
+    override fun onDestroy() {
+        super.onDestroy()
 
-    private fun setPosition(latitude: Double, longitude: Double) {
-        val cameraPosition = CameraPosition(
-            LatLng(latitude, longitude),
-            14.0
-        )
-        naverMap.cameraPosition = cameraPosition
-    }
-
-    override fun onClick(p0: Overlay): Boolean {
-        viewModel.getTruckInfo(p0.tag.toString().toInt())
-        return true
+        val mapFragmentWrapper = supportFragmentManager.findFragmentById(R.id.mapContainer) as? MapFragmentWrapper
+        if (mapFragmentWrapper != null) {
+            supportFragmentManager.beginTransaction().remove(mapFragmentWrapper).commit()
+        }
     }
 }
