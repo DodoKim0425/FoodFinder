@@ -7,7 +7,7 @@ public class FoodItem {
 	private int truckId;
 	private String name;
 	private String description;
-	private BigDecimal price;
+	private int price;
 	private String status;
 	private boolean usingYN;
 	
@@ -16,7 +16,7 @@ public class FoodItem {
 	}
 	
 
-	public FoodItem(int itemId, int truckId, String name, String description, BigDecimal price, String status,
+	public FoodItem(int itemId, int truckId, String name, String description, int price, String status,
 			boolean usingYN) {
 		super();
 		this.itemId = itemId;
@@ -53,10 +53,10 @@ public class FoodItem {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public BigDecimal getPrice() {
+	public int getPrice() {
 		return price;
 	}
-	public void setPrice(BigDecimal price) {
+	public void setPrice(int price) {
 		this.price = price;
 	}
 	public String getStatus() {
