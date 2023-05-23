@@ -61,4 +61,26 @@
             currentStatus = #{currentStatus}
 		where truckId = #{truckId};
 	</update>
+	
+	<!-- truckId 로 트럭 조회 -->
+	<select id="selectTruckByTruckId" parameterType="String" resultType="Truck">
+		select 
+			t.truckId,
+		    ownerId,
+		    name,
+		    description,
+		    location,
+		    currentStatus,
+		    IFNULL(avg(c.rating), 0) rating
+		from foodtruck t
+		left join comment c
+		on t.truckId = c.truckId
+        group by t.truckId
+        having truckId=1;
+	</select>
+	
+	<!-- truckId와 location만 조회 -->
+	<select id="selectTrucklocations" resultType="Map">
+		select truckId, location from foodtruck;
+	</select>
 </mapper>

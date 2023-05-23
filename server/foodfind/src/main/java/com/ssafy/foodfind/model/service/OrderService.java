@@ -12,4 +12,5 @@ public interface OrderService {
 	public boolean updateOrderToCancel(String orderId);
 	public Order selectOrder(String orderId);
 	public boolean updateOrderStatus(Order order);
+	public List<Order> selectOrderByTruck(String truckId);
 }

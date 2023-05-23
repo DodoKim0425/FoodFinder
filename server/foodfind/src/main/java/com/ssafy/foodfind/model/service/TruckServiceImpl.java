@@ -1,6 +1,7 @@
 package com.ssafy.foodfind.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,6 +59,16 @@ public class TruckServiceImpl implements TruckService {
 	@Override
 	public List<Truck> selectAllTruck() {
 		return truckDao.selectAllTruck();
+	}
+
+	@Override
+	public List<Truck> selectTruckByTruckId(String truckId) {
+		return truckDao.selectTruckByTruckId(truckId);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectTrucklocations() {
+		return truckDao.selectTrucklocations();
 	}
 	
 

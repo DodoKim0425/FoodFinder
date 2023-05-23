@@ -74,5 +74,10 @@ public class OrderServiceImpl implements OrderService {
 			return false;
 		}
 	}
+
+	@Override
+	public List<Order> selectOrderByTruck(String truckId) {
+		return orderDao.selectOrderByTruck(truckId);
+	}
 	
 }

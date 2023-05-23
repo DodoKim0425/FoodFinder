@@ -1,6 +1,7 @@
 package com.ssafy.foodfind.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,5 +67,17 @@ public class TruckRestController {
 	@ApiOperation(value="Truck 전체 조회")
 	public List<Truck> selectAllTruck(){
 		return tService.selectAllTruck();
+	}
+	
+	@GetMapping("/selectTruckByTruckId")
+	@ApiOperation(value="truckId로 트럭 조회")
+	public List<Truck> selectTruckByTruckId(String truckId){
+		return tService.selectTruckByTruckId(truckId);
+	}
+	
+	@GetMapping("/selectTruckLocations")
+	@ApiOperation(value="truckId와 location목록을 조회")
+	public List<Map<String, Object>>selectTrucklocations(){
+		return tService.selectTrucklocations();
 	}
 }
