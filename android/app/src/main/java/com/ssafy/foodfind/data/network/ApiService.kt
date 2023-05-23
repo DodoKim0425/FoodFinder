@@ -2,6 +2,7 @@ package com.ssafy.foodfind.data.network
 
 import com.ssafy.foodfind.data.entity.ErrorResponse
 import com.ssafy.foodfind.data.entity.Truck
+import com.ssafy.foodfind.data.entity.TruckLocation
 import com.ssafy.foodfind.data.entity.User
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -38,7 +39,14 @@ interface ApiService {
     @GET("/rest/truck/selectAllTruck")
     suspend fun getAllTruckResponse(): NetworkResponse<List<Truck>, ErrorResponse>
 
+
+    @GET("/rest/truck/selectTruckLocations")
+    suspend fun getAllTruckLocationResponse(): NetworkResponse<List<TruckLocation>, ErrorResponse>
+
     @POST("/rest/truck/update")
     suspend fun updateTruckResponse(@Body truck : Truck): NetworkResponse<Boolean, ErrorResponse>
+
+    @GET("/rest/truck/selectTruckByTruckId")
+    suspend fun getTruckResponse(@Query("truckId") truckId : Int): NetworkResponse<Truck, ErrorResponse>
 
 }
