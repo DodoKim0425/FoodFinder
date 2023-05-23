@@ -11,6 +11,6 @@ public interface TruckDao {
 	int insert(Truck truck);
 	int update(Truck truck);
 	List<Truck> selectAllTruck();
-	List<Truck>selectTruckByTruckId(String truckId);
+	Truck selectTruckByTruckId(String truckId);
 	List<Map<String, Object>>selectTrucklocations();
 }

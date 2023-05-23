@@ -13,6 +13,6 @@ public interface TruckService {
 	public Boolean insert(Truck truck);
 	public void update(Truck truck);
 	public List<Truck> selectAllTruck();
-	public List<Truck>selectTruckByTruckId(String truckId);
+	public Truck selectTruckByTruckId(String truckId);
 	public List<Map<String, Object>>selectTrucklocations();
 }
