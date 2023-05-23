@@ -60,6 +60,14 @@
     <string name="truck_open">영업중</string>
     <string name="truck_close">휴업중</string>
     <string name="truck_manage">가게 정보 관리</string>
+    <string name= "new_food_item_name">새로운 메뉴의 이름</string>
+    <string name= "new_food_item_description">새로운 메뉴의 설명</string>
+    <string name= "new_food_item_price">새로운 메뉴의 가격</string>
+    <string name= "tv_new_food_item_name">이름</string>
+    <string name= "tv_new_food_item_description">설명</string>
+    <string name= "tv_new_food_item_price">가격</string>
+    <string name= "new_food_item_bottom_sheet">아래에 추가할 메뉴의 정보를 입력하세요</string>
+    <string name="new_food_item_bottom_sheet_btn">리스트에 추가하기</string>
 
     <!-- truck item page -->
     <string name="read_title">이름</string>

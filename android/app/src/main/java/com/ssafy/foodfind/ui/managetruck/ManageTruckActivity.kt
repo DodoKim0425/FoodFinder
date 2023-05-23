@@ -54,5 +54,10 @@ class ManageTruckActivity :
             val intent = Intent(this, ManageTruckActivity::class.java)
             startActivity(intent)
         }
+
+        binding.floatingActionButton.setOnClickListener {
+            var bottomSheet = ManageTruckItemBottomSheet(this)
+            bottomSheet.show()
+        }
     }
 }
