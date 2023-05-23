@@ -14,6 +14,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="24sp"
@@ -27,7 +28,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:rating="@{truck.rating}"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:isIndicator="true"/>
 
         <TextView
             android:layout_width="match_parent"
