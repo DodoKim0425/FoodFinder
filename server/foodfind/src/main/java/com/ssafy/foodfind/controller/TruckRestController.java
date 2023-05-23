@@ -71,7 +71,7 @@ public class TruckRestController {
 	
 	@GetMapping("/selectTruckByTruckId")
 	@ApiOperation(value="truckId로 트럭 조회")
-	public List<Truck> selectTruckByTruckId(String truckId){
+	public Truck selectTruckByTruckId(String truckId){
 		return tService.selectTruckByTruckId(truckId);
 	}
 	

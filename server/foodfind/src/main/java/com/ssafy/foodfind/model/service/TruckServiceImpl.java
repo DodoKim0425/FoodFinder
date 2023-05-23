@@ -62,7 +62,7 @@ public class TruckServiceImpl implements TruckService {
 	}
 
 	@Override
-	public List<Truck> selectTruckByTruckId(String truckId) {
+	public Truck selectTruckByTruckId(String truckId) {
 		return truckDao.selectTruckByTruckId(truckId);
 	}
 

@@ -76,7 +76,7 @@
 		left join comment c
 		on t.truckId = c.truckId
         group by t.truckId
-        having truckId=1;
+        having truckId=#{truckId};
 	</select>
 	
 	<!-- truckId와 location만 조회 -->
