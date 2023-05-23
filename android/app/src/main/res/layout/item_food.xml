@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:gravity="center"
-            android:text="@{food.price}"
+            android:text="@{String.format(`%,d원`, food.price)}"
             tools:text="5,000원" />
 
     </LinearLayout>
