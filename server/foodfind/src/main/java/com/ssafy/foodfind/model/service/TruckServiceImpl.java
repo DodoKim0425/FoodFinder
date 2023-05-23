@@ -44,10 +44,10 @@ public class TruckServiceImpl implements TruckService {
 	
 	@Override
 	@Transactional
-	public Boolean insert(Truck truck){
+	public int insert(Truck truck){
 		truckDao.insert(truck);
 		userDao.updateUserToOwner(Integer.toString(truck.getOwnerId()));
-		return true;
+		return truck.getTruckId();
 	}
 
 	@Override
