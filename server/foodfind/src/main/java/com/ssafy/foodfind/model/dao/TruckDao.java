@@ -1,6 +1,7 @@
 package com.ssafy.foodfind.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ssafy.foodfind.model.dto.Truck;
 
@@ -10,4 +11,6 @@ public interface TruckDao {
 	int insert(Truck truck);
 	int update(Truck truck);
 	List<Truck> selectAllTruck();
+	List<Truck>selectTruckByTruckId(String truckId);
+	List<Map<String, Object>>selectTrucklocations();
 }
