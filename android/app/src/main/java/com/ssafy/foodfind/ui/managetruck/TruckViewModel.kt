@@ -33,9 +33,6 @@ class TruckViewModel @Inject constructor(
     private val _foodItemList = MutableLiveData<Event<List<FoodItem>>>()
     val foodItemList : LiveData<Event<List<FoodItem>>> = _foodItemList
 
-    private val _isMapReady = MutableLiveData<Boolean>()
-    val isMapReady : LiveData<Boolean> = _isMapReady
-
     fun getMyTruckInfo(ownerId: Int) {
         showProgress()
         viewModelScope.launch {
@@ -102,10 +99,6 @@ class TruckViewModel @Inject constructor(
             }
             hideProgress()
         }
-    }
-
-    fun setIsMapReady(){
-        _isMapReady.postValue(true)
     }
     private fun postValueEvent(value: Int, type: String) {
         val msgArrayList = arrayOf(

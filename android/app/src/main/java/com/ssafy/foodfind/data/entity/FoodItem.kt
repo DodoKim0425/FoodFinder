@@ -10,4 +10,4 @@ data class FoodItem (
 	var price : BigDecimal = BigDecimal(0),
 	var status : String = "",
 	val usingYN : Boolean = true
-)
+) : java.io.Serializable

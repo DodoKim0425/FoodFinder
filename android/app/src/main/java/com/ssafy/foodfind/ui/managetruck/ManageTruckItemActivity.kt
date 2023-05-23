@@ -67,24 +67,30 @@ class ManageTruckItemActivity :
 
     private fun initButton() {
         binding.btnBack.setOnClickListener {
-            truckInfo.apply {
-                when(binding.radioGroupStatus.checkedRadioButtonId){
-                    R.id.truck_open -> this.currentStatus="OPEN"
-                    else -> this.currentStatus ="CLOSED"
-                }
-            }
             viewModel.updateTruck(truckInfo)
             finish()
         }
 
         binding.btnUpdateTruck.setOnClickListener {
             val intent = Intent(this, ManageTruckActivity::class.java)
+            intent.putExtra("truckInfo", truckInfo)
+            var foodItemList : ArrayList<FoodItem> = ArrayList<FoodItem>()
+            foodItemList.addAll(list)
+            intent.putExtra("foodItemList", foodItemList)
             startActivity(intent)
+        }
+
+        binding.radioGroupStatus.setOnCheckedChangeListener { group, checkedId ->
+            truckInfo.apply {
+                when(binding.radioGroupStatus.checkedRadioButtonId){
+                    R.id.truck_open -> this.currentStatus="OPEN"
+                    else -> this.currentStatus ="CLOSED"
+                }
+            }
         }
 
 
     }
-
     private fun observeData() {
         with(viewModel) {
             errorMsg.observe(this@ManageTruckItemActivity) { event ->

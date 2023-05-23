@@ -10,4 +10,4 @@ data class Truck(
     var description: String = "",
     var location: String = "",
     var currentStatus: String = ""
-)
+) : java.io.Serializable
