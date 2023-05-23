@@ -43,17 +43,14 @@ public class TruckRestController {
 	
 	@PostMapping("/insert")
 	@Transactional
-	@ApiOperation(value="Truck 추가", response = Boolean.class)
-	public Boolean insert(@RequestBody Truck truck) {
+	@ApiOperation(value="Truck 추가, 반환값은 추가된 트럭의 truckId이다, 이미 트럭을 보유하여 추가 불가한 경우 -1반환", response = Integer.class)
+	public int insert(@RequestBody Truck truck) {
 		String ownerId=Integer.toString(truck.getOwnerId());
 		int truckCount=tService.selectTruckCountByUser(ownerId);
 		if(truckCount==0) {
-			boolean res=tService.insert(truck);
-			return res;
-		}else {
-			return false;
+			return tService.insert(truck);
 		}
-		
+		return -1;
 	}
 	
 	@PutMapping("/update")

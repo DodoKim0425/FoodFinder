@@ -45,7 +45,7 @@
 	</select>
 	
 	<!--트럭 추가-->
-	<insert id="insert" parameterType="Truck">
+	<insert id="insert" parameterType="Truck" useGeneratedKeys="true" keyProperty="truckId">
 		insert into foodtruck (ownerId, name, description, location, currentStatus)
 		value(#{ownerId}, #{name}, #{description}, #{location}, #{currentStatus});
 	</insert>
