@@ -27,7 +27,7 @@ class TruckViewModel @Inject constructor(
     fun getMyTruckInfo(ownerId: Int) {
         showProgress()
         viewModelScope.launch {
-            val response = repository.getMyTruckInfo(ownerId)
+            val response = repository.getMyTruckInfoRequest(ownerId)
             val type = "정보 조회에"
             when (response) {
                 is NetworkResponse.Success -> {
