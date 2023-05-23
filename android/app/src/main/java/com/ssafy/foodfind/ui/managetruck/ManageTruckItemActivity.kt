@@ -1,44 +1,54 @@
 package com.ssafy.foodfind.ui.managetruck
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.RadioButton
-import android.widget.RadioGroup
 import androidx.activity.viewModels
+import androidx.annotation.UiThread
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraPosition
+import com.naver.maps.map.MapFragment
+import com.naver.maps.map.NaverMap
+import com.naver.maps.map.OnMapReadyCallback
+import com.naver.maps.map.overlay.Marker
 import com.ssafy.foodfind.R
 import com.ssafy.foodfind.SharedPrefs
 import com.ssafy.foodfind.data.entity.FoodItem
 import com.ssafy.foodfind.data.entity.Truck
-import com.ssafy.foodfind.databinding.ActivityCustomerOrderListBinding
-import com.ssafy.foodfind.databinding.ActivityLoginBinding
 import com.ssafy.foodfind.databinding.ActivityManageTruckItemBinding
 import com.ssafy.foodfind.ui.LoadingDialog
 import com.ssafy.foodfind.ui.base.BaseActivity
-import com.ssafy.foodfind.ui.home.MainActivity
-import com.ssafy.foodfind.ui.login.LoginViewModel
-import com.ssafy.foodfind.ui.shoppingcart.ShoppingCartActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 private const val TAG = "ManageTruckItemActivity"
 
 @AndroidEntryPoint
 class ManageTruckItemActivity :
-    BaseActivity<ActivityManageTruckItemBinding>(R.layout.activity_manage_truck_item) {
+    BaseActivity<ActivityManageTruckItemBinding>(R.layout.activity_manage_truck_item), OnMapReadyCallback {
 
     private val viewModel by viewModels<TruckViewModel>()
-    private lateinit var truckInfo : Truck
+    private var truckInfo : Truck = Truck()
     private lateinit var foodTruckAdapter: FoodTruckAdapter
     private var list : MutableList<FoodItem> = mutableListOf()
+    private var marker = Marker()
+    private lateinit var naverMap : NaverMap
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val fm = supportFragmentManager
+        val mapFragment = fm.findFragmentById(R.id.map) as MapFragment?
+            ?: MapFragment.newInstance().also {
+                fm.beginTransaction().add(R.id.map, it).commit()
+            }
+        mapFragment.getMapAsync(this)
+
+        binding.truck = Truck()
+
         initRecyclerView()
         initButton()
-        initTruck()
         observeData()
+
     }
 
     private fun initRecyclerView(){
@@ -48,7 +58,7 @@ class ManageTruckItemActivity :
     }
 
     private fun initTruck() {
-        binding.truck = Truck()
+
         if (SharedPrefs.getUserInfo() != null) {
             val userId = SharedPrefs.getUserInfo()!!.userId
             viewModel.getMyTruckInfo(userId)
@@ -106,6 +116,7 @@ class ManageTruckItemActivity :
                         binding.truck = truck
                         truckInfo = truck
                         viewModel.getFoodItem(truck.truckId)
+                        setMarker(truck.location)
                     }
                 }
             }
@@ -118,6 +129,31 @@ class ManageTruckItemActivity :
                     foodTruckAdapter.notifyDataSetChanged()
                 }
             }
+
         }
+    }
+
+    fun setMarker(locationString : String){
+        Log.d(TAG, "setMarker: ${locationString}")
+        var latLngArr = locationString.split("/").map {
+            it.toDouble()
+        }
+        marker.position = LatLng(latLngArr[0], latLngArr[1])
+        marker.map = naverMap
+        setPosition(latLngArr[0], latLngArr[1])
+    }
+
+    @UiThread
+    override fun onMapReady(p0: NaverMap) {
+        naverMap=p0
+        initTruck()
+    }
+
+    fun setPosition(y: Double, x: Double) {
+        val cameraPosition = CameraPosition(
+            LatLng(y, x),
+            14.0
+        )
+        naverMap.cameraPosition = cameraPosition
     }
 }

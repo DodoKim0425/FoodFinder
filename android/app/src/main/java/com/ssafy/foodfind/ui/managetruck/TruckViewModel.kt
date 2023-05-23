@@ -5,6 +5,7 @@ import androidx.databinding.ObservableInt
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.Glide.init
 import com.ssafy.foodfind.data.entity.Event
 import com.ssafy.foodfind.data.entity.FoodItem
 import com.ssafy.foodfind.data.entity.Truck
@@ -31,6 +32,10 @@ class TruckViewModel @Inject constructor(
 
     private val _foodItemList = MutableLiveData<Event<List<FoodItem>>>()
     val foodItemList : LiveData<Event<List<FoodItem>>> = _foodItemList
+
+    private val _isMapReady = MutableLiveData<Boolean>()
+    val isMapReady : LiveData<Boolean> = _isMapReady
+
     fun getMyTruckInfo(ownerId: Int) {
         showProgress()
         viewModelScope.launch {
@@ -97,6 +102,10 @@ class TruckViewModel @Inject constructor(
             }
             hideProgress()
         }
+    }
+
+    fun setIsMapReady(){
+        _isMapReady.postValue(true)
     }
     private fun postValueEvent(value: Int, type: String) {
         val msgArrayList = arrayOf(
