@@ -1,6 +1,7 @@
 package com.ssafy.foodfind.data.repository.truck
 
 import com.ssafy.foodfind.data.entity.ErrorResponse
+import com.ssafy.foodfind.data.entity.Food
 import com.ssafy.foodfind.data.entity.Truck
 import com.ssafy.foodfind.data.entity.TruckLocation
 import com.ssafy.foodfind.data.network.ApiService
@@ -37,5 +38,9 @@ class TruckRepositoryImpl @Inject constructor(
 
     override suspend fun getTruckRequest(truckId: Int): NetworkResponse<Truck, ErrorResponse> {
         return apiService.getTruckResponse(truckId)
+    }
+
+    override suspend fun getTruckItemRequest(truckId: Int): NetworkResponse<List<Food>, ErrorResponse> {
+        return apiService.getTruckItemRequest(truckId)
     }
 }

@@ -27,11 +27,11 @@ class MapActivity : BaseActivity<ActivityMapBinding>(R.layout.activity_map),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initButton()
+        initMap()
         observeData()
     }
 
-    private fun initButton() {
+    private fun initMap() {
         val fm = supportFragmentManager
         val mapFragment = fm.findFragmentById(R.id.map_fragment) as MapFragment?
             ?: MapFragment.newInstance().also {
@@ -39,7 +39,6 @@ class MapActivity : BaseActivity<ActivityMapBinding>(R.layout.activity_map),
             }
 
         mapFragment.getMapAsync(this)
-
     }
 
     private fun observeData() {
@@ -75,7 +74,6 @@ class MapActivity : BaseActivity<ActivityMapBinding>(R.layout.activity_map),
     }
 
     override fun onMapReady(p0: NaverMap) {
-        Log.d(TAG, "onMapReady: ")
         this.naverMap = p0
         viewModel.getAllTruckLocation()
     }
