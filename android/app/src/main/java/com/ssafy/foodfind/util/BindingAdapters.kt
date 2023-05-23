@@ -28,8 +28,8 @@ fun checkTruckClosed(view:RadioButton, truckStatus:String){
 	}
 }
 
-@BindingAdapter("bigDecimalToPriceString")
-fun bigDecimalToPriceString(view: TextView, bigDecimal: BigDecimal){
+@BindingAdapter("intToPriceString")
+fun intToPriceString(view: TextView, price: Int){
 	val df = DecimalFormat("#,##0")
-	view.setText(df.format(bigDecimal)+"원")
+	view.setText(df.format(price)+"원")
 }

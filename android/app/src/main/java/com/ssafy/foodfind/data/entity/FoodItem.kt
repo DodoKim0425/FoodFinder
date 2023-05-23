@@ -7,7 +7,7 @@ data class FoodItem (
 	val truckId : Int = 0,
 	var name : String = "",
 	var description : String = "",
-	var price : BigDecimal = BigDecimal(0),
+	var price : Int = 0,
 	var status : String = "",
 	val usingYN : Boolean = true
 ) : java.io.Serializable
