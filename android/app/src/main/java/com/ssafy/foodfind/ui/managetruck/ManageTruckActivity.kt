@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.databinding.DataBindingUtil.setContentView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.foodfind.R
+import com.ssafy.foodfind.SharedPrefs
 import com.ssafy.foodfind.data.entity.FoodItem
 import com.ssafy.foodfind.data.entity.Truck
 import com.ssafy.foodfind.databinding.ActivityManageTruckBinding
@@ -25,18 +26,33 @@ class ManageTruckActivity :
     private var list = mutableListOf<FoodItem>()
     private var truckInfo = Truck()
     private lateinit var foodTruckAdapter: FoodTruckAdapter
+    private var registMode = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        truckInfo= intent.getSerializableExtra("truckInfo") as Truck
-        binding.truck = truckInfo
-        var test : ArrayList<FoodItem> = intent.getSerializableExtra("foodItemList") as ArrayList<FoodItem>
-        test.map {
-            list.add(it)
-        }
-
+        setData()
         initRecyclerView()
         initButton()
+    }
+
+    private fun setData(){
+        truckInfo.apply {
+            if(intent.getSerializableExtra("truckInfo")==null){
+                truckInfo= Truck()
+            }else{
+                truckInfo= intent.getSerializableExtra("truckInfo") as Truck
+                registMode=false
+            }
+        }
+        if(intent.getSerializableExtra("foodItemList")!=null){
+            var foodItemList : ArrayList<FoodItem> = intent.getSerializableExtra("foodItemList") as ArrayList<FoodItem>
+            foodItemList.map {
+                list.add(it)
+            }
+        }
+        binding.truck = truckInfo
+
+
     }
 
     private fun initRecyclerView(){
@@ -46,7 +62,19 @@ class ManageTruckActivity :
     }
     private fun initButton() {
         binding.btnCreateOk.setOnClickListener {
-            viewModel.updateTruck(truckInfo)
+            if(registMode){
+                if (SharedPrefs.getUserInfo() != null) {
+                    truckInfo.apply {
+                        ownerId = SharedPrefs.getUserInfo()!!.userId
+                        location = "37.5512/126.9882"
+                        currentStatus = "CLOSED"
+                    }
+                    viewModel.registTruck(truckInfo)
+                }
+
+            }else{
+                viewModel.updateTruck(truckInfo)
+            }
             finish()
         }
 
@@ -57,6 +85,12 @@ class ManageTruckActivity :
 
         binding.floatingActionButton.setOnClickListener {
             var bottomSheet = ManageTruckItemBottomSheet(this)
+            bottomSheet.listener=object : ManageTruckItemBottomSheet.OnSendFromBottomSheetDialog{
+                override fun sendValue(value: FoodItem) {
+                    Log.d(TAG, "sendValue: $value")
+                }
+
+            }
             bottomSheet.show()
         }
     }

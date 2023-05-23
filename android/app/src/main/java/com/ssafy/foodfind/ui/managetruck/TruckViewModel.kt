@@ -33,6 +33,9 @@ class TruckViewModel @Inject constructor(
     private val _foodItemList = MutableLiveData<Event<List<FoodItem>>>()
     val foodItemList : LiveData<Event<List<FoodItem>>> = _foodItemList
 
+    private val _newTruckId = MutableLiveData<Int>()
+    val newTruckId : LiveData<Int> = _newTruckId
+
     fun getMyTruckInfo(ownerId: Int) {
         showProgress()
         viewModelScope.launch {
@@ -83,6 +86,29 @@ class TruckViewModel @Inject constructor(
         viewModelScope.launch {
             val response = truckRepository.updateTruck(truck)
             val type = "업데이트에"
+            when(response){
+                is NetworkResponse.Success -> {
+                    //_newTruckId.postValue(response.body)
+                }
+                is NetworkResponse.ApiError -> {
+                    postValueEvent(0, type)
+                }
+                is NetworkResponse.NetworkError -> {
+                    postValueEvent(1, type)
+                }
+                is NetworkResponse.UnknownError -> {
+                    postValueEvent(2, type)
+                }
+            }
+            hideProgress()
+        }
+    }
+
+    fun registTruck(truck : Truck){
+        showProgress()
+        viewModelScope.launch{
+            val response = truckRepository.insertTruckResponse(truck)
+            val type = "추가에"
             when(response){
                 is NetworkResponse.Success -> {
 
