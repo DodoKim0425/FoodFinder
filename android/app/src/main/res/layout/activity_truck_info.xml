@@ -4,6 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="truck"
+            type="com.ssafy.foodfind.data.entity.Truck" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -61,6 +66,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:ems="10"
+                        android:text="@{truck.name}"
                         android:textColor="@color/main_color1"
                         android:textSize="20sp" />
 
@@ -77,6 +83,7 @@
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:gravity="start"
+                        android:text="@{truck.description}"
                         android:minHeight="30dp"
                         android:textColor="@color/main_color1"
                         android:textSize="18sp" />
@@ -102,15 +109,15 @@
                         android:id="@+id/tv_location"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/main_color1" />
+                        android:textColor="@color/main_color1"
+                        android:text="@{truck.location}"/>
 
-                    <!--                    <fragment-->
-                    <!--                        android:id="@+id/map"-->
-                    <!--                        android:layout_width="match_parent"-->
-                    <!--                        android:layout_height="300dp"-->
-                    <!--                        android:background="@drawable/border_line"-->
-                    <!--                        android:name="com.naver.maps.map.MapFragment">-->
-                    <!--                    </fragment>-->
+                    <fragment
+                        android:id="@+id/map"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:name="com.naver.maps.map.MapFragment">
+                    </fragment>
 
                     <TextView
                         android:id="@+id/line_part3"
@@ -136,12 +143,14 @@
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_member"
+                        android:id="@+id/rv_food"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:nestedScrollingEnabled="false"
                         tools:itemCount="5"
-                        tools:listitem="@layout/item_food" />
+                        tools:listitem="@layout/item_food"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        />
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
@@ -179,7 +188,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:layout_weight="1"
-                    tools:text="도도의 타꼬야끼"
+                    android:text="@{truck.name}"
                     android:textColor="@color/white"
                     android:textSize="18sp"/>
 
