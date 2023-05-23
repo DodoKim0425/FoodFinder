@@ -67,18 +67,15 @@ class ManageTruckItemActivity :
                 }
             }
 
-            truck.observe(this@ManageTruckItemActivity) { event ->
-                event.getContentIfNotHandled()?.let { truck ->
+            truck.observe(this@ManageTruckItemActivity) {
+                if (it.truckId == 0) {
+                    //다이얼로그 띄우기
+                    val intent =
+                        Intent(this@ManageTruckItemActivity, ManageTruckActivity::class.java)
+                    startActivity(intent)
+                } else {
                     Log.d(TAG, "observeData: ")
-                    if (truck.truckId == 0) {
-                        //다이얼로그 띄우기
-                        val intent =
-                            Intent(this@ManageTruckItemActivity, ManageTruckActivity::class.java)
-                        startActivity(intent)
-                    } else {
-                        Log.d(TAG, "observeData: ")
-                        binding.truck = truck
-                    }
+                    binding.truck = it
                 }
             }
         }
