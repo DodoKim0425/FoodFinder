@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -15,22 +16,34 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{truck.name}" />
+            android:textSize="24sp"
+            android:gravity="center"
+            android:text="@{truck.name}"
+            tools:text="도연이네 타꼬야끼"
+            android:textColor="@color/main_color1"
+            android:layout_margin="5dp"/>
 
         <RatingBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:rating="@{truck.rating}" />
+            android:rating="@{truck.rating}"
+            android:layout_gravity="center"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{truck.description}" />
+            android:text="@{truck.description}"
+            android:gravity="center"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{truck.location}" />
+            android:text="@{truck.getStatusText()}"
+            android:gravity="center"
+            android:layout_margin="5dp"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@{truck.getStatusColor()}"/>
 
     </LinearLayout>
 </layout>
