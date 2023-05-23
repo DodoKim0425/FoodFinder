@@ -57,4 +57,10 @@
 			orderStatus =#{orderStatus}
 		where orderId = #{orderId};
 	</update>
+	
+	<select id="selectOrderByTruck" parameterType="String" resultType="Order">
+		select * 
+		from food_find.order 
+		order by orderStatus, orderTime;
+	</select>
 </mapper>

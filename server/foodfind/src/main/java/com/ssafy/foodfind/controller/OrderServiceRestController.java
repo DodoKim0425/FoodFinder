@@ -31,13 +31,13 @@ public class OrderServiceRestController {
     }
     
     @GetMapping("/selectOrderItemDetailByOrderId")
-    @ApiOperation(value = "order에 대한 상세정보 반환한다")
+    @ApiOperation(value = "order에 대한 상세정보(orderItem) 반환한다")
     public List<UserOrderItemDetail> selectOrderItemDetailByOrderId(String orderId){
     	return oService.selectOrderItemDetailByOrderId(orderId);
     }
     
     @GetMapping("/selectOrderByUserId")
-    @ApiOperation(value = "사용자의 주문 상세 목록(orderItem)을 반환한다.")
+    @ApiOperation(value = "사용자의 주문 목록(order)을 반환한다.")
     public List<Order> selectOrderByUserId(String userId){
     	return oService.getOrderByUser(userId);
     }
@@ -65,4 +65,11 @@ public class OrderServiceRestController {
     public boolean updateOrderStatus(@RequestBody Order order) {
     	return oService.updateOrderStatus(order);
     }
+    
+    @GetMapping("/selectOrderByTruckId")
+    @ApiOperation(value = "truckId로 주문 목록을 조회한다, orderStatus로 먼저 정렬되고 orderStatus가 동일하면 orderTime이 오래된것 순으로 정렬")
+    public List<Order> selectOrderByTruckId(String truckId){
+    	return oService.selectOrderByTruck(truckId);
+    }
+    
 }

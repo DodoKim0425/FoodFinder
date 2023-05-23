@@ -12,4 +12,5 @@ public interface OrderDao {
 	int updateOrderToCancel(String orderId);
 	Order selectOrder(String orderId);
 	int updateOrderStatus(Order order);
+	List<Order>selectOrderByTruck(String truckId);
 }
