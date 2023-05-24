@@ -1,5 +1,6 @@
 package com.ssafy.foodfind.ui.truckinfo
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -53,8 +54,17 @@ class OrderDetailBottomSheet : BottomSheetDialogFragment() {
         }
 
         binding.buttonAddCart.setOnClickListener {
-            SharedPrefs.addShoppingList(orderDetail, truck)
-            dismiss()
+            if (SharedPrefs.getShoppingList().size > 0) {
+                val truckId = SharedPrefs.getShoppingList()[0].item.truckId
+                if (truckId == truck.truckId) {
+                    SharedPrefs.addShoppingList(orderDetail, truck)
+                    dismiss()
+                } else {
+                    showTruckMismatchDialog()
+                    dismiss()
+                }
+            }
+
         }
 
         return binding.root
@@ -63,6 +73,22 @@ class OrderDetailBottomSheet : BottomSheetDialogFragment() {
     private fun updateTotalPrice() {
         val totalPrice = orderDetail.count * orderDetail.item.price
         binding.tvTotalPrice.text = String.format("%,d원", totalPrice)
+    }
+
+
+    private fun showTruckMismatchDialog() {
+        val dialogBuilder = AlertDialog.Builder(requireContext())
+        dialogBuilder.setTitle("장바구니 정보 삭제")
+        dialogBuilder.setMessage("이전 가게에서 장바구니에 넣어둔 메뉴가 삭제됩니다. 계속 진행하시겠습니까?")
+        dialogBuilder.setPositiveButton("확인") { dialog, _ ->
+            SharedPrefs.addShoppingList(orderDetail, truck)
+            dialog.dismiss()
+        }
+        dialogBuilder.setNegativeButton("취소") { dialog, _ ->
+            dialog.dismiss()
+        }
+        val dialog = dialogBuilder.create()
+        dialog.show()
     }
 
     companion object {
