@@ -1,7 +1,7 @@
 package com.ssafy.foodfind.ui.shoppingcart
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,9 +13,8 @@ import com.ssafy.foodfind.data.entity.OrderStatus
 import com.ssafy.foodfind.databinding.ActivityShoppingCartBinding
 import com.ssafy.foodfind.ui.LoadingDialog
 import com.ssafy.foodfind.ui.base.BaseActivity
+import com.ssafy.foodfind.ui.customerorderlist.CustomerOrderListActivity
 import dagger.hilt.android.AndroidEntryPoint
-import java.sql.Timestamp
-import java.util.Date
 
 @AndroidEntryPoint
 class ShoppingCartActivity :
@@ -98,6 +97,16 @@ class ShoppingCartActivity :
                     dialog.show()
                 } else if (!isLoading.value!!) {
                     dialog.dismiss()
+                }
+            }
+
+            orderId.observe(this@ShoppingCartActivity) {
+                if(it != 0) {
+                    showToast("주문을 성공했습니다.")
+                    SharedPrefs.clearShoppingList()
+                    val intent = Intent(this@ShoppingCartActivity, CustomerOrderListActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 }
             }
         }

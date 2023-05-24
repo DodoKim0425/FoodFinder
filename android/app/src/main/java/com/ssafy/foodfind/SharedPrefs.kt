@@ -80,6 +80,15 @@ object SharedPrefs {
         editor.apply()
     }
 
+    fun clearShoppingList() {
+        val editor = App.prefs.edit()
+        editor.remove("cartItems")
+        editor.remove("truckId")
+        editor.remove("truckName")
+        editor.apply()
+    }
+
+
     fun getTruckName() : String? {
         return App.prefs.getString("truckName", "")
     }
