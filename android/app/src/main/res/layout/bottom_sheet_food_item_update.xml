@@ -49,6 +49,33 @@
         android:hint="@string/update_food_item_price"
         android:padding="16dp"
         android:layout_marginBottom="20dp"/>
+    <TextView
+        android:layout_gravity="left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tv_food_item_bottom_sheet_status"
+        android:layout_marginTop="10dp"/>
+    <RadioGroup
+        android:id="@+id/updateBottomSheetRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp">
+
+      <RadioButton
+          android:id="@+id/foodItemAvailable"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:text="@string/update_food_item_status_available" />
+
+      <RadioButton
+          android:id="@+id/foodItemNotAvailable"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:text="@string/update_food_item_status_notavailable" />
+    </RadioGroup>
     <Button
         android:id="@+id/foodItemUpdateBtn"
         android:layout_width="wrap_content"

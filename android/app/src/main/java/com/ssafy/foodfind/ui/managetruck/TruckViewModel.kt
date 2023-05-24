@@ -209,6 +209,52 @@ class TruckViewModel @Inject constructor(
             hideProgress()
         }
     }
+
+    fun updateFoodItem(foodItem: FoodItem){
+        showProgress()
+        viewModelScope.launch {
+            val response = foodItemRepository.updateFoodItemResponse(foodItem)
+            val type = "수정에"
+            when(response){
+                is NetworkResponse.Success -> {
+
+                }
+                is NetworkResponse.ApiError -> {
+                    postValueEvent(0, type)
+                }
+                is NetworkResponse.NetworkError -> {
+                    postValueEvent(1, type)
+                }
+                is NetworkResponse.UnknownError -> {
+                    postValueEvent(2, type)
+                }
+            }
+            hideProgress()
+        }
+    }
+
+    fun deleteFoodItem(foodItemId : Int){
+        showProgress()
+        viewModelScope.launch {
+            val response = foodItemRepository.updateFoodItemToNotUseResponse(foodItemId)
+            val type = "삭제에"
+            when(response){
+                is NetworkResponse.Success -> {
+
+                }
+                is NetworkResponse.ApiError -> {
+                    postValueEvent(0, type)
+                }
+                is NetworkResponse.NetworkError -> {
+                    postValueEvent(1, type)
+                }
+                is NetworkResponse.UnknownError -> {
+                    postValueEvent(2, type)
+                }
+            }
+            hideProgress()
+        }
+    }
     private fun postValueEvent(value: Int, type: String) {
         val msgArrayList = arrayOf(
             "Api 오류 : $type 실패했습니다.",

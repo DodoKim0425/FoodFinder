@@ -73,6 +73,9 @@
     <string name= "update_food_item_description">수정될 메뉴의 설명</string>
     <string name= "update_food_item_price">수정될 메뉴의 가격</string>
     <string name="update_food_item_bottom_sheet_btn">수정하기</string>
+    <string name="tv_food_item_bottom_sheet_status">품절 여부</string>
+    <string name="update_food_item_status_available">판매 가능</string>
+    <string name="update_food_item_status_notavailable">품절</string>
 
 
     <!-- truck item page -->

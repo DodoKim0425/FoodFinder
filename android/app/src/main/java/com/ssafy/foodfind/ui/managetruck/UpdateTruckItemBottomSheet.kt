@@ -15,7 +15,7 @@ import com.ssafy.foodfind.databinding.BottomSheetFoodItemUpdateBinding
 import kotlin.math.log
 
 private const val TAG = "UpdateTruckItemBottomSh_싸피"
-class UpdateTruckItemBottomSheet (context: Context, private var foodItem:FoodItem, private val position: Int) : BottomSheetDialog(context){
+class UpdateTruckItemBottomSheet (context: Context, private var foodItem:FoodItem) : BottomSheetDialog(context){
 	private lateinit var binding: BottomSheetFoodItemUpdateBinding
 	var listener: OnSendFromBottomSheetDialog? = null
 
@@ -33,8 +33,13 @@ class UpdateTruckItemBottomSheet (context: Context, private var foodItem:FoodIte
 			var name = binding.etUpdatedFoodItemName.text.toString()
 			var description = binding.etUpdatedFoodItemDescription.text.toString()
 			var price = (binding.etUpdatedFoodItemPrcie.text.toString())
+			var status =""
+			when(binding.updateBottomSheetRadioGroup.checkedRadioButtonId){
+				R.id.foodItemAvailable->status ="AVAILABLE"
+				else->status="SOLD_OUT"
+			}
 			if(name!="" && description!="" && price!=""){
-				listener?.sendValue(FoodItem(0,0,name, description, Integer.parseInt(price), "AVAILABLE", true), position)
+				listener?.sendValue(FoodItem(0,0,name, description, Integer.parseInt(price), status, true))
 				dismiss()
 			}else{
 				Toast.makeText(context, "모든 입력창을 채워주세요", Toast.LENGTH_SHORT).show()
@@ -48,9 +53,16 @@ class UpdateTruckItemBottomSheet (context: Context, private var foodItem:FoodIte
 		binding.etUpdatedFoodItemName.setText(foodItem.name)
 		binding.etUpdatedFoodItemPrcie.setText(foodItem.price.toString())
 		binding.etUpdatedFoodItemDescription.setText(foodItem.description)
+		if(foodItem.status=="AVAILABLE"){
+			binding.foodItemNotAvailable.isChecked=false
+			binding.foodItemAvailable.isChecked=true
+		}else{
+			binding.foodItemNotAvailable.isChecked=true
+			binding.foodItemAvailable.isChecked=false
+		}
 	}
 
 	interface OnSendFromBottomSheetDialog{
-		fun sendValue(value : FoodItem, position:Int)
+		fun sendValue(value : FoodItem)
 	}
 }

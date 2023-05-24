@@ -4,11 +4,12 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat.startActivity
 import androidx.databinding.DataBindingUtil.setContentView
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.*
 import com.ssafy.foodfind.R
 import com.ssafy.foodfind.SharedPrefs
 import com.ssafy.foodfind.data.entity.FoodItem
@@ -16,6 +17,7 @@ import com.ssafy.foodfind.data.entity.Truck
 import com.ssafy.foodfind.data.entity.TruckStatus
 import com.ssafy.foodfind.databinding.ActivityManageTruckBinding
 import com.ssafy.foodfind.databinding.ActivityManageTruckItemBinding
+import com.ssafy.foodfind.databinding.ItemFoodBinding
 import com.ssafy.foodfind.ui.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.log
@@ -29,6 +31,7 @@ class ManageTruckActivity :
     private var truckInfo = Truck(0, 0, "", 0.0F, "", "", TruckStatus.CLOSED)
     private lateinit var foodItemUpdateAdapter: FoodItemUpdateAdapter
     private var registMode = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -59,17 +62,24 @@ class ManageTruckActivity :
     }
 
     private fun initRecyclerView(){
-        foodItemUpdateAdapter = FoodItemUpdateAdapter()
-        foodItemUpdateAdapter.submitList(list)
+        foodItemUpdateAdapter = FoodItemUpdateAdapter(list)
 
         foodItemUpdateAdapter.itemClickListener = object : FoodItemUpdateAdapter.ItemClickListener{
             override fun onClick(data: FoodItem, position: Int) {
-                var bottomSheet = UpdateTruckItemBottomSheet(this@ManageTruckActivity, data, position)
+                var bottomSheet = UpdateTruckItemBottomSheet(this@ManageTruckActivity, data)
                 bottomSheet.listener=object : UpdateTruckItemBottomSheet.OnSendFromBottomSheetDialog{
-                    override fun sendValue(value: FoodItem, position:Int) {
-                        var newList = foodItemUpdateAdapter.currentList.toMutableList()
-                        newList[position]=value
-                        foodItemUpdateAdapter.submitList(newList)
+                    override fun sendValue(value: FoodItem) {
+                        //var newList = list
+                        var originalItem = data.copy()
+                        originalItem.apply {
+                            this.name=value.name
+                            this.description=value.description
+                            this.price=value.price
+                            this.status=value.status
+                        }
+
+                        list[position]=originalItem
+                        foodItemUpdateAdapter.notifyDataSetChanged()
                     }
 
                 }
@@ -79,7 +89,7 @@ class ManageTruckActivity :
 
         binding.rvMember.adapter= foodItemUpdateAdapter
         binding.rvMember.layoutManager = LinearLayoutManager(this)
-        val itemTouchCallback = ItemTouchHelper(FoodItemTouchCallback(binding.rvMember))
+        val itemTouchCallback = ItemTouchHelper(FoodItemTouchCallback(this, binding.rvMember))
         itemTouchCallback.attachToRecyclerView(binding.rvMember)
     }
     private fun initButton() {
@@ -97,6 +107,20 @@ class ManageTruckActivity :
 
             }else{
                 viewModel.updateTruck(truckInfo)
+                val newList=list
+                newList.map {
+                    if(it.truckId==0){//새로 추가되어야 하는 foodItem
+                        viewModel.insertFoodItem(it, truckInfo.truckId)
+                    }else{//수정되어야 하는 foodItem
+                        viewModel.updateFoodItem(it)
+                    }
+                }
+                val deletedList = foodItemUpdateAdapter.getDeletedList()
+                deletedList.map {
+                    if(it.truckId!=0){
+                        viewModel.deleteFoodItem(it.itemId)
+                    }
+                }
             }
             finish()
         }
@@ -110,9 +134,10 @@ class ManageTruckActivity :
             var bottomSheet = ManageTruckItemBottomSheet(this)
             bottomSheet.listener=object : ManageTruckItemBottomSheet.OnSendFromBottomSheetDialog{
                 override fun sendValue(value: FoodItem) {
-                    var newList = foodItemUpdateAdapter.currentList.toMutableList()
-                    newList.add(value)
-                    foodItemUpdateAdapter.submitList(newList)
+//                    var newList = foodItemUpdateAdapter.currentList.toMutableList()
+                    list.add(value)
+                    //foodItemUpdateAdapter.submitList(list.toMutableList())
+                    foodItemUpdateAdapter.notifyDataSetChanged()
                 }
 
             }
@@ -121,10 +146,78 @@ class ManageTruckActivity :
     }
     private fun observeData(){
         viewModel.newTruckId.observe(this@ManageTruckActivity){truckId ->
-            val newList = foodItemUpdateAdapter.currentList
+            val newList = list
             newList.map {
                 viewModel.insertFoodItem(it, truckId)
             }
         }
+    }
+
+
+
+
+    companion object itemComparator: DiffUtil.ItemCallback<FoodItem>(){
+        override fun areItemsTheSame(oldItem: FoodItem, newItem: FoodItem): Boolean {
+            return oldItem.hashCode()==newItem.hashCode()
+        }
+        override fun areContentsTheSame(oldItem: FoodItem, newItem: FoodItem): Boolean {
+            Log.d(TAG, "areContentsTheSame: $oldItem")
+            Log.d(TAG, "areContentsTheSame: $newItem")
+            return oldItem==newItem
+        }
+    }
+
+    class FoodItemUpdateAdapter (private val foodItemList : MutableList<FoodItem>): RecyclerView.Adapter<FoodItemUpdateAdapter.CustomViewHolder>(){
+
+        private var deletedList= mutableListOf<FoodItem>()
+        inner class CustomViewHolder(private val binding: ItemFoodBinding): RecyclerView.ViewHolder(binding.root){
+            fun bindInfo(data:FoodItem, position: Int){
+                Log.d(TAG, "bindInfo: biding!!! $data")
+                binding.food=data
+                binding.root.setOnClickListener {
+                    itemClickListener.onClick(data, position)
+                }
+            }
+            fun setBackgound(color:Int){
+                itemView.setBackgroundColor(color)
+            }
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
+            val inflater = LayoutInflater.from(parent.context)
+            val binding = ItemFoodBinding.inflate(inflater, parent, false)
+            return CustomViewHolder(binding)
+        }
+
+        override fun getItemCount(): Int {
+            return foodItemList.size
+        }
+
+        override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
+            holder.apply{
+                bindInfo(foodItemList[position], position)
+            }
+        }
+
+
+        interface ItemClickListener{
+            fun onClick(data:FoodItem, position: Int)
+        }
+        lateinit var itemClickListener: ItemClickListener
+
+        fun getDeletedList() : MutableList<FoodItem>{
+            return deletedList
+        }
+
+        fun removeItem(position: Int){
+//            val newList=list
+//            deletedList.add(newList[position])
+//            newList.removeAt(position)
+//            Log.d(TAG, "removeItem: ------------${newList.size}")
+//            foodItemUpdateAdapter.submitList(newList.toMutableList())
+            foodItemList.removeAt(position)
+            notifyItemRemoved(position)
+        }
+
     }
 }

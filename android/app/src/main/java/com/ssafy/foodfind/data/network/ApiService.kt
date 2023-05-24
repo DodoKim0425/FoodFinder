@@ -52,4 +52,9 @@ interface ApiService {
     @POST("/rest/foodItem/insert")
     suspend fun insertFoodItemResponse(@Body foodItem: FoodItem):NetworkResponse<Boolean, ErrorResponse>
 
+    @PUT("/rest/foodItem/updateItem")
+    suspend fun updateFoodItemResponse(@Body foodItem: FoodItem):NetworkResponse<Boolean, ErrorResponse>
+
+    @PUT("/rest/foodItem/updateItemToNotUse/{itemId}")
+    suspend fun updateFoodItemToNotUseResponse(@Path("itemId") itemId : Int):NetworkResponse<Boolean, ErrorResponse>
 }
