@@ -24,4 +24,8 @@ class FoodItemRepositoryImpl @Inject constructor(
 	override suspend fun updateFoodItemToNotUseResponse(itemId: Int): NetworkResponse<Boolean, ErrorResponse> {
 		return apiService.updateFoodItemToNotUseResponse(itemId)
 	}
+
+	override suspend fun insertAllFoodItemsResponse(foodItems: List<FoodItem>): NetworkResponse<Unit, ErrorResponse> {
+		return apiService.insertAllFoodItemResponse(foodItems)
+	}
 }

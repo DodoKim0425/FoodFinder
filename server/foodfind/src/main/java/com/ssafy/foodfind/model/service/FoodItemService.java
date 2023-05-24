@@ -10,4 +10,5 @@ public interface FoodItemService {
 	public FoodItem selectFoodItemById(String itemId);
 	public boolean updateFoodItemToNotUse(String itemId);
 	public boolean updateFoodItem(FoodItem foodItem);
+	public void insertAll(List<FoodItem> foodItems);
 }

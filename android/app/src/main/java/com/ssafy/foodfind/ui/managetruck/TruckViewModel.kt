@@ -210,6 +210,30 @@ class TruckViewModel @Inject constructor(
         }
     }
 
+    fun insertFoodItemList(foodItems:List<FoodItem>){
+        showProgress()
+        viewModelScope.launch {
+            val response = foodItemRepository.insertAllFoodItemsResponse(foodItems)
+            val type = "추가에"
+            when(response){
+                is NetworkResponse.Success -> {
+
+                }
+                is NetworkResponse.ApiError -> {
+                    postValueEvent(0, type)
+                }
+                is NetworkResponse.NetworkError -> {
+                    postValueEvent(1, type)
+                }
+                is NetworkResponse.UnknownError -> {
+                    postValueEvent(2, type)
+                }
+            }
+            hideProgress()
+
+        }
+    }
+
     fun updateFoodItem(foodItem: FoodItem){
         showProgress()
         viewModelScope.launch {

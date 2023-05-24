@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.foodfind.model.dto.FoodItem;
@@ -28,6 +29,12 @@ public class FoodItemRestController {
     public boolean join(@RequestBody FoodItem foodItem) {
     	return fService.insert(foodItem);
     }
+	
+	@PostMapping("/insertAll")
+	@ApiOperation(value="한번에 여러개의 FoodItem을 추가한다")
+	public void insertAll(@RequestBody List<FoodItem> foodItems) {
+		fService.insertAll(foodItems);
+	}
 	
 	@GetMapping("/selectById")
 	@ApiOperation(value="itemId로 FoodItem하나를 조회함.")

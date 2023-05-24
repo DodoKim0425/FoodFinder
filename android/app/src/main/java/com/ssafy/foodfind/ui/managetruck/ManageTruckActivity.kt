@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil.setContentView
 import androidx.recyclerview.widget.*
 import com.ssafy.foodfind.R
 import com.ssafy.foodfind.SharedPrefs
+import com.ssafy.foodfind.data.entity.Food
 import com.ssafy.foodfind.data.entity.FoodItem
 import com.ssafy.foodfind.data.entity.Truck
 import com.ssafy.foodfind.data.entity.TruckStatus
@@ -112,13 +113,17 @@ class ManageTruckActivity :
 
             }else{
                 viewModel.updateTruck(truckInfo)
+                var insertList = mutableListOf<FoodItem>()
                 list.map {
                     if(it.truckId==0){//새로 추가되어야 하는 foodItem
-                        viewModel.insertFoodItem(it, truckInfo.truckId)
+                        //viewModel.insertFoodItem(it, truckInfo.truckId)
+                        it.truckId = truckInfo.truckId
+                        insertList.add(it)
                     }else{//수정되어야 하는 foodItem
                         viewModel.updateFoodItem(it)
                     }
                 }
+                viewModel.insertFoodItemList(insertList)
                 deletedList.map {
                     if(it.truckId!=0){
                         viewModel.deleteFoodItem(it.itemId)
@@ -148,9 +153,13 @@ class ManageTruckActivity :
     private fun observeData(){
         viewModel.newTruckId.observe(this@ManageTruckActivity){truckId ->
             list.map {
-                Log.d(TAG, "observeData: insert!! $it")
-                viewModel.insertFoodItem(it, truckId)
+                it.truckId = truckId
             }
+            viewModel.insertFoodItemList(list)
+//            list.map {
+//                Log.d(TAG, "observeData: insert!! $it")
+//                viewModel.insertFoodItem(it, truckId)
+//            }
         }
     }
 

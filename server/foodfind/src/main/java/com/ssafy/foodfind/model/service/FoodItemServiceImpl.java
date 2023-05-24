@@ -24,6 +24,14 @@ public class FoodItemServiceImpl implements FoodItemService {
     	else
     		return false;
 	}
+	
+	@Override
+	@Transactional
+	public void insertAll(List<FoodItem> foodItems) {
+		for(FoodItem elements : foodItems) {
+			foodItemDao.insert(elements);
+		}
+	}
 
 	@Override
 	public List<FoodItem> selectFoodItemByTruck(String truckId) {

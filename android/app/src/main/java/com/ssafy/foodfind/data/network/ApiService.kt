@@ -57,4 +57,7 @@ interface ApiService {
 
     @PUT("/rest/foodItem/updateItemToNotUse/{itemId}")
     suspend fun updateFoodItemToNotUseResponse(@Path("itemId") itemId : Int):NetworkResponse<Boolean, ErrorResponse>
+
+    @POST("/rest/foodItem/insertAll")
+    suspend fun insertAllFoodItemResponse(@Body foodItems : List<FoodItem>) : NetworkResponse<Unit, ErrorResponse>
 }
