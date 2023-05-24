@@ -25,20 +25,20 @@ class FoodItemTouchCallback (val activity:ManageTruckActivity, val recyclerView:
 
 	//아이템이 왼쪽 스와이프 될때
 	override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-		(recyclerView.adapter as ManageTruckActivity.FoodItemUpdateAdapter).removeItem(viewHolder.layoutPosition)
+		activity.removeItem(viewHolder.layoutPosition)
 	}
 
 	override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
 		super.onSelectedChanged(viewHolder, actionState)
 		when(actionState){
 			ItemTouchHelper.ACTION_STATE_DRAG, ItemTouchHelper.ACTION_STATE_SWIPE->{
-				(viewHolder as ManageTruckActivity.FoodItemUpdateAdapter.CustomViewHolder).setBackgound(ResourcesCompat.getColor(recyclerView.context.resources, R.color.main_color5, null))
+				(viewHolder as FoodItemUpdateAdapter.CustomViewHolder).setBackgound(ResourcesCompat.getColor(recyclerView.context.resources, R.color.main_color5, null))
 			}
 		}
 	}
 
 	override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
 		super.clearView(recyclerView, viewHolder)
-		(viewHolder as ManageTruckActivity.FoodItemUpdateAdapter.CustomViewHolder).setBackgound(Color.WHITE)
+		(viewHolder as FoodItemUpdateAdapter.CustomViewHolder).setBackgound(Color.WHITE)
 	}
 }

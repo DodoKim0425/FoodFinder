@@ -39,7 +39,7 @@ class UpdateTruckItemBottomSheet (context: Context, private var foodItem:FoodIte
 				else->status="SOLD_OUT"
 			}
 			if(name!="" && description!="" && price!=""){
-				listener?.sendValue(FoodItem(0,0,name, description, Integer.parseInt(price), status, true))
+				listener?.sendValue(FoodItem(0,0,name, description, Integer.parseInt(price), status, true), foodItem)
 				dismiss()
 			}else{
 				Toast.makeText(context, "모든 입력창을 채워주세요", Toast.LENGTH_SHORT).show()
@@ -63,6 +63,6 @@ class UpdateTruckItemBottomSheet (context: Context, private var foodItem:FoodIte
 	}
 
 	interface OnSendFromBottomSheetDialog{
-		fun sendValue(value : FoodItem)
+		fun sendValue(value : FoodItem, oldItem : FoodItem)
 	}
 }
