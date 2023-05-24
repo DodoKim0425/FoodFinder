@@ -127,7 +127,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    app:checkTruckOpen="@{truck.currentStatus}"
+                                    app:checkTruckOpen="@{truck.statusText}"
                                     android:text="@string/truck_open" />
 
                                 <RadioButton
@@ -135,7 +135,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    app:checkTruckClosed="@{truck.currentStatus}"
+                                    app:checkTruckClosed="@{truck.statusText}"
                                     android:text="@string/truck_close" />
                             </RadioGroup>
                         </LinearLayout>
@@ -205,7 +205,7 @@
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_member"
+                        android:id="@+id/rv_food"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:nestedScrollingEnabled="false"

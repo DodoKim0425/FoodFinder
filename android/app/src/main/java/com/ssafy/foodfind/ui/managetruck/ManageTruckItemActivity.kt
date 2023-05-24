@@ -16,6 +16,7 @@ import com.ssafy.foodfind.R
 import com.ssafy.foodfind.SharedPrefs
 import com.ssafy.foodfind.data.entity.FoodItem
 import com.ssafy.foodfind.data.entity.Truck
+import com.ssafy.foodfind.data.entity.TruckStatus
 import com.ssafy.foodfind.databinding.ActivityManageTruckItemBinding
 import com.ssafy.foodfind.ui.LoadingDialog
 import com.ssafy.foodfind.ui.base.BaseActivity
@@ -28,7 +29,7 @@ class ManageTruckItemActivity :
     BaseActivity<ActivityManageTruckItemBinding>(R.layout.activity_manage_truck_item), OnMapReadyCallback {
 
     private val viewModel by viewModels<TruckViewModel>()
-    private var truckInfo : Truck = Truck()
+    private var truckInfo : Truck = Truck(0, 0, "", 0.0F, "", "", TruckStatus.CLOSED)
     private lateinit var foodTruckAdapter: FoodTruckAdapter
     private var list : MutableList<FoodItem> = mutableListOf()
     private var marker = Marker()
@@ -43,7 +44,7 @@ class ManageTruckItemActivity :
             }
         mapFragment.getMapAsync(this)
 
-        binding.truck = Truck()
+        binding.truck = Truck(0, 0, "", 0.0F, "", "", TruckStatus.CLOSED)
 
         initRecyclerView()
         initButton()
@@ -53,8 +54,8 @@ class ManageTruckItemActivity :
 
     private fun initRecyclerView(){
         foodTruckAdapter = FoodTruckAdapter(list)
-        binding.rvMember.adapter=foodTruckAdapter
-        binding.rvMember.layoutManager = LinearLayoutManager(this)
+        binding.rvFood.adapter=foodTruckAdapter
+        binding.rvFood.layoutManager = LinearLayoutManager(this)
     }
 
     private fun initTruck() {
@@ -83,8 +84,8 @@ class ManageTruckItemActivity :
         binding.radioGroupStatus.setOnCheckedChangeListener { group, checkedId ->
             truckInfo.apply {
                 when(binding.radioGroupStatus.checkedRadioButtonId){
-                    R.id.truck_open -> this.currentStatus="OPEN"
-                    else -> this.currentStatus ="CLOSED"
+                    R.id.truck_open -> this.currentStatus=TruckStatus.OPEN
+                    else -> this.currentStatus =TruckStatus.CLOSED
                 }
             }
         }
@@ -108,9 +109,7 @@ class ManageTruckItemActivity :
                 }
             }
 
-            truck.observe(this@ManageTruckItemActivity) { event ->
-                event.getContentIfNotHandled()?.let { truck ->
-                    Log.d(TAG, "observeData: ")
+            truck.observe(this@ManageTruckItemActivity) {truck->
                     if (truck.truckId == 0) {
                         //다이얼로그 띄우기
                         val intent =
@@ -124,8 +123,9 @@ class ManageTruckItemActivity :
                         viewModel.getFoodItem(truck.truckId)
                         setMarker(truck.location)
                     }
-                }
+                    binding.truck = truck
             }
+
 
             foodItemList.observe(this@ManageTruckItemActivity){ event ->
                 event.getContentIfNotHandled()?.let {

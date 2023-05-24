@@ -12,7 +12,7 @@ private const val TAG = "BindingAdapters_싸피"
 @BindingAdapter("checkTruckOpen")
 fun checkTruckOpen(view:RadioButton, truckStatus:String){
 	Log.d(TAG, "checkTruckOpen: ${truckStatus}")
-	if(truckStatus=="OPEN"){
+	if(truckStatus=="영업중"){
 		view.isChecked=true
 	}else{
 		view.isChecked=false
@@ -21,7 +21,7 @@ fun checkTruckOpen(view:RadioButton, truckStatus:String){
 
 @BindingAdapter("checkTruckClosed")
 fun checkTruckClosed(view:RadioButton, truckStatus:String){
-	if(truckStatus=="CLOSED"){
+	if(truckStatus=="휴업중"){
 		view.isChecked=true
 	}else{
 		view.isChecked=false

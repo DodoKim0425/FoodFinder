@@ -8,7 +8,7 @@ public class UserOrderItemDetail {
 	private int userId;
 	private int truckId;
 	private String description;
-	private BigDecimal totalPrice;
+	private int totalPrice;
 	private Date orderTime;
 	private String orderStatus;
 	private int orderItemId;
@@ -22,7 +22,7 @@ public class UserOrderItemDetail {
 		super();
 	}
 	
-	public UserOrderItemDetail(int orderId, int userId, int truckId, String description, BigDecimal totalPrice,
+	public UserOrderItemDetail(int orderId, int userId, int truckId, String description, int totalPrice,
 			Date orderTime, String orderStatus, int orderItemId, int itemId, int quantity, String truckName,
 			String customerName, String itemName) {
 		super();
@@ -64,10 +64,10 @@ public class UserOrderItemDetail {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public BigDecimal getTotalPrice() {
+	public int getTotalPrice() {
 		return totalPrice;
 	}
-	public void setTotalPrice(BigDecimal totalPrice) {
+	public void setTotalPrice(int totalPrice) {
 		this.totalPrice = totalPrice;
 	}
 	public Date getOrderTime() {

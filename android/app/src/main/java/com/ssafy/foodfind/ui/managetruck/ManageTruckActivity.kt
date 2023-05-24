@@ -12,6 +12,7 @@ import com.ssafy.foodfind.R
 import com.ssafy.foodfind.SharedPrefs
 import com.ssafy.foodfind.data.entity.FoodItem
 import com.ssafy.foodfind.data.entity.Truck
+import com.ssafy.foodfind.data.entity.TruckStatus
 import com.ssafy.foodfind.databinding.ActivityManageTruckBinding
 import com.ssafy.foodfind.databinding.ActivityManageTruckItemBinding
 import com.ssafy.foodfind.ui.base.BaseActivity
@@ -24,7 +25,7 @@ class ManageTruckActivity :
     BaseActivity<ActivityManageTruckBinding>(R.layout.activity_manage_truck) {
     private val viewModel by viewModels<TruckViewModel>()
     private var list = mutableListOf<FoodItem>()
-    private var truckInfo = Truck()
+    private var truckInfo = Truck(0, 0, "", 0.0F, "", "", TruckStatus.CLOSED)
     private lateinit var foodTruckAdapter: FoodTruckAdapter
     private var registMode = true
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +39,7 @@ class ManageTruckActivity :
     private fun setData(){
         truckInfo.apply {
             if(intent.getSerializableExtra("truckInfo")==null){
-                truckInfo= Truck()
+                truckInfo= Truck(0, 0, "", 0.0F, "", "", TruckStatus.CLOSED)
             }else{
                 truckInfo= intent.getSerializableExtra("truckInfo") as Truck
                 registMode=false
@@ -67,7 +68,7 @@ class ManageTruckActivity :
                     truckInfo.apply {
                         ownerId = SharedPrefs.getUserInfo()!!.userId
                         location = "37.5512/126.9882"
-                        currentStatus = "CLOSED"
+                        currentStatus = TruckStatus.CLOSED
                     }
                     viewModel.registTruck(truckInfo)
                 }

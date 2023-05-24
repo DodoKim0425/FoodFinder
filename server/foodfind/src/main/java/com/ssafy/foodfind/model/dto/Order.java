@@ -8,7 +8,7 @@ public class Order {
 	private int userId;
 	private int truckId;
 	private String description;
-	private BigDecimal totalPrice;
+	private int totalPrice;
 	private Date orderTime;
 	private String orderStatus;
 	
@@ -17,7 +17,7 @@ public class Order {
 	public Order() {
 		super();
 	}
-	public Order(int orderId, int userId, int truckId, String description, BigDecimal totalPrice, Date orderTime,
+	public Order(int orderId, int userId, int truckId, String description, int totalPrice, Date orderTime,
 			String orderStatus) {
 		super();
 		this.orderId = orderId;
@@ -52,10 +52,10 @@ public class Order {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public BigDecimal getTotalPrice() {
+	public int getTotalPrice() {
 		return totalPrice;
 	}
-	public void setTotalPrice(BigDecimal totalPrice) {
+	public void setTotalPrice(int totalPrice) {
 		this.totalPrice = totalPrice;
 	}
 	public Date getOrderTime() {

@@ -1,9 +1,7 @@
 package com.ssafy.foodfind.data.network
 
-import com.ssafy.foodfind.data.entity.ErrorResponse
-import com.ssafy.foodfind.data.entity.FoodItem
-import com.ssafy.foodfind.data.entity.Truck
-import com.ssafy.foodfind.data.entity.User
+
+import com.ssafy.foodfind.data.entity.*
 import retrofit2.http.*
 
 interface ApiService {
@@ -36,10 +34,20 @@ interface ApiService {
     @GET("/rest/truck/selectAllTruck")
     suspend fun getAllTruckResponse(): NetworkResponse<List<Truck>, ErrorResponse>
 
+
     @PUT("/rest/truck/update")
     suspend fun updateTruckResponse(@Body truck : Truck): NetworkResponse<Boolean, ErrorResponse>
 
     //FoodItem
     @GET("/rest/foodItem/selectByTruckId")
     suspend fun getFoodItemsResponseByTruckId(@Query("truckId") truckId : Int): NetworkResponse<List<FoodItem>, ErrorResponse>
+
+
+    @GET("/rest/truck/selectTruckLocations")
+    suspend fun getAllTruckLocationResponse(): NetworkResponse<List<TruckLocation>, ErrorResponse>
+    @GET("/rest/truck/selectTruckByTruckId")
+    suspend fun getTruckResponse(@Query("truckId") truckId : Int): NetworkResponse<Truck, ErrorResponse>
+
+    @GET("/rest/foodItem/selectByTruckId")
+    suspend fun getTruckItemRequest(@Query("truckId") truckId : Int): NetworkResponse<List<FoodItem>, ErrorResponse>
 }
