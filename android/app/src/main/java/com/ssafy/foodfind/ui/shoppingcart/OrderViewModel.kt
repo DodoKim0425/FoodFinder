@@ -26,6 +26,12 @@ class OrderViewModel @Inject constructor(
     private val _orders = MutableLiveData<List<Order>>()
     val orders: LiveData<List<Order>> = _orders
 
+    private val _order = MutableLiveData<List<Order>>()
+    val order: LiveData<List<Order>> = _order
+
+    private val _isCancel = MutableLiveData<Boolean>()
+    val isCancel: LiveData<Boolean> = _isCancel
+
 
     fun insertOrder(order: Order) {
         showProgress()
@@ -59,6 +65,54 @@ class OrderViewModel @Inject constructor(
             when(response) {
                 is NetworkResponse.Success -> {
                     _orders.postValue(response.body)
+                }
+                is NetworkResponse.ApiError -> {
+                    postValueEvent(0, type)
+                }
+                is NetworkResponse.NetworkError -> {
+                    postValueEvent(1, type)
+                }
+                is NetworkResponse.UnknownError -> {
+                    postValueEvent(2, type)
+                }
+            }
+            hideProgress()
+        }
+    }
+
+
+    fun getDetailOrder(orderId: Int) {
+        showProgress()
+        viewModelScope.launch {
+            val response = repository.selectOrderItemDetailByOrderId(orderId)
+            val type = "주문 조회에"
+            when(response) {
+                is NetworkResponse.Success -> {
+                    _order.postValue(response.body)
+                }
+                is NetworkResponse.ApiError -> {
+                    postValueEvent(0, type)
+                }
+                is NetworkResponse.NetworkError -> {
+                    postValueEvent(1, type)
+                }
+                is NetworkResponse.UnknownError -> {
+                    postValueEvent(2, type)
+                }
+            }
+            hideProgress()
+        }
+    }
+
+
+    fun updateOrderToCancel(orderId: Int) {
+        showProgress()
+        viewModelScope.launch {
+            val response = repository.updateOrderToCancel(orderId)
+            val type = "주문 조회에"
+            when(response) {
+                is NetworkResponse.Success -> {
+                    _isCancel.postValue(response.body)
                 }
                 is NetworkResponse.ApiError -> {
                     postValueEvent(0, type)

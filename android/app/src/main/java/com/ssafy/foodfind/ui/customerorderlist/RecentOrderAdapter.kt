@@ -1,10 +1,13 @@
 package com.ssafy.foodfind.ui.customerorderlist
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.foodfind.data.entity.Order
 import com.ssafy.foodfind.databinding.ItemRecentOrderBinding
+import com.ssafy.foodfind.ui.orderdetail.OrderDetailActivity
+import kotlinx.coroutines.NonCancellable
 
 class RecentOrderAdapter :
     RecyclerView.Adapter<RecentOrderAdapter.ViewHolder>() {
@@ -17,6 +20,12 @@ class RecentOrderAdapter :
         fun bind(order: Order) {
             binding.order = order
             binding.executePendingBindings()
+
+            itemView.setOnClickListener {
+                val intent = Intent(itemView.context, OrderDetailActivity::class.java)
+                intent.putExtra("orderId", order.orderId)
+                itemView.context.startActivity(intent)
+            }
         }
     }
 

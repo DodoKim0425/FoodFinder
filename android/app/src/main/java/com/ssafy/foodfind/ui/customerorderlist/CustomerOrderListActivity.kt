@@ -1,7 +1,6 @@
 package com.ssafy.foodfind.ui.customerorderlist
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -9,12 +8,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.foodfind.R
 import com.ssafy.foodfind.SharedPrefs
 import com.ssafy.foodfind.databinding.ActivityCustomerOrderListBinding
-import com.ssafy.foodfind.databinding.ActivityNotificationBinding
-import com.ssafy.foodfind.databinding.ActivityShoppingCartBinding
 import com.ssafy.foodfind.ui.LoadingDialog
 import com.ssafy.foodfind.ui.base.BaseActivity
 import com.ssafy.foodfind.ui.shoppingcart.OrderViewModel
-import com.ssafy.foodfind.ui.shoppingcart.ShoppingCartAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

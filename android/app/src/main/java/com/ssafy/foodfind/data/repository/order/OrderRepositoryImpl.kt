@@ -16,4 +16,12 @@ class OrderRepositoryImpl @Inject constructor(
     override suspend fun selectOrderByUserIdRequest(userId : Int): NetworkResponse<List<Order>, ErrorResponse> {
         return apiService.selectOrderByUserIdRequest(userId)
     }
+
+    override suspend fun selectOrderItemDetailByOrderId(orderId: Int): NetworkResponse<List<Order>, ErrorResponse> {
+        return apiService.selectOrderItemDetailByOrderId(orderId)
+    }
+
+    override suspend fun updateOrderToCancel(orderId: Int): NetworkResponse<Boolean, ErrorResponse> {
+        return apiService.updateOrderToCancel(orderId)
+    }
 }
