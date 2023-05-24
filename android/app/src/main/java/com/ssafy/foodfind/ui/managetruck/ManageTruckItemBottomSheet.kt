@@ -3,6 +3,7 @@ package com.ssafy.foodfind.ui.managetruck
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.ssafy.foodfind.R
@@ -24,11 +25,14 @@ class ManageTruckItemBottomSheet(context: Context) : BottomSheetDialog(context) 
 		binding.foodItemAddBtn.setOnClickListener {
 			var name = binding.etNewFoodItemName.text.toString()
 			var description = binding.etNewFoodItemDescription.text.toString()
-			var price = Integer.parseInt(binding.etNewFoodItemPrcie.text.toString())
-			if(name!=null && description!=null && price!=null){
-				listener?.sendValue(FoodItem(0,0,name, description, price, "AVAILABLE", true))
+			var price = (binding.etNewFoodItemPrcie.text.toString())
+			if(name!="" && description!="" && price!=""){
+				listener?.sendValue(FoodItem(0,0,name, description, Integer.parseInt(price), "AVAILABLE", true))
+				dismiss()
+			}else{
+				Toast.makeText(context, "모든 입력창을 채워주세요", Toast.LENGTH_SHORT).show()
 			}
-			dismiss()
+
 		}
 
 	}

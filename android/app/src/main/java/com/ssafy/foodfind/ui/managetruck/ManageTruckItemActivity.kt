@@ -111,19 +111,21 @@ class ManageTruckItemActivity :
 
             truck.observe(this@ManageTruckItemActivity) {truck->
                     if (truck.truckId == 0) {
+                        Log.d(TAG, "observeData: $truck")
                         //다이얼로그 띄우기
                         val intent =
                             Intent(this@ManageTruckItemActivity, ManageTruckActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {
-                        Log.d(TAG, "observeData: ")
+                        Log.d(TAG, "observeData: $truck")
                         binding.truck = truck
                         truckInfo = truck
                         viewModel.getFoodItem(truck.truckId)
                         setMarker(truck.location)
+                        binding.truck = truck
                     }
-                    binding.truck = truck
+
             }
 
 

@@ -6,22 +6,22 @@
       android:layout_height="wrap_content"
       android:orientation="vertical"
       android:padding="20dp">
-      <TextView
-          android:layout_gravity="center"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/new_food_item_bottom_sheet"
-          android:layout_margin="30dp"/>
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/update_food_item_bottom_sheet"
+        android:layout_margin="30dp"/>
     <TextView
         android:layout_gravity="left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/tv_food_item_name"/>
     <EditText
-        android:id="@+id/etNewFoodItemName"
+        android:id="@+id/etUpdatedFoodItemName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/new_food_item_name"
+        android:hint="@string/update_food_item_name"
         android:padding="16dp" />
     <TextView
         android:layout_gravity="left"
@@ -30,10 +30,10 @@
         android:text="@string/tv_food_item_description"
         android:layout_marginTop="10dp"/>
     <EditText
-        android:id="@+id/etNewFoodItemDescription"
+        android:id="@+id/etUpdatedFoodItemDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/new_food_item_description"
+        android:hint="@string/update_food_item_description"
         android:padding="16dp" />
     <TextView
         android:layout_gravity="left"
@@ -42,18 +42,18 @@
         android:text="@string/tv_food_item_price"
         android:layout_marginTop="10dp"/>
     <EditText
-        android:id="@+id/etNewFoodItemPrcie"
+        android:id="@+id/etUpdatedFoodItemPrcie"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="number"
-        android:hint="@string/new_food_item_price"
+        android:hint="@string/update_food_item_price"
         android:padding="16dp"
         android:layout_marginBottom="20dp"/>
     <Button
-        android:id="@+id/foodItemAddBtn"
+        android:id="@+id/foodItemUpdateBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/new_food_item_bottom_sheet_btn"/>
+        android:text="@string/update_food_item_bottom_sheet_btn"/>
   </LinearLayout>
 </layout>

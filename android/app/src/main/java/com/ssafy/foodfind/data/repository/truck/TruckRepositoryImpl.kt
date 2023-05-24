@@ -12,7 +12,7 @@ class TruckRepositoryImpl @Inject constructor(
         return apiService.getTruckCountResponse(ownerId)
     }
 
-    override suspend fun insertTruckRequest(truck: Truck): NetworkResponse<Boolean, ErrorResponse> {
+    override suspend fun insertTruckRequest(truck: Truck): NetworkResponse<Int, ErrorResponse> {
         return apiService.insertTruckResponse(truck)
     }
 

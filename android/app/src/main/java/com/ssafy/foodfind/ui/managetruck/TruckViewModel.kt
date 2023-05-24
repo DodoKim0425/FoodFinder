@@ -17,6 +17,7 @@ import com.ssafy.foodfind.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.log
 
 private const val TAG = "TruckViewModel_싸피"
 @HiltViewModel
@@ -163,6 +164,33 @@ class TruckViewModel @Inject constructor(
         showProgress()
         viewModelScope.launch{
             val response = truckRepository.insertTruckRequest(truck)
+            val type = "추가에"
+            when(response){
+                is NetworkResponse.Success -> {
+                    _newTruckId.postValue(response.body)
+                }
+                is NetworkResponse.ApiError -> {
+                    postValueEvent(0, type)
+                }
+                is NetworkResponse.NetworkError -> {
+                    postValueEvent(1, type)
+                }
+                is NetworkResponse.UnknownError -> {
+                    postValueEvent(2, type)
+                }
+            }
+            hideProgress()
+        }
+    }
+
+    fun insertFoodItem(foodItem : FoodItem, truckId: Int){
+        Log.d(TAG, "insertFoodItem: $foodItem")
+        foodItem.truckId=truckId
+        showProgress()
+        viewModelScope.launch{
+            Log.d(TAG, "insertFoodItem: 변경 ${foodItem}")
+            val response = foodItemRepository.insertFoodItemResponse(foodItem)
+            Log.d(TAG, "insertFoodItem: response ${response}")
             val type = "추가에"
             when(response){
                 is NetworkResponse.Success -> {

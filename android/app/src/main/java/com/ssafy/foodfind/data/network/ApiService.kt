@@ -26,7 +26,7 @@ interface ApiService {
     suspend fun getTruckCountResponse(@Query("ownerId") ownerId : Int): NetworkResponse<Int, ErrorResponse>
 
     @POST("/rest/truck/insert")
-    suspend fun insertTruckResponse(@Body truck : Truck): NetworkResponse<Boolean, ErrorResponse>
+    suspend fun insertTruckResponse(@Body truck : Truck): NetworkResponse<Int, ErrorResponse>
 
     @GET("/rest/truck/myTruckInfo")
     suspend fun getMyTruckInfoResponse(@Query("ownerId") ownerId : Int): NetworkResponse<Truck, ErrorResponse>
@@ -34,14 +34,8 @@ interface ApiService {
     @GET("/rest/truck/selectAllTruck")
     suspend fun getAllTruckResponse(): NetworkResponse<List<Truck>, ErrorResponse>
 
-
     @PUT("/rest/truck/update")
     suspend fun updateTruckResponse(@Body truck : Truck): NetworkResponse<Boolean, ErrorResponse>
-
-    //FoodItem
-    @GET("/rest/foodItem/selectByTruckId")
-    suspend fun getFoodItemsResponseByTruckId(@Query("truckId") truckId : Int): NetworkResponse<List<FoodItem>, ErrorResponse>
-
 
     @GET("/rest/truck/selectTruckLocations")
     suspend fun getAllTruckLocationResponse(): NetworkResponse<List<TruckLocation>, ErrorResponse>
@@ -50,4 +44,12 @@ interface ApiService {
 
     @GET("/rest/foodItem/selectByTruckId")
     suspend fun getTruckItemRequest(@Query("truckId") truckId : Int): NetworkResponse<List<FoodItem>, ErrorResponse>
+
+    //FoodItem
+    @GET("/rest/foodItem/selectByTruckId")
+    suspend fun getFoodItemsResponseByTruckId(@Query("truckId") truckId : Int): NetworkResponse<List<FoodItem>, ErrorResponse>
+
+    @POST("/rest/foodItem/insert")
+    suspend fun insertFoodItemResponse(@Body foodItem: FoodItem):NetworkResponse<Boolean, ErrorResponse>
+
 }
