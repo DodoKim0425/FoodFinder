@@ -39,10 +39,12 @@ class ShoppingCartActivity :
         binding.buttonOrder.setOnClickListener {
             val items = getShoppingList()
             val itemList = mutableListOf<OrderCount>()
+            var price = 0
 
             for (item in items) {
                 val orderCount = OrderCount(item.item.itemId, 0, 0, item.count)
                 itemList.add(orderCount)
+                price += item.item.price*item.count
             }
 
             if (items.size > 0) {
@@ -54,7 +56,7 @@ class ShoppingCartActivity :
                     SharedPrefs.getTruckName() ?: "",
                     SharedPrefs.getUserInfo()?.username ?: "",
                     binding.editOtherRequest.text.toString(),
-                    1000,
+                    price,
                     "",
                     OrderStatus.RECEIVED,
                     itemList
