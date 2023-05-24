@@ -1,7 +1,5 @@
 package com.ssafy.foodfind.data.entity
 
-import java.math.BigDecimal
-
 data class FoodItem (
 	val itemId : Int = 0,
 	val truckId : Int = 0,

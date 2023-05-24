@@ -50,4 +50,9 @@ interface ApiService {
 
     @GET("/rest/foodItem/selectByTruckId")
     suspend fun getTruckItemRequest(@Query("truckId") truckId : Int): NetworkResponse<List<FoodItem>, ErrorResponse>
+
+    //order
+    @POST("/rest/order/insert")
+    suspend fun insertOrderRequest(@Body order : Order): NetworkResponse<Int, ErrorResponse>
+
 }

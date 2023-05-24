@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="@{orderDetail.name}"
+            android:text="@{orderDetail.item.name}"
             tools:text="타꼬야끼"/>
 
         <TextView
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:gravity="center"
-            android:text='@{String.format("%,d원", orderDetail.price)}'
+            android:text='@{String.format("%,d원", orderDetail.item.price*orderDetail.count)}'
             tools:text="5,000원" />
 
         <TextView
@@ -48,6 +48,7 @@
             tools:text="3개" />
 
         <ImageView
+            android:id="@+id/btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

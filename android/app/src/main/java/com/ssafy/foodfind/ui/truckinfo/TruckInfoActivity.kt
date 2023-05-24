@@ -10,9 +10,7 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.ssafy.foodfind.R
-import com.ssafy.foodfind.data.entity.Food
-import com.ssafy.foodfind.data.entity.FoodItem
-import com.ssafy.foodfind.data.entity.TruckLocation
+import com.ssafy.foodfind.data.entity.*
 import com.ssafy.foodfind.databinding.ActivityTruckInfoBinding
 import com.ssafy.foodfind.ui.LoadingDialog
 import com.ssafy.foodfind.ui.base.BaseActivity
@@ -47,6 +45,14 @@ class TruckInfoActivity : BaseActivity<ActivityTruckInfoBinding>(R.layout.activi
     private fun initFood(items: List<FoodItem>) {
         val adapter = FoodAdapter(items)
         binding.rvFood.adapter = adapter
+
+        adapter.setItemClickListener { item ->
+            val orderDetail = OrderDetail(item, 0)
+            if(binding.truck != null) {
+                val bottomSheet = OrderDetailBottomSheet.newInstance(orderDetail, binding.truck!!)
+                bottomSheet.show(supportFragmentManager, "order_detail_bottom_sheet")
+            }
+        }
     }
 
     private fun initButton() {

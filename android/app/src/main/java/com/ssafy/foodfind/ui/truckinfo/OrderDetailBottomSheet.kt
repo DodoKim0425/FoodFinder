@@ -7,19 +7,22 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.ssafy.foodfind.R
+import com.ssafy.foodfind.SharedPrefs
 import com.ssafy.foodfind.data.entity.OrderDetail
+import com.ssafy.foodfind.data.entity.Truck
 import com.ssafy.foodfind.databinding.BottomSheetOrdrDetailBinding
-import dagger.hilt.android.AndroidEntryPoint
 
 class OrderDetailBottomSheet : BottomSheetDialogFragment() {
     private lateinit var binding: BottomSheetOrdrDetailBinding
     private lateinit var orderDetail: OrderDetail
+    private lateinit var truck: Truck
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        savedInstanceState: Bundle?,
+    ): View {
         binding = DataBindingUtil.inflate(
             inflater,
             R.layout.bottom_sheet_ordr_detail,
@@ -28,10 +31,10 @@ class OrderDetailBottomSheet : BottomSheetDialogFragment() {
         )
         binding.lifecycleOwner = this
 
-        // Get the OrderDetail object from arguments
         val arguments = arguments
         if (arguments != null) {
             orderDetail = arguments.getSerializable(ARG_ORDER_DETAIL) as OrderDetail
+            truck = arguments.getSerializable(ARG_TRUCK) as Truck
             binding.orderDetail = orderDetail
         }
 
@@ -50,7 +53,7 @@ class OrderDetailBottomSheet : BottomSheetDialogFragment() {
         }
 
         binding.buttonAddCart.setOnClickListener {
-            // Add the orderDetail to the cart or perform any necessary action
+            SharedPrefs.addShoppingList(orderDetail, truck)
             dismiss()
         }
 
@@ -58,16 +61,17 @@ class OrderDetailBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun updateTotalPrice() {
-        val totalPrice = orderDetail.count * Integer.parseInt(orderDetail.price)
+        val totalPrice = orderDetail.count * orderDetail.item.price
         binding.tvTotalPrice.text = String.format("%,d원", totalPrice)
     }
 
     companion object {
         private const val ARG_ORDER_DETAIL = "arg_order_detail"
-
-        fun newInstance(orderDetail: OrderDetail): OrderDetailBottomSheet {
+        private const val ARG_TRUCK = "arg_truck"
+        fun newInstance(orderDetail: OrderDetail, truck: Truck): OrderDetailBottomSheet {
             val args = Bundle()
             args.putSerializable(ARG_ORDER_DETAIL, orderDetail)
+            args.putSerializable(ARG_TRUCK, truck)
 
             val fragment = OrderDetailBottomSheet()
             fragment.arguments = args

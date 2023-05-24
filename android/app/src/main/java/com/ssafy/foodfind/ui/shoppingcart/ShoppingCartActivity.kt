@@ -1,14 +1,105 @@
 package com.ssafy.foodfind.ui.shoppingcart
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.foodfind.R
+import com.ssafy.foodfind.SharedPrefs
+import com.ssafy.foodfind.SharedPrefs.getShoppingList
+import com.ssafy.foodfind.data.entity.Order
+import com.ssafy.foodfind.data.entity.OrderStatus
+import com.ssafy.foodfind.databinding.ActivityShoppingCartBinding
+import com.ssafy.foodfind.ui.LoadingDialog
+import com.ssafy.foodfind.ui.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
+import java.sql.Timestamp
+import java.util.Date
 
 @AndroidEntryPoint
-class ShoppingCartActivity : AppCompatActivity() {
+class ShoppingCartActivity :
+    BaseActivity<ActivityShoppingCartBinding>(R.layout.activity_shopping_cart) {
+
+    private val viewModel by viewModels<OrderViewModel>()
+    private lateinit var adapter: ShoppingCartAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_shopping_cart)
+
+        initButton()
+        initRecyclerView()
+        observeData()
+    }
+
+    private fun initButton() {
+        binding.buttonBack.setOnClickListener {
+            finish()
+        }
+
+        binding.buttonOrder.setOnClickListener {
+            val items = getShoppingList()
+            val itemMapList = mutableListOf<HashMap<String, String>>()
+
+            for (item in items) {
+                val itemMap = hashMapOf<String, String>()
+                itemMap["itemId"] = item.item.itemId.toString()
+                itemMap["quantity"] = item.count.toString()
+                itemMapList.add(itemMap)
+            }
+
+
+            if (items.size > 0) {
+                val truckId = items[0].item.truckId
+                val order = Order(
+                    0,
+                    SharedPrefs.getUserInfo()?.userId ?: 0,
+                    truckId,
+                    SharedPrefs.getTruckName() ?: "",
+                    SharedPrefs.getUserInfo()?.username ?: "",
+                    binding.editOtherRequest.text.toString(),
+                    1000,
+                    "",
+                    OrderStatus.RECEIVED,
+                    itemMapList
+                )
+                viewModel.insertOrder(order)
+            } else {
+                showToast("장바구니가 비어있습니다.")
+            }
+        }
+
+        binding.editTruckTitle.isEnabled = false
+        binding.editTruckTitle.setText(SharedPrefs.getTruckName())
+    }
+
+    private fun initRecyclerView() {
+        val list = getShoppingList()
+        adapter = ShoppingCartAdapter(list) { orderDetail ->
+            adapter.removeItem(orderDetail)
+        }
+        binding.recyclerview.adapter = adapter
+        binding.recyclerview.addItemDecoration(
+            DividerItemDecoration(this, LinearLayoutManager.VERTICAL)
+        )
+    }
+
+
+    private fun observeData() {
+        with(viewModel) {
+            errorMsg.observe(this@ShoppingCartActivity) { event ->
+                event.getContentIfNotHandled()?.let {
+                    showToast(it)
+                }
+            }
+
+            val dialog = LoadingDialog(this@ShoppingCartActivity)
+            isLoading.observe(this@ShoppingCartActivity) {
+                if (isLoading.value!!) {
+                    dialog.show()
+                } else if (!isLoading.value!!) {
+                    dialog.dismiss()
+                }
+            }
+        }
     }
 }

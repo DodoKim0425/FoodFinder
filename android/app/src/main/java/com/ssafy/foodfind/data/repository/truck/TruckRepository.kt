@@ -11,6 +11,5 @@ interface TruckRepository {
     suspend fun updateTruckRequest(truck: Truck): NetworkResponse<Boolean, ErrorResponse>
     suspend fun getAllTruckLocationRequest(): NetworkResponse<List<TruckLocation>, ErrorResponse>
     suspend fun getTruckRequest(truckId: Int): NetworkResponse<Truck, ErrorResponse>
-
     suspend fun getTruckItemRequest(truckId: Int): NetworkResponse<List<FoodItem>, ErrorResponse>
 }
