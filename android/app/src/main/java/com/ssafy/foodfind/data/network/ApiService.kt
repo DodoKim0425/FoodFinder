@@ -55,4 +55,7 @@ interface ApiService {
     @POST("/rest/order/insert")
     suspend fun insertOrderRequest(@Body order : Order): NetworkResponse<Int, ErrorResponse>
 
+    @GET("/rest/order/selectOrderByUserId")
+    suspend fun selectOrderByUserIdRequest(@Query("userId") userId : Int): NetworkResponse<List<Order>, ErrorResponse>
+
 }

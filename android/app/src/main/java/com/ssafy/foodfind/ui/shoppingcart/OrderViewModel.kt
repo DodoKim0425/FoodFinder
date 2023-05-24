@@ -23,6 +23,8 @@ class OrderViewModel @Inject constructor(
     private val _orderId = MutableLiveData<Int>()
     val orderId: LiveData<Int> = _orderId
 
+    private val _orders = MutableLiveData<List<Order>>()
+    val orders: LiveData<List<Order>> = _orders
 
 
     fun insertOrder(order: Order) {
@@ -33,6 +35,30 @@ class OrderViewModel @Inject constructor(
             when(response) {
                 is NetworkResponse.Success -> {
                     _orderId.postValue(response.body)
+                }
+                is NetworkResponse.ApiError -> {
+                    postValueEvent(0, type)
+                }
+                is NetworkResponse.NetworkError -> {
+                    postValueEvent(1, type)
+                }
+                is NetworkResponse.UnknownError -> {
+                    postValueEvent(2, type)
+                }
+            }
+            hideProgress()
+        }
+    }
+
+
+    fun getRecentOrders(userId: Int) {
+        showProgress()
+        viewModelScope.launch {
+            val response = repository.selectOrderByUserIdRequest(userId)
+            val type = "주문 조회에"
+            when(response) {
+                is NetworkResponse.Success -> {
+                    _orders.postValue(response.body)
                 }
                 is NetworkResponse.ApiError -> {
                     postValueEvent(0, type)

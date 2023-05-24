@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="@{String.format(`총 $%.2f 원`, order.getTotalPrice())}"
+                android:text="@{String.format(`총 %d 원`, order.getTotalPrice())}"
                 android:gravity="center"
                 tools:text="총 2,3000 원"/>
 

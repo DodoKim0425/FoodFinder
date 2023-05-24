@@ -18,7 +18,7 @@ data class Order(
     val totalPrice: Int,
     val orderTime: String,
     val orderStatus: OrderStatus,
-    var items : List<HashMap<String, String>>
+    var items: List<OrderCount>,
 ) {
     fun getStatusText(): String {
         return when (orderStatus) {
@@ -40,3 +40,6 @@ data class Order(
 }
 
 data class OrderDetail(val item: FoodItem, var count: Int) : Serializable
+
+data class OrderCount(val itemId: Int = 0, val orderId: Int = 0, val orderItemId: Int = 0, var count: Int = 0) :
+    Serializable

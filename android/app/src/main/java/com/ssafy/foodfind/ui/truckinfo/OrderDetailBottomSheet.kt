@@ -18,7 +18,6 @@ class OrderDetailBottomSheet : BottomSheetDialogFragment() {
     private lateinit var orderDetail: OrderDetail
     private lateinit var truck: Truck
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,7 +53,9 @@ class OrderDetailBottomSheet : BottomSheetDialogFragment() {
         }
 
         binding.buttonAddCart.setOnClickListener {
-            if (SharedPrefs.getShoppingList().size > 0) {
+            if (SharedPrefs.getShoppingList().size == 0) {
+                SharedPrefs.addShoppingList(orderDetail, truck)
+            } else {
                 val truckId = SharedPrefs.getShoppingList()[0].item.truckId
                 if (truckId == truck.truckId) {
                     SharedPrefs.addShoppingList(orderDetail, truck)
@@ -64,7 +65,6 @@ class OrderDetailBottomSheet : BottomSheetDialogFragment() {
                     dismiss()
                 }
             }
-
         }
 
         return binding.root

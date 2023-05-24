@@ -9,6 +9,7 @@ import com.ssafy.foodfind.R
 import com.ssafy.foodfind.SharedPrefs
 import com.ssafy.foodfind.SharedPrefs.getShoppingList
 import com.ssafy.foodfind.data.entity.Order
+import com.ssafy.foodfind.data.entity.OrderCount
 import com.ssafy.foodfind.data.entity.OrderStatus
 import com.ssafy.foodfind.databinding.ActivityShoppingCartBinding
 import com.ssafy.foodfind.ui.LoadingDialog
@@ -37,15 +38,12 @@ class ShoppingCartActivity :
 
         binding.buttonOrder.setOnClickListener {
             val items = getShoppingList()
-            val itemMapList = mutableListOf<HashMap<String, String>>()
+            val itemList = mutableListOf<OrderCount>()
 
             for (item in items) {
-                val itemMap = hashMapOf<String, String>()
-                itemMap["itemId"] = item.item.itemId.toString()
-                itemMap["quantity"] = item.count.toString()
-                itemMapList.add(itemMap)
+                val orderCount = OrderCount(item.item.itemId, 0, 0, item.count)
+                itemList.add(orderCount)
             }
-
 
             if (items.size > 0) {
                 val truckId = items[0].item.truckId
@@ -59,7 +57,7 @@ class ShoppingCartActivity :
                     1000,
                     "",
                     OrderStatus.RECEIVED,
-                    itemMapList
+                    itemList
                 )
                 viewModel.insertOrder(order)
             } else {
