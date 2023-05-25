@@ -12,7 +12,10 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.UiThread
+import androidx.constraintlayout.motion.widget.Debug.getLocation
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.location.*
 import com.naver.maps.geometry.LatLng
@@ -35,11 +38,12 @@ private const val TAG = "ManageTruckItemActivity"
 
 @AndroidEntryPoint
 class ManageTruckItemActivity :
-    BaseActivity<ActivityManageTruckItemBinding>(R.layout.activity_manage_truck_item), OnMapReadyCallback {
+    BaseActivity<ActivityManageTruckItemBinding>(R.layout.activity_manage_truck_item),
+    OnMapReadyCallback {
     private val locationManager by lazy {
         getSystemService(Context.LOCATION_SERVICE) as LocationManager
     }
-    val REQUIRED_PERMISSIONS  = arrayOf(
+    val REQUIRED_PERMISSIONS = arrayOf(
         android.Manifest.permission.ACCESS_FINE_LOCATION,
         android.Manifest.permission.ACCESS_COARSE_LOCATION
     )
@@ -48,15 +52,16 @@ class ManageTruckItemActivity :
     private val UPDATE_INTERVAL = 1000 // 1초
     private val FASTEST_UPDATE_INTERVAL = 500 // 0.5초
     private val viewModel by viewModels<TruckViewModel>()
-    private var truckInfo : Truck = Truck(0, 0, "", 0.0F, "", "", TruckStatus.CLOSED)
+    private var truckInfo: Truck = Truck(0, 0, "", 0.0F, "", "", TruckStatus.CLOSED)
     private lateinit var foodTruckAdapter: FoodTruckAdapter
-    private var list : MutableList<FoodItem> = mutableListOf()
+    private var list: MutableList<FoodItem> = mutableListOf()
     private var marker = Marker()
-    private lateinit var naverMap : NaverMap
+    private lateinit var naverMap: NaverMap
     private lateinit var locationRequest: LocationRequest
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
-    private var userLocation : Location = Location("")
-    private var isAlreadyPoped : Boolean =false
+    private var userLocation: Location = Location("")
+    private var isAlreadyPoped: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -83,13 +88,14 @@ class ManageTruckItemActivity :
         initRecyclerView()
         observeData()
     }
+
     private fun startLocationUpdates() {
         // 위치서비스 활성화 여부 check
         if (!checkLocationServicesStatus()) {
             showToast("GPS 기능을 켜고 다시 시도해 주세요")
             finish()
-        }else{
-            if(checkRunTimePermission()){
+        } else {
+            if (checkRunTimePermission()) {
                 mFusedLocationClient.requestLocationUpdates(
                     locationRequest,
                     locationCallback,
@@ -99,9 +105,10 @@ class ManageTruckItemActivity :
 
         }
     }
-    private fun initRecyclerView(){
+
+    private fun initRecyclerView() {
         foodTruckAdapter = FoodTruckAdapter(list)
-        binding.rvFood.adapter=foodTruckAdapter
+        binding.rvFood.adapter = foodTruckAdapter
         binding.rvFood.layoutManager = LinearLayoutManager(this)
     }
 
@@ -122,7 +129,7 @@ class ManageTruckItemActivity :
         binding.btnUpdateTruck.setOnClickListener {
             val intent = Intent(this, ManageTruckActivity::class.java)
             intent.putExtra("truckInfo", truckInfo)
-            var foodItemList : ArrayList<FoodItem> = ArrayList<FoodItem>()
+            var foodItemList: ArrayList<FoodItem> = ArrayList<FoodItem>()
             foodItemList.addAll(list)
             intent.putExtra("foodItemList", foodItemList)
             startActivity(intent)
@@ -130,26 +137,31 @@ class ManageTruckItemActivity :
 
         binding.radioGroupStatus.setOnCheckedChangeListener { group, checkedId ->
             truckInfo.apply {
-                when(binding.radioGroupStatus.checkedRadioButtonId){
-                    R.id.truck_open -> this.currentStatus=TruckStatus.OPEN
-                    else -> this.currentStatus =TruckStatus.CLOSED
+                when (binding.radioGroupStatus.checkedRadioButtonId) {
+                    R.id.truck_open -> this.currentStatus = TruckStatus.OPEN
+                    else -> this.currentStatus = TruckStatus.CLOSED
                 }
             }
         }
 
         binding.btnSearch.setOnClickListener {
-            val isGPSOn=checkLocationServicesStatus()
-            if(isGPSOn==false){
+            val isGPSOn = checkLocationServicesStatus()
+            if (isGPSOn == false) {
                 showToast("GPS를 켜고 다시 시도해주세요")
-            }else if(checkRunTimePermission()==false){
-                ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE)
-            }else{
+            } else if (checkRunTimePermission() == false) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    REQUIRED_PERMISSIONS,
+                    PERMISSIONS_REQUEST_CODE
+                )
+            } else {
                 getLocation()
             }
 
         }
 
     }
+
     private fun observeData() {
         with(viewModel) {
             errorMsg.observe(this@ManageTruckItemActivity) { event ->
@@ -167,31 +179,31 @@ class ManageTruckItemActivity :
                 }
             }
 
-            truck.observe(this@ManageTruckItemActivity) {truck->
-                    if (truck.truckId == 0) {
-                        Log.d(TAG, "observeData: $truck")
-                        //다이얼로그 띄우기
-                        if(isAlreadyPoped==false){
-                            val intent =
-                                Intent(this@ManageTruckItemActivity, ManageTruckActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                            isAlreadyPoped=true
-                        }
-                        
-                    } else {
-                        Log.d(TAG, "observeData: $truck")
-                        binding.truck = truck
-                        truckInfo = truck
-                        viewModel.getFoodItem(truck.truckId)
-                        setMarker(truck.location)
-                        binding.truck = truck
+            truck.observe(this@ManageTruckItemActivity) { truck ->
+                if (truck.truckId == 0) {
+                    Log.d(TAG, "observeData: $truck")
+                    //다이얼로그 띄우기
+                    if (isAlreadyPoped == false) {
+                        val intent =
+                            Intent(this@ManageTruckItemActivity, ManageTruckActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                        isAlreadyPoped = true
                     }
 
+                } else {
+                    Log.d(TAG, "observeData: $truck")
+                    binding.truck = truck
+                    truckInfo = truck
+                    viewModel.getFoodItem(truck.truckId)
+                    setMarker(truck.location)
+                    SharedPrefs.saveTruckId(truckId = truck.truckId)
+                    binding.truck = truck
+                }
             }
 
 
-            foodItemList.observe(this@ManageTruckItemActivity){ event ->
+            foodItemList.observe(this@ManageTruckItemActivity) { event ->
                 event.getContentIfNotHandled()?.let {
                     Log.d(TAG, "observeData: ${it.size}")
                     list.clear()
@@ -203,8 +215,8 @@ class ManageTruckItemActivity :
         }
     }
 
-    fun setMarker(locationString : String){
-        if(locationString!=""){
+    fun setMarker(locationString: String) {
+        if (locationString != "") {
             Log.d(TAG, "setMarker: ${locationString}")
             var latLngArr = locationString.split("/").map {
                 it.toDouble()
@@ -218,7 +230,7 @@ class ManageTruckItemActivity :
 
     @UiThread
     override fun onMapReady(p0: NaverMap) {
-        naverMap=p0
+        naverMap = p0
         initTruck()
         initButton()
     }
@@ -231,26 +243,31 @@ class ManageTruckItemActivity :
         naverMap.cameraPosition = cameraPosition
     }
 
-    private fun checkRunTimePermission():Boolean{
-        if(applicationContext!=null){
-            for(permission in REQUIRED_PERMISSIONS){
-                if(ActivityCompat.checkSelfPermission(applicationContext, permission)!= PackageManager.PERMISSION_GRANTED){
+    private fun checkRunTimePermission(): Boolean {
+        if (applicationContext != null) {
+            for (permission in REQUIRED_PERMISSIONS) {
+                if (ActivityCompat.checkSelfPermission(
+                        applicationContext,
+                        permission
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
                     return false
                 }
             }
         }
         return true
     }
+
     private fun checkLocationServicesStatus(): Boolean { //gps 켜져있는지 확인
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
                 || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
     }
 
-    private fun getLocation(){
-        if(userLocation.latitude!=null && userLocation.longitude!=null){
+    private fun getLocation() {
+        if (userLocation.latitude != null && userLocation.longitude != null) {
             setMarker("${userLocation.latitude}/${userLocation.longitude}")
-            truckInfo.location="${userLocation.latitude}/${userLocation.longitude}"
+            truckInfo.location = "${userLocation.latitude}/${userLocation.longitude}"
         }
     }
 
@@ -260,7 +277,7 @@ class ManageTruckItemActivity :
             val locationList = locationResult.locations
             if (locationList.size > 0) {
                 val location = locationList[locationList.size - 1]
-                userLocation=location
+                userLocation = location
             }
         }
     }
@@ -268,11 +285,11 @@ class ManageTruckItemActivity :
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when(requestCode){
-            PERMISSIONS_REQUEST_CODE ->{
+        when (requestCode) {
+            PERMISSIONS_REQUEST_CODE -> {
                 if (!(grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     val alertDialog = androidx.appcompat.app.AlertDialog.Builder(this)
                     alertDialog.setTitle("위치 권한이 필요합니다.")
@@ -287,7 +304,7 @@ class ManageTruckItemActivity :
                         finish()
                     }
                     alertDialog.show()
-                }else{
+                } else {
                     startLocationUpdates()
                 }
             }
@@ -297,12 +314,13 @@ class ManageTruckItemActivity :
     override fun onStart() {
         super.onStart()
 
-        if(checkRunTimePermission()==false){
+        if (checkRunTimePermission() == false) {
             ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, PERMISSIONS_REQUEST_CODE)
-        }else{
+        } else {
             startLocationUpdates()
         }
     }
+
     override fun onStop() {
         super.onStop()
         mFusedLocationClient.removeLocationUpdates(locationCallback)

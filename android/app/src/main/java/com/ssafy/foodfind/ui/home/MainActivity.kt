@@ -13,6 +13,7 @@ import com.ssafy.foodfind.ui.customerorderlist.CustomerOrderListActivity
 import com.ssafy.foodfind.ui.managetruck.ManageTruckItemActivity
 import com.ssafy.foodfind.ui.map.MapActivity
 import com.ssafy.foodfind.ui.notification.NotificationActivity
+import com.ssafy.foodfind.ui.ownerorderlist.OwnerOrderListActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.Math.abs
 import java.util.*
@@ -54,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnNotification.setOnClickListener {
-            val intent = Intent(this, NotificationActivity::class.java)
+            val intent = Intent(this, OwnerOrderListActivity::class.java)
             startActivity(intent)
         }
     }

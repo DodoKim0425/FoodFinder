@@ -12,14 +12,15 @@ data class Order(
     val orderId: Int,
     val userId: Int,
     val truckId: Int,
-    val name: String,
-    val customerName: String,
+    var name: String,
+    var customerName: String,
     val description: String?,
     val totalPrice: Int,
     val orderTime: String,
     val orderStatus: OrderStatus,
     var items: List<OrderCount>,
 ) {
+
     fun getStatusText(): String {
         return when (orderStatus) {
             OrderStatus.RECEIVED -> "주문 접수됨"
@@ -28,7 +29,6 @@ data class Order(
             OrderStatus.CANCEL -> "주문 취소됨"
         }
     }
-
     fun getStatusColor(): Int {
         return when (orderStatus) {
             OrderStatus.RECEIVED -> R.color.received
@@ -37,9 +37,18 @@ data class Order(
             OrderStatus.CANCEL -> R.color.cancel
         }
     }
+
+    fun getDateTime(): String {
+        return orderTime.split("T")[0]
+    }
 }
 
 data class OrderDetail(val item: FoodItem, var count: Int) : Serializable
 
-data class OrderCount(val itemId: Int = 0, val orderId: Int = 0, val orderItemId: Int = 0, var count: Int = 0) :
+data class OrderCount(
+    val itemId: Int = 0,
+    val orderId: Int = 0,
+    val orderItemId: Int = 0,
+    var quantity: Int = 0,
+) :
     Serializable

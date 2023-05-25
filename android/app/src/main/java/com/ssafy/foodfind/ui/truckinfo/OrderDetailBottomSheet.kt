@@ -55,6 +55,7 @@ class OrderDetailBottomSheet : BottomSheetDialogFragment() {
         binding.buttonAddCart.setOnClickListener {
             if (SharedPrefs.getShoppingList().size == 0) {
                 SharedPrefs.addShoppingList(orderDetail, truck)
+                dismiss()
             } else {
                 val truckId = SharedPrefs.getShoppingList()[0].item.truckId
                 if (truckId == truck.truckId) {

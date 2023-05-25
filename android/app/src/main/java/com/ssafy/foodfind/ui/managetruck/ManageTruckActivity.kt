@@ -24,6 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.log
 
 private const val TAG = "ManageTruckActivity_싸피"
+
 @AndroidEntryPoint
 class ManageTruckActivity :
     BaseActivity<ActivityManageTruckBinding>(R.layout.activity_manage_truck) {
@@ -43,64 +44,66 @@ class ManageTruckActivity :
         observeData()
     }
 
-    private fun setData(){
+    private fun setData() {
         truckInfo.apply {
-            if(intent.getSerializableExtra("truckInfo")==null){
-                truckInfo= Truck(0, 0, "", 0.0F, "", "", TruckStatus.CLOSED)
-            }else{
-                truckInfo= intent.getSerializableExtra("truckInfo") as Truck
-                registMode=false
+            if (intent.getSerializableExtra("truckInfo") == null) {
+                truckInfo = Truck(0, 0, "", 0.0F, "", "", TruckStatus.CLOSED)
+            } else {
+                truckInfo = intent.getSerializableExtra("truckInfo") as Truck
+                registMode = false
             }
         }
-        if(intent.getSerializableExtra("foodItemList")!=null){
-            var foodItemList : ArrayList<FoodItem> = intent.getSerializableExtra("foodItemList") as ArrayList<FoodItem>
+        if (intent.getSerializableExtra("foodItemList") != null) {
+            var foodItemList: ArrayList<FoodItem> =
+                intent.getSerializableExtra("foodItemList") as ArrayList<FoodItem>
             foodItemList.map {
                 list.add(it)
             }
         }
         binding.truck = truckInfo
 
-
     }
 
-    private fun initRecyclerView(){
+    private fun initRecyclerView() {
         foodItemUpdateAdapter = FoodItemUpdateAdapter()
         foodItemUpdateAdapter.submitList(list.toMutableList())
 
-        foodItemUpdateAdapter.itemClickListener = object : FoodItemUpdateAdapter.ItemClickListener{
+        foodItemUpdateAdapter.itemClickListener = object : FoodItemUpdateAdapter.ItemClickListener {
             override fun onClick(data: FoodItem, position: Int) {
                 var bottomSheet = UpdateTruckItemBottomSheet(this@ManageTruckActivity, data)
-                bottomSheet.listener=object : UpdateTruckItemBottomSheet.OnSendFromBottomSheetDialog{
-                    override fun sendValue(value: FoodItem, oldItem: FoodItem) {
-                        list.forEachIndexed { index, it ->
-                            if(it == oldItem) {
-                                var originalItem = it.copy()
-                                originalItem.apply {
-                                    this.name=value.name
-                                    this.description=value.description
-                                    this.price=value.price
-                                    this.status=value.status
+                bottomSheet.listener =
+                    object : UpdateTruckItemBottomSheet.OnSendFromBottomSheetDialog {
+                        override fun sendValue(value: FoodItem, oldItem: FoodItem) {
+                            list.forEachIndexed { index, it ->
+                                if (it == oldItem) {
+                                    var originalItem = it.copy()
+                                    originalItem.apply {
+                                        this.name = value.name
+                                        this.description = value.description
+                                        this.price = value.price
+                                        this.status = value.status
+                                    }
+                                    list[index] = originalItem
+                                    foodItemUpdateAdapter.submitList(list.toMutableList())
+                                    return@forEachIndexed
                                 }
-                                list[index]=originalItem
-                                foodItemUpdateAdapter.submitList(list.toMutableList())
-                                return@forEachIndexed
                             }
                         }
-                    }
 
-                }
+                    }
                 bottomSheet.show()
             }
         }
 
-        binding.rvMember.adapter= foodItemUpdateAdapter
+        binding.rvMember.adapter = foodItemUpdateAdapter
         binding.rvMember.layoutManager = LinearLayoutManager(this)
         val itemTouchCallback = ItemTouchHelper(FoodItemTouchCallback(this, binding.rvMember))
         itemTouchCallback.attachToRecyclerView(binding.rvMember)
     }
+
     private fun initButton() {
         binding.btnCreateOk.setOnClickListener {
-            if(registMode){
+            if (registMode) {
                 if (SharedPrefs.getUserInfo() != null) {
                     truckInfo.apply {
                         ownerId = SharedPrefs.getUserInfo()!!.userId
@@ -111,21 +114,21 @@ class ManageTruckActivity :
                     viewModel.registTruck(truckInfo)
                 }
 
-            }else{
+            } else {
                 viewModel.updateTruck(truckInfo)
                 var insertList = mutableListOf<FoodItem>()
                 list.map {
-                    if(it.truckId==0){//새로 추가되어야 하는 foodItem
+                    if (it.truckId == 0) {//새로 추가되어야 하는 foodItem
                         //viewModel.insertFoodItem(it, truckInfo.truckId)
                         it.truckId = truckInfo.truckId
                         insertList.add(it)
-                    }else{//수정되어야 하는 foodItem
+                    } else {//수정되어야 하는 foodItem
                         viewModel.updateFoodItem(it)
                     }
                 }
                 viewModel.insertFoodItemList(insertList)
                 deletedList.map {
-                    if(it.truckId!=0){
+                    if (it.truckId != 0) {
                         viewModel.deleteFoodItem(it.itemId)
                     }
                 }
@@ -140,7 +143,7 @@ class ManageTruckActivity :
 
         binding.floatingActionButton.setOnClickListener {
             var bottomSheet = ManageTruckItemBottomSheet(this)
-            bottomSheet.listener=object : ManageTruckItemBottomSheet.OnSendFromBottomSheetDialog{
+            bottomSheet.listener = object : ManageTruckItemBottomSheet.OnSendFromBottomSheetDialog {
                 override fun sendValue(value: FoodItem) {
                     list.add(value)
                     foodItemUpdateAdapter.submitList(list.toMutableList())
@@ -150,8 +153,9 @@ class ManageTruckActivity :
             bottomSheet.show()
         }
     }
-    private fun observeData(){
-        viewModel.newTruckId.observe(this@ManageTruckActivity){truckId ->
+
+    private fun observeData() {
+        viewModel.newTruckId.observe(this@ManageTruckActivity) { truckId ->
             list.map {
                 it.truckId = truckId
             }
@@ -163,11 +167,11 @@ class ManageTruckActivity :
         }
     }
 
-    fun removeItem(position: Int){
-            val newList=list
-            deletedList.add(newList[position])
-            newList.removeAt(position)
-            foodItemUpdateAdapter.submitList(newList.toMutableList())
+    fun removeItem(position: Int) {
+        val newList = list
+        deletedList.add(newList[position])
+        newList.removeAt(position)
+        foodItemUpdateAdapter.submitList(newList.toMutableList())
 
     }
 

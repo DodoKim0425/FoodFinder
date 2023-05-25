@@ -11,9 +11,7 @@ import com.ssafy.foodfind.data.entity.OrderStatus
 import com.ssafy.foodfind.databinding.ActivityOrderDetailBinding
 import com.ssafy.foodfind.ui.LoadingDialog
 import com.ssafy.foodfind.ui.base.BaseActivity
-import com.ssafy.foodfind.ui.customerorderlist.RecentOrderAdapter
 import com.ssafy.foodfind.ui.shoppingcart.OrderViewModel
-import com.ssafy.foodfind.ui.shoppingcart.ShoppingCartAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,6 +32,10 @@ class OrderDetailActivity : BaseActivity<ActivityOrderDetailBinding>(R.layout.ac
             viewModel.getDetailOrder(orderId)
         }
 
+        binding.buttonBack.setOnClickListener {
+            finish()
+        }
+
         binding.orderCancel.setOnClickListener {
             if(binding.order?.orderStatus == OrderStatus.RECEIVED) {
                 viewModel.updateOrderToCancel(orderId)
@@ -42,7 +44,7 @@ class OrderDetailActivity : BaseActivity<ActivityOrderDetailBinding>(R.layout.ac
     }
 
     private fun initRecyclerView() {
-        adapter = OrderDetailAdapter(mutableListOf())
+        adapter = OrderDetailAdapter()
         binding.recyclerViewOrderItems.addItemDecoration(
             DividerItemDecoration(this, LinearLayoutManager.VERTICAL)
         )
@@ -66,7 +68,7 @@ class OrderDetailActivity : BaseActivity<ActivityOrderDetailBinding>(R.layout.ac
                 }
             }
 
-            order.observe(this@OrderDetailActivity) {
+            orderItems.observe(this@OrderDetailActivity) {
                 if(it.isNotEmpty()) {
                     val order = it[0]
                     binding.order = order
@@ -76,13 +78,14 @@ class OrderDetailActivity : BaseActivity<ActivityOrderDetailBinding>(R.layout.ac
                     if(order.orderStatus != OrderStatus.RECEIVED) {
                         binding.orderCancel.isEnabled = false
                     }
+                    adapter.addOrderDetail(it)
                 }
             }
 
             isCancel.observe(this@OrderDetailActivity) {
                 if(it == true) {
                     showToast("주문이 취소되었습니다.")
-                    //화면을 종료할지 아니면, 데이터를 한번 더 불러서 조회할지?
+                    finish()
                 }
             }
         }
