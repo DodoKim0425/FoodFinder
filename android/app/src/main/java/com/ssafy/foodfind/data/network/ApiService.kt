@@ -75,4 +75,13 @@ interface ApiService {
     @PUT("/rest/order/updateOrderToCancel")
     suspend fun updateOrderToCancel(@Query("orderId") orderId : Int): NetworkResponse<Boolean, ErrorResponse>
 
+    //comment
+    @GET("/rest/comment/getCommentByTruck")
+    suspend fun getCommentByTruckRequest(@Query("truckId") truckId:Int):NetworkResponse<List<Comment>, ErrorResponse>
+
+    @DELETE("/rest/comment/delete/{id}")
+    suspend fun deleteCommentRequest(@Path("id") commentId : Int):NetworkResponse<Boolean, ErrorResponse>
+
+    @PUT("/rest/comment/update")
+    suspend fun updateCommentRequest(@Body comment : Comment):NetworkResponse<Boolean, ErrorResponse>
 }
