@@ -3,10 +3,12 @@ package com.ssafy.foodfind.ui.shoppingcart
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.ssafy.foodfind.data.entity.Comment
 import com.ssafy.foodfind.data.entity.Event
 import com.ssafy.foodfind.data.entity.Order
 import com.ssafy.foodfind.data.entity.OrderItem
 import com.ssafy.foodfind.data.network.NetworkResponse
+import com.ssafy.foodfind.data.repository.comment.CommentRepository
 import com.ssafy.foodfind.data.repository.order.OrderRepository
 import com.ssafy.foodfind.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class OrderViewModel @Inject constructor(
     private val repository: OrderRepository,
+    private val commentRepository: CommentRepository
 ) : BaseViewModel() {
 
     private val _msg = MutableLiveData<Event<String>>()
@@ -219,6 +222,29 @@ class OrderViewModel @Inject constructor(
             when (response) {
                 is NetworkResponse.Success -> {
                     _isCancel.postValue(Event(response.body))
+                }
+                is NetworkResponse.ApiError -> {
+                    postValueEvent(0, type)
+                }
+                is NetworkResponse.NetworkError -> {
+                    postValueEvent(1, type)
+                }
+                is NetworkResponse.UnknownError -> {
+                    postValueEvent(2, type)
+                }
+            }
+            hideProgress()
+        }
+    }
+
+    fun insertComment(comment: Comment){
+        showProgress()
+        viewModelScope.launch {
+            val response = commentRepository.insertCommentResponse(comment)
+            val type = "댓글 남기기에"
+            when (response) {
+                is NetworkResponse.Success -> {
+
                 }
                 is NetworkResponse.ApiError -> {
                     postValueEvent(0, type)

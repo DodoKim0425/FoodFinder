@@ -40,6 +40,7 @@ public class CommentRestController {
 	@PostMapping("/insert")
     @ApiOperation(value="코멘트를 추가, 성공하면 true반환 실패하면 false반환", response = Boolean.class)
 	public Boolean insert(@RequestBody Comment comment) {
+		System.out.println("-----"+comment);
 		return cService.insert(comment);
 	}
 	
