@@ -20,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.log
 
 private const val TAG = "ManageTruckActivity_싸피"
+
 @AndroidEntryPoint
 class ManageTruckActivity :
     BaseActivity<ActivityManageTruckBinding>(R.layout.activity_manage_truck) {
@@ -36,34 +37,35 @@ class ManageTruckActivity :
         initButton()
     }
 
-    private fun setData(){
+    private fun setData() {
         truckInfo.apply {
-            if(intent.getSerializableExtra("truckInfo")==null){
-                truckInfo= Truck(0, 0, "", 0.0F, "", "", TruckStatus.CLOSED)
-            }else{
-                truckInfo= intent.getSerializableExtra("truckInfo") as Truck
-                registMode=false
+            if (intent.getSerializableExtra("truckInfo") == null) {
+                truckInfo = Truck(0, 0, "", 0.0F, "", "", TruckStatus.CLOSED)
+            } else {
+                truckInfo = intent.getSerializableExtra("truckInfo") as Truck
+                registMode = false
             }
         }
-        if(intent.getSerializableExtra("foodItemList")!=null){
-            var foodItemList : ArrayList<FoodItem> = intent.getSerializableExtra("foodItemList") as ArrayList<FoodItem>
+        if (intent.getSerializableExtra("foodItemList") != null) {
+            var foodItemList: ArrayList<FoodItem> =
+                intent.getSerializableExtra("foodItemList") as ArrayList<FoodItem>
             foodItemList.map {
                 list.add(it)
             }
         }
         binding.truck = truckInfo
 
-
     }
 
-    private fun initRecyclerView(){
+    private fun initRecyclerView() {
         foodTruckAdapter = FoodTruckAdapter(list)
-        binding.rvMember.adapter=foodTruckAdapter
+        binding.rvMember.adapter = foodTruckAdapter
         binding.rvMember.layoutManager = LinearLayoutManager(this)
     }
+
     private fun initButton() {
         binding.btnCreateOk.setOnClickListener {
-            if(registMode){
+            if (registMode) {
                 if (SharedPrefs.getUserInfo() != null) {
                     truckInfo.apply {
                         ownerId = SharedPrefs.getUserInfo()!!.userId
@@ -73,7 +75,7 @@ class ManageTruckActivity :
                     viewModel.registTruck(truckInfo)
                 }
 
-            }else{
+            } else {
                 viewModel.updateTruck(truckInfo)
             }
             finish()
@@ -86,7 +88,7 @@ class ManageTruckActivity :
 
         binding.floatingActionButton.setOnClickListener {
             var bottomSheet = ManageTruckItemBottomSheet(this)
-            bottomSheet.listener=object : ManageTruckItemBottomSheet.OnSendFromBottomSheetDialog{
+            bottomSheet.listener = object : ManageTruckItemBottomSheet.OnSendFromBottomSheetDialog {
                 override fun sendValue(value: FoodItem) {
                     Log.d(TAG, "sendValue: $value")
                 }

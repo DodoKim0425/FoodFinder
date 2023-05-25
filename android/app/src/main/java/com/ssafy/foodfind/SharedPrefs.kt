@@ -11,12 +11,23 @@ import com.ssafy.foodfind.data.entity.User
 object SharedPrefs {
     private const val LOGIN_SESSION = "login.session"
     private var user: User? = null
+    private var truckId: Int = -1
     private var shoppingList : MutableList<OrderDetail> = mutableListOf()
 
     fun openSharedPrep(context: Context): SharedPreferences {
         return context.getSharedPreferences(LOGIN_SESSION, Context.MODE_PRIVATE)
     }
 
+    fun getTruckId() : Int {
+        return App.prefs.getInt("truckId", -1)
+    }
+
+    fun saveTruckId(truckId : Int) {
+        this.truckId = truckId
+        val editor = App.prefs.edit()
+        editor.putInt("truckId", truckId)
+        editor.apply()
+    }
     fun getUserInfo() = user
 
     fun saveUserInfo(user: User) {
@@ -87,7 +98,6 @@ object SharedPrefs {
         editor.remove("truckName")
         editor.apply()
     }
-
 
     fun getTruckName() : String? {
         return App.prefs.getString("truckName", "")

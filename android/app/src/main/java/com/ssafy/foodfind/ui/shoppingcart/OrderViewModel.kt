@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.ssafy.foodfind.data.entity.Event
 import com.ssafy.foodfind.data.entity.Order
-import com.ssafy.foodfind.data.entity.User
+import com.ssafy.foodfind.data.entity.OrderItem
 import com.ssafy.foodfind.data.network.NetworkResponse
 import com.ssafy.foodfind.data.repository.order.OrderRepository
 import com.ssafy.foodfind.ui.base.BaseViewModel
@@ -15,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OrderViewModel @Inject constructor(
-    private val repository: OrderRepository) : BaseViewModel() {
+    private val repository: OrderRepository,
+) : BaseViewModel() {
 
     private val _msg = MutableLiveData<Event<String>>()
     val errorMsg: LiveData<Event<String>> = _msg
@@ -26,8 +27,8 @@ class OrderViewModel @Inject constructor(
     private val _orders = MutableLiveData<List<Order>>()
     val orders: LiveData<List<Order>> = _orders
 
-    private val _order = MutableLiveData<List<Order>>()
-    val order: LiveData<List<Order>> = _order
+    private val _orderItems = MutableLiveData<List<OrderItem>>()
+    val orderItems: LiveData<List<OrderItem>> = _orderItems
 
     private val _isCancel = MutableLiveData<Boolean>()
     val isCancel: LiveData<Boolean> = _isCancel
@@ -38,7 +39,7 @@ class OrderViewModel @Inject constructor(
         viewModelScope.launch {
             val response = repository.insertOrderRequest(order)
             val type = "주문을"
-            when(response) {
+            when (response) {
                 is NetworkResponse.Success -> {
                     _orderId.postValue(response.body)
                 }
@@ -62,7 +63,31 @@ class OrderViewModel @Inject constructor(
         viewModelScope.launch {
             val response = repository.selectOrderByUserIdRequest(userId)
             val type = "주문 조회에"
-            when(response) {
+            when (response) {
+                is NetworkResponse.Success -> {
+                    _orders.postValue(response.body)
+                }
+                is NetworkResponse.ApiError -> {
+                    postValueEvent(0, type)
+                }
+                is NetworkResponse.NetworkError -> {
+                    postValueEvent(1, type)
+                }
+                is NetworkResponse.UnknownError -> {
+                    postValueEvent(2, type)
+                }
+            }
+            hideProgress()
+        }
+    }
+
+
+    fun getRecentOrdersByTruckId(truckId: Int) {
+        showProgress()
+        viewModelScope.launch {
+            val response = repository.selectOrderByTruckId(truckId)
+            val type = "주문 조회에"
+            when (response) {
                 is NetworkResponse.Success -> {
                     _orders.postValue(response.body)
                 }
@@ -86,9 +111,9 @@ class OrderViewModel @Inject constructor(
         viewModelScope.launch {
             val response = repository.selectOrderItemDetailByOrderId(orderId)
             val type = "주문 조회에"
-            when(response) {
+            when (response) {
                 is NetworkResponse.Success -> {
-                    _order.postValue(response.body)
+                    _orderItems.postValue(response.body)
                 }
                 is NetworkResponse.ApiError -> {
                     postValueEvent(0, type)
@@ -110,7 +135,7 @@ class OrderViewModel @Inject constructor(
         viewModelScope.launch {
             val response = repository.updateOrderToCancel(orderId)
             val type = "주문 조회에"
-            when(response) {
+            when (response) {
                 is NetworkResponse.Success -> {
                     _isCancel.postValue(response.body)
                 }

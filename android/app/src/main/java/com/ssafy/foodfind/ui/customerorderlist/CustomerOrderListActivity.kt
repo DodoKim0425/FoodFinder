@@ -22,10 +22,13 @@ class CustomerOrderListActivity :
         super.onCreate(savedInstanceState)
 
         initButton()
-        initRecyclerView()
         observeData()
     }
 
+    override fun onResume() {
+        super.onResume()
+        initRecyclerView()
+    }
     private fun initButton() {
         binding.buttonBack.setOnClickListener {
             finish()
@@ -35,9 +38,6 @@ class CustomerOrderListActivity :
     private fun initRecyclerView() {
         viewModel.getRecentOrders(SharedPrefs.getUserInfo()?.userId ?: 0)
         adapter = RecentOrderAdapter()
-        binding.recyclerview.addItemDecoration(
-            DividerItemDecoration(this, LinearLayoutManager.VERTICAL)
-        )
         binding.recyclerview.adapter = adapter
     }
 

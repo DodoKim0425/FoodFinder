@@ -20,8 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="10dp"
-            android:background="@{order.getStatusColor()}">
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/textViewCustomerName"
@@ -46,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="@{order.orderTime.toString()}"
+                android:text="@{order.getDateTime()}"
                 android:gravity="center"
                 tools:text="11:30:32" />
         </LinearLayout>

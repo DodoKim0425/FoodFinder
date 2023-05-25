@@ -26,14 +26,15 @@ private const val TAG = "ManageTruckItemActivity"
 
 @AndroidEntryPoint
 class ManageTruckItemActivity :
-    BaseActivity<ActivityManageTruckItemBinding>(R.layout.activity_manage_truck_item), OnMapReadyCallback {
+    BaseActivity<ActivityManageTruckItemBinding>(R.layout.activity_manage_truck_item),
+    OnMapReadyCallback {
 
     private val viewModel by viewModels<TruckViewModel>()
-    private var truckInfo : Truck = Truck(0, 0, "", 0.0F, "", "", TruckStatus.CLOSED)
+    private var truckInfo: Truck = Truck(0, 0, "", 0.0F, "", "", TruckStatus.CLOSED)
     private lateinit var foodTruckAdapter: FoodTruckAdapter
-    private var list : MutableList<FoodItem> = mutableListOf()
+    private var list: MutableList<FoodItem> = mutableListOf()
     private var marker = Marker()
-    private lateinit var naverMap : NaverMap
+    private lateinit var naverMap: NaverMap
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -52,9 +53,9 @@ class ManageTruckItemActivity :
 
     }
 
-    private fun initRecyclerView(){
+    private fun initRecyclerView() {
         foodTruckAdapter = FoodTruckAdapter(list)
-        binding.rvFood.adapter=foodTruckAdapter
+        binding.rvFood.adapter = foodTruckAdapter
         binding.rvFood.layoutManager = LinearLayoutManager(this)
     }
 
@@ -75,7 +76,7 @@ class ManageTruckItemActivity :
         binding.btnUpdateTruck.setOnClickListener {
             val intent = Intent(this, ManageTruckActivity::class.java)
             intent.putExtra("truckInfo", truckInfo)
-            var foodItemList : ArrayList<FoodItem> = ArrayList<FoodItem>()
+            var foodItemList: ArrayList<FoodItem> = ArrayList<FoodItem>()
             foodItemList.addAll(list)
             intent.putExtra("foodItemList", foodItemList)
             startActivity(intent)
@@ -83,15 +84,16 @@ class ManageTruckItemActivity :
 
         binding.radioGroupStatus.setOnCheckedChangeListener { group, checkedId ->
             truckInfo.apply {
-                when(binding.radioGroupStatus.checkedRadioButtonId){
-                    R.id.truck_open -> this.currentStatus=TruckStatus.OPEN
-                    else -> this.currentStatus =TruckStatus.CLOSED
+                when (binding.radioGroupStatus.checkedRadioButtonId) {
+                    R.id.truck_open -> this.currentStatus = TruckStatus.OPEN
+                    else -> this.currentStatus = TruckStatus.CLOSED
                 }
             }
         }
 
 
     }
+
     private fun observeData() {
         with(viewModel) {
             errorMsg.observe(this@ManageTruckItemActivity) { event ->
@@ -109,25 +111,26 @@ class ManageTruckItemActivity :
                 }
             }
 
-            truck.observe(this@ManageTruckItemActivity) {truck->
-                    if (truck.truckId == 0) {
-                        //다이얼로그 띄우기
-                        val intent =
-                            Intent(this@ManageTruckItemActivity, ManageTruckActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    } else {
-                        Log.d(TAG, "observeData: ")
-                        binding.truck = truck
-                        truckInfo = truck
-                        viewModel.getFoodItem(truck.truckId)
-                        setMarker(truck.location)
-                    }
+            truck.observe(this@ManageTruckItemActivity) { truck ->
+                if (truck.truckId == 0) {
+                    //다이얼로그 띄우기
+                    val intent =
+                        Intent(this@ManageTruckItemActivity, ManageTruckActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    Log.d(TAG, "observeData: ")
                     binding.truck = truck
+                    truckInfo = truck
+                    viewModel.getFoodItem(truck.truckId)
+                    setMarker(truck.location)
+                }
+                SharedPrefs.saveTruckId(truckId = truck.truckId)
+                binding.truck = truck
             }
 
 
-            foodItemList.observe(this@ManageTruckItemActivity){ event ->
+            foodItemList.observe(this@ManageTruckItemActivity) { event ->
                 event.getContentIfNotHandled()?.let {
                     Log.d(TAG, "observeData: ${it.size}")
                     list.clear()
@@ -139,7 +142,7 @@ class ManageTruckItemActivity :
         }
     }
 
-    fun setMarker(locationString : String){
+    fun setMarker(locationString: String) {
         Log.d(TAG, "setMarker: ${locationString}")
         var latLngArr = locationString.split("/").map {
             it.toDouble()
@@ -151,7 +154,7 @@ class ManageTruckItemActivity :
 
     @UiThread
     override fun onMapReady(p0: NaverMap) {
-        naverMap=p0
+        naverMap = p0
         initTruck()
     }
 
