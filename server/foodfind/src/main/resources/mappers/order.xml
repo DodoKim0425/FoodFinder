@@ -38,7 +38,8 @@
 		    quantity,
 		    t.name truckName,
 		    u.username customerName,
-		    fi.name itemName
+		    fi.name itemName,
+            fi.price itemPrice
 		from food_find.order o
 		join orderitem oi
 		on o.orderId = oi.orderid

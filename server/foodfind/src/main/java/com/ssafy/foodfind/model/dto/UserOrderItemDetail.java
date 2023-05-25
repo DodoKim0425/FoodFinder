@@ -17,6 +17,7 @@ public class UserOrderItemDetail {
 	private String truckName;
 	private String customerName;
 	private String itemName;
+	private int itemPrice;
 	
 	public UserOrderItemDetail() {
 		super();
@@ -24,7 +25,7 @@ public class UserOrderItemDetail {
 	
 	public UserOrderItemDetail(int orderId, int userId, int truckId, String description, int totalPrice,
 			Date orderTime, String orderStatus, int orderItemId, int itemId, int quantity, String truckName,
-			String customerName, String itemName) {
+			String customerName, String itemName, int itemPrice) {
 		super();
 		this.orderId = orderId;
 		this.userId = userId;
@@ -39,6 +40,7 @@ public class UserOrderItemDetail {
 		this.truckName = truckName;
 		this.customerName = customerName;
 		this.itemName = itemName;
+		this.itemPrice = itemPrice;
 	}
 	public int getOrderId() {
 		return orderId;
@@ -118,12 +120,24 @@ public class UserOrderItemDetail {
 	public void setItemName(String itemName) {
 		this.itemName = itemName;
 	}
+	
+	public int getItemPrice() {
+		return itemPrice;
+	}
+
+	public void setItemPrice(int itemPrice) {
+		this.itemPrice = itemPrice;
+	}
+
 	@Override
 	public String toString() {
-		return "OrderItemDetail [orderId=" + orderId + ", userId=" + userId + ", truckId=" + truckId + ", description="
-				+ description + ", totalPrice=" + totalPrice + ", orderTime=" + orderTime + ", orderStatus="
-				+ orderStatus + ", orderItemId=" + orderItemId + ", itemId=" + itemId + ", quantity=" + quantity
-				+ ", truckName=" + truckName + ", customerName=" + customerName + ", itemName=" + itemName + "]";
+		return "UserOrderItemDetail [orderId=" + orderId + ", userId=" + userId + ", truckId=" + truckId
+				+ ", description=" + description + ", totalPrice=" + totalPrice + ", orderTime=" + orderTime
+				+ ", orderStatus=" + orderStatus + ", orderItemId=" + orderItemId + ", itemId=" + itemId + ", quantity="
+				+ quantity + ", truckName=" + truckName + ", customerName=" + customerName + ", itemName=" + itemName
+				+ ", itemPrice=" + itemPrice + "]";
 	}
+
+	
 	
 }
