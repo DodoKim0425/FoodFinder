@@ -4,10 +4,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
+import com.ssafy.foodfind.R
 import com.ssafy.foodfind.SharedPrefs
 import com.ssafy.foodfind.data.entity.User
 import com.ssafy.foodfind.databinding.ActivityMainBinding
@@ -51,6 +54,17 @@ class MainActivity : AppCompatActivity() {
     private fun initButton() {
         binding.btnDrawer.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        binding.navView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.logout -> {
+                    finish()
+                    true
+                }
+                // 다른 메뉴 아이템에 대한 처리
+                else -> false
+            }
         }
 
         binding.findStore.setOnClickListener {
