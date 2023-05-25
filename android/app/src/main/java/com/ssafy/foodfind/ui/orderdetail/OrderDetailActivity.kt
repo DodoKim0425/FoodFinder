@@ -3,12 +3,14 @@ package com.ssafy.foodfind.ui.orderdetail
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ssafy.foodfind.R
 import com.ssafy.foodfind.SharedPrefs
+import com.ssafy.foodfind.data.entity.Comment
 import com.ssafy.foodfind.data.entity.Order
 import com.ssafy.foodfind.data.entity.OrderStatus
 import com.ssafy.foodfind.databinding.ActivityOrderDetailBinding
@@ -17,13 +19,14 @@ import com.ssafy.foodfind.ui.base.BaseActivity
 import com.ssafy.foodfind.ui.shoppingcart.OrderViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+private const val TAG = "OrderDetailActivity_싸피"
 @AndroidEntryPoint
 class OrderDetailActivity :
     BaseActivity<ActivityOrderDetailBinding>(R.layout.activity_order_detail) {
     private val viewModel by viewModels<OrderViewModel>()
     private lateinit var adapter: OrderDetailAdapter
     private var phoneNumber = ""
-
+    private var commentTruckId = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -53,6 +56,26 @@ class OrderDetailActivity :
         }
         binding.orderCall.setOnClickListener {
             startDialer(phoneNumber)
+        }
+        binding.orderComment.setOnClickListener {
+            var bottomSheet : CommentInsertBottomSheet= CommentInsertBottomSheet(this@OrderDetailActivity)
+            bottomSheet.listener=object :CommentInsertBottomSheet.OnSendFromBottomSheetDialog{
+                override fun sendValue(value: Comment) {
+                    var newComment=value.copy()
+                    newComment.apply {
+                        if(commentTruckId!=-1 && SharedPrefs.getUserInfo()!=null){
+                            userId=SharedPrefs.getUserInfo()!!.userId
+                            truckId=commentTruckId
+                        }
+                    }
+                    if(newComment.userId!=0){
+                        viewModel.insertComment(newComment)
+                        showToast("댓글이 등록 되었습니다")
+                    }
+                }
+
+            }
+            bottomSheet.show()
         }
     }
 
@@ -93,6 +116,8 @@ class OrderDetailActivity :
                 if (it.isNotEmpty()) {
                     val order = it[0]
                     binding.order = order
+                    Log.d(TAG, "observeData: $order")
+                    commentTruckId=order.truckId
                     if ((SharedPrefs.getUserInfo()?.userId ?: -1) == order.userId) {
                         binding.orderStart.visibility = View.GONE
                     } else {
@@ -100,6 +125,10 @@ class OrderDetailActivity :
                     }
                     if (order.orderStatus != OrderStatus.RECEIVED) {
                         binding.orderCancel.isEnabled = false
+                    }
+                    if (order.orderStatus == OrderStatus.RECEIVED) {
+                      //  binding.orderStart.isEnabled = false
+                        binding.orderComment.isEnabled=false
                     }
                     if (order.orderStatus == OrderStatus.CANCEL) {
                         binding.orderStart.text = "취소된 주문"
@@ -109,6 +138,7 @@ class OrderDetailActivity :
                     if (order.orderStatus == OrderStatus.DONE) {
                         binding.orderStart.text = "조리 완료"
                         binding.orderStart.isEnabled = false
+                        binding.orderComment.isEnabled=true
                     }
                     if (order.orderStatus == OrderStatus.COOKING) {
                         binding.orderStart.text = "조리 완료"
@@ -129,6 +159,8 @@ class OrderDetailActivity :
 
             order.observe(this@OrderDetailActivity) {
                 val order: Order
+                //truckId=it.truckId
+                Log.d(TAG, "observeData: --------------$it")
                 if (it.orderStatus == OrderStatus.RECEIVED) {
                     order = it.apply {
                         orderStatus = OrderStatus.COOKING
