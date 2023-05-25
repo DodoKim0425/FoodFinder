@@ -93,6 +93,7 @@
     <string name="orderStart">조리 시작</string>
     <string name="orderCancel">주문 취소</string>
     <string name="orderCall">전화 걸기</string>
+    <string name="orderComment">댓글 적기</string>
     <string name="textViewStatusInfo">현재 주문 상태</string>
     <string name="textViewTimeInfo">완료 예정 시간</string>
     <string name="tvCompletionTime">주문 조리 완료 예상 시간을 입력하세요.</string>

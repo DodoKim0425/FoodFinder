@@ -7,7 +7,6 @@ import com.ssafy.foodfind.SharedPrefs
 import com.ssafy.foodfind.databinding.ActivityOwnerOrderListBinding
 import com.ssafy.foodfind.ui.LoadingDialog
 import com.ssafy.foodfind.ui.base.BaseActivity
-import com.ssafy.foodfind.ui.customerorderlist.RecentOrderAdapter
 import com.ssafy.foodfind.ui.shoppingcart.OrderViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,6 +18,11 @@ class OwnerOrderListActivity :
     private lateinit var adapter: TruckOrderAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        binding.layoutSwipe.setOnRefreshListener {
+            initRecyclerView()
+            binding.layoutSwipe.isRefreshing = false
+        }
 
         observeData()
     }
