@@ -68,10 +68,20 @@
             o.totalPrice,
             o.orderTime,
             o.orderStatus,
-            t.name
+            t.name,
+            u.phoneNumber customerPhone,
+            i.phoneNumber ownerPhone
         from food_find.order o
         join foodtruck t
         on t.truckId = o.truckId
+        join user u
+        on u.userId=o.userId
+        join (
+			select * from user
+			join foodtruck
+			on user.userId=foodtruck.ownerId
+        ) i
+		on i.ownerId=t.ownerId
         where orderId =#{orderId} ;
 	</select>
 	
@@ -85,6 +95,7 @@
 	<select id="selectOrderByTruck" parameterType="String" resultType="Order">
 		select * 
 		from food_find.order 
-		order by orderStatus, orderTime;
+        where truckId = #{truckId}
+		order by orderStatus, orderTime desc;
 	</select>
 </mapper>

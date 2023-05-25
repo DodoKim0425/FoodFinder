@@ -8,4 +8,6 @@ interface CommentRepository {
 	suspend fun getCommentByTruckResponse(truckId : Int): NetworkResponse<List<Comment>, ErrorResponse>
 	suspend fun deleteCommentResponse(commentId : Int):NetworkResponse<Boolean, ErrorResponse>
 	suspend fun updateCommentResponse(comment : Comment):NetworkResponse<Boolean, ErrorResponse>
+
+	suspend fun insertCommentResponse(comment: Comment):NetworkResponse<Boolean, ErrorResponse>
 }
