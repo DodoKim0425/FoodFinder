@@ -20,4 +20,8 @@ class CommentRepositoryImpl @Inject constructor(
 	override suspend fun updateCommentResponse(comment: Comment): NetworkResponse<Boolean, ErrorResponse> {
 		return apiService.updateCommentRequest(comment)
 	}
+
+	override suspend fun insertCommentResponse(comment: Comment): NetworkResponse<Boolean, ErrorResponse> {
+		return apiService.insertCommentRequest(comment)
+	}
 }

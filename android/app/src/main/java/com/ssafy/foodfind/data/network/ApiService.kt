@@ -96,4 +96,8 @@ interface ApiService {
     @PUT("/rest/comment/update")
     suspend fun updateCommentRequest(@Body comment: Comment): NetworkResponse<Boolean, ErrorResponse>
 
+
+    @POST("/rest/comment/insert")
+    suspend fun insertCommentRequest(@Body comment: Comment):NetworkResponse<Boolean, ErrorResponse>
+
 }
