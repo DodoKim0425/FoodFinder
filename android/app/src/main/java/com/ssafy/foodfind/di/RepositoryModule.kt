@@ -1,5 +1,7 @@
 package com.ssafy.foodfind.di
 
+import com.ssafy.foodfind.data.repository.comment.CommentRepository
+import com.ssafy.foodfind.data.repository.comment.CommentRepositoryImpl
 import com.ssafy.foodfind.data.repository.foodItem.FoodItemRepository
 import com.ssafy.foodfind.data.repository.foodItem.FoodItemRepositoryImpl
 import com.ssafy.foodfind.data.repository.order.OrderRepository
@@ -35,4 +37,9 @@ abstract class RepositoryModule {
     abstract fun bindsOrderRepository(
         orderRepository: OrderRepositoryImpl
     ): OrderRepository
+
+    @Binds
+    abstract fun bindsCommentRepository(
+        commentRepository: CommentRepositoryImpl
+    ): CommentRepository
 }

@@ -87,6 +87,10 @@
     <string name="read_participate">참가하기</string>
     <string name="read_cancel">취소하기</string>
     <string name="read_delete">삭제하기</string>
+    <string name="read_truck_comment">리뷰</string>
+    <string name="update_comment">수정할 내용을 입력해주세요</string>
+    <string name="update_comment_content">수정할 내용</string>
+    <string name="update_comment_rating">별점</string>
 
     <!-- 주문 세부 화면 -->
     <string name="textViewDescriptionInfo">요청 사항</string>

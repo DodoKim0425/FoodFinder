@@ -6,11 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide.init
-import com.ssafy.foodfind.data.entity.Event
-import com.ssafy.foodfind.data.entity.FoodItem
-import com.ssafy.foodfind.data.entity.Food
-import com.ssafy.foodfind.data.entity.Truck
+import com.ssafy.foodfind.data.entity.*
 import com.ssafy.foodfind.data.network.NetworkResponse
+import com.ssafy.foodfind.data.repository.comment.CommentRepository
 import com.ssafy.foodfind.data.repository.foodItem.FoodItemRepository
 import com.ssafy.foodfind.data.repository.truck.TruckRepository
 import com.ssafy.foodfind.ui.base.BaseViewModel
@@ -25,6 +23,7 @@ private const val TAG = "TruckViewModel_싸피"
 class TruckViewModel @Inject constructor(
     private val truckRepository: TruckRepository,
     private val foodItemRepository: FoodItemRepository,
+    private val commentRepository: CommentRepository
     ) : BaseViewModel() {
 
     private val _msg = MutableLiveData<Event<String>>()
@@ -41,6 +40,9 @@ class TruckViewModel @Inject constructor(
 
     private val _truckItem = MutableLiveData<List<FoodItem>>()
     val truckItems: LiveData<List<FoodItem>> = _truckItem
+
+    private val _commentList = MutableLiveData<List<Comment>>()
+    val commentList : LiveData<List<Comment>> = _commentList
 
     fun getMyTruckInfo(ownerId: Int) {
         showProgress()
@@ -280,6 +282,73 @@ class TruckViewModel @Inject constructor(
         }
     }
 
+
+    fun getCommentList(truckId : Int){
+        showProgress()
+        viewModelScope.launch {
+            val response = commentRepository.getCommentByTruckResponse(truckId)
+            val type = "불러오기에"
+            when(response){
+                is NetworkResponse.Success -> {
+                    _commentList.postValue(response.body)
+                }
+                is NetworkResponse.ApiError -> {
+                    postValueEvent(0, type)
+                }
+                is NetworkResponse.NetworkError -> {
+                    postValueEvent(1, type)
+                }
+                is NetworkResponse.UnknownError -> {
+                    postValueEvent(2, type)
+                }
+            }
+            hideProgress()
+        }
+    }
+
+    fun deleteComment(commentId: Int){
+        showProgress()
+        viewModelScope.launch {
+            val response = commentRepository.deleteCommentResponse(commentId)
+            val type = "삭제에"
+            when(response){
+                is NetworkResponse.Success -> {
+                }
+                is NetworkResponse.ApiError -> {
+                    postValueEvent(0, type)
+                }
+                is NetworkResponse.NetworkError -> {
+                    postValueEvent(1, type)
+                }
+                is NetworkResponse.UnknownError -> {
+                    postValueEvent(2, type)
+                }
+            }
+            hideProgress()
+        }
+    }
+
+    fun updateComment(comment: Comment){
+        showProgress()
+        viewModelScope.launch {
+            val response = commentRepository.updateCommentResponse(comment)
+            val type = "수정에"
+            when(response){
+                is NetworkResponse.Success -> {
+                }
+                is NetworkResponse.ApiError -> {
+                    postValueEvent(0, type)
+                }
+                is NetworkResponse.NetworkError -> {
+                    postValueEvent(1, type)
+                }
+                is NetworkResponse.UnknownError -> {
+                    postValueEvent(2, type)
+                }
+            }
+            hideProgress()
+        }
+    }
     private fun postValueEvent(value: Int, type: String) {
         val msgArrayList = arrayOf(
             "Api 오류 : $type 실패했습니다.",
