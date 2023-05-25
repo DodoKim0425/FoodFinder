@@ -1,6 +1,7 @@
 package com.ssafy.foodfind.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public List<Order> getOrderByUser(String orderId) {
+	public List<Map<String, Object>> getOrderByUser(String orderId) {
 		return orderDao.selectOrderByUser(orderId);
 	}
 
@@ -55,13 +56,8 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Order selectOrder(String orderId) {
-		Order order= orderDao.selectOrder(orderId);
-		if(order==null) {
-			return  new Order();
-		}else {
-			return order;
-		}
+	public Map<String, Object> selectOrder(String orderId) {
+		return orderDao.selectOrder(orderId);
 	}
 
 	@Override
