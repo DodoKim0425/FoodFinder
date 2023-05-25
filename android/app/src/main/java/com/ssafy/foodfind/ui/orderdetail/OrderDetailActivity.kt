@@ -26,7 +26,7 @@ class OrderDetailActivity :
     private val viewModel by viewModels<OrderViewModel>()
     private lateinit var adapter: OrderDetailAdapter
     private var phoneNumber = ""
-    private var truckId = -1
+    private var commentTruckId = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -63,9 +63,9 @@ class OrderDetailActivity :
                 override fun sendValue(value: Comment) {
                     var newComment=value.copy()
                     newComment.apply {
-                        if(truckId!=-1 && SharedPrefs.getUserInfo()!=null){
+                        if(commentTruckId!=-1 && SharedPrefs.getUserInfo()!=null){
                             userId=SharedPrefs.getUserInfo()!!.userId
-                            truckId=truckId
+                            truckId=commentTruckId
                         }
                     }
                     if(newComment.userId!=0){
@@ -116,7 +116,8 @@ class OrderDetailActivity :
                 if (it.isNotEmpty()) {
                     val order = it[0]
                     binding.order = order
-                    //truckId=order.truckId
+                    Log.d(TAG, "observeData: $order")
+                    commentTruckId=order.truckId
                     if ((SharedPrefs.getUserInfo()?.userId ?: -1) == order.userId) {
                         binding.orderStart.visibility = View.GONE
                     } else {
@@ -127,6 +128,7 @@ class OrderDetailActivity :
                     }
                     if (order.orderStatus == OrderStatus.RECEIVED) {
                         binding.orderStart.isEnabled = false
+                        binding.orderComment.isEnabled=false
                     }
                     if (order.orderStatus == OrderStatus.CANCEL) {
                         binding.orderStart.text = "취소된 주문"
@@ -136,6 +138,7 @@ class OrderDetailActivity :
                     if (order.orderStatus == OrderStatus.DONE) {
                         binding.orderStart.text = "조리 완료"
                         binding.orderStart.isEnabled = false
+                        binding.orderComment.isEnabled=true
                     }
                     if (order.orderStatus == OrderStatus.COOKING) {
                         binding.orderStart.text = "조리 완료"
@@ -156,7 +159,7 @@ class OrderDetailActivity :
 
             order.observe(this@OrderDetailActivity) {
                 val order: Order
-                truckId=it.truckId
+                //truckId=it.truckId
                 Log.d(TAG, "observeData: --------------$it")
                 if (it.orderStatus == OrderStatus.RECEIVED) {
                     order = it.apply {
