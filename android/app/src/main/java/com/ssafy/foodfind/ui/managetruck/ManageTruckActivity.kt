@@ -104,7 +104,7 @@ class ManageTruckActivity :
                 if (SharedPrefs.getUserInfo() != null) {
                     truckInfo.apply {
                         ownerId = SharedPrefs.getUserInfo()!!.userId
-                        location = "37.5512/126.9882"
+                        location = ""
                         currentStatus = TruckStatus.CLOSED
                     }
 

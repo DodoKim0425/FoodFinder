@@ -56,6 +56,7 @@ class ManageTruckItemActivity :
     private lateinit var locationRequest: LocationRequest
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     private var userLocation : Location = Location("")
+    private var isAlreadyPoped : Boolean =false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -170,10 +171,14 @@ class ManageTruckItemActivity :
                     if (truck.truckId == 0) {
                         Log.d(TAG, "observeData: $truck")
                         //다이얼로그 띄우기
-                        val intent =
-                            Intent(this@ManageTruckItemActivity, ManageTruckActivity::class.java)
-                        startActivity(intent)
-                        finish()
+                        if(isAlreadyPoped==false){
+                            val intent =
+                                Intent(this@ManageTruckItemActivity, ManageTruckActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                            isAlreadyPoped=true
+                        }
+                        
                     } else {
                         Log.d(TAG, "observeData: $truck")
                         binding.truck = truck
@@ -199,13 +204,16 @@ class ManageTruckItemActivity :
     }
 
     fun setMarker(locationString : String){
-        Log.d(TAG, "setMarker: ${locationString}")
-        var latLngArr = locationString.split("/").map {
-            it.toDouble()
+        if(locationString!=""){
+            Log.d(TAG, "setMarker: ${locationString}")
+            var latLngArr = locationString.split("/").map {
+                it.toDouble()
+            }
+            marker.position = LatLng(latLngArr[0], latLngArr[1])
+            marker.map = naverMap
+            setPosition(latLngArr[0], latLngArr[1])
         }
-        marker.position = LatLng(latLngArr[0], latLngArr[1])
-        marker.map = naverMap
-        setPosition(latLngArr[0], latLngArr[1])
+
     }
 
     @UiThread
@@ -299,5 +307,10 @@ class ManageTruckItemActivity :
         super.onStop()
         mFusedLocationClient.removeLocationUpdates(locationCallback)
         Log.d(TAG, "onStop: ")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initTruck()
     }
 }
