@@ -59,7 +59,9 @@ class ShoppingCartActivity :
                     price,
                     "",
                     OrderStatus.RECEIVED,
-                    itemList
+                    itemList,
+                    "",
+                    ""
                 )
                 viewModel.insertOrder(order)
             } else {

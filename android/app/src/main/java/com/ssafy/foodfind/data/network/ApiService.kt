@@ -79,13 +79,21 @@ interface ApiService {
     @GET("/rest/order/selectOrderByTruckId")
     suspend fun selectOrderByTruckId(@Query("truckId") truckId: Int): NetworkResponse<List<Order>, ErrorResponse>
 
+    @PUT("/rest/order/updateOrderStatus")
+    suspend fun updateOrderStatus(@Body order: Order): NetworkResponse<Boolean, ErrorResponse>
+
+    @GET("/rest/order/selectOrder")
+    suspend fun selectOrder(@Query("orderId") orderId: Int): NetworkResponse<Order, ErrorResponse>
+
+
     //comment
     @GET("/rest/comment/getCommentByTruck")
-    suspend fun getCommentByTruckRequest(@Query("truckId") truckId:Int):NetworkResponse<List<Comment>, ErrorResponse>
+    suspend fun getCommentByTruckRequest(@Query("truckId") truckId: Int): NetworkResponse<List<Comment>, ErrorResponse>
 
     @DELETE("/rest/comment/delete/{id}")
-    suspend fun deleteCommentRequest(@Path("id") commentId : Int):NetworkResponse<Boolean, ErrorResponse>
+    suspend fun deleteCommentRequest(@Path("id") commentId: Int): NetworkResponse<Boolean, ErrorResponse>
 
     @PUT("/rest/comment/update")
-    suspend fun updateCommentRequest(@Body comment : Comment):NetworkResponse<Boolean, ErrorResponse>
+    suspend fun updateCommentRequest(@Body comment: Comment): NetworkResponse<Boolean, ErrorResponse>
+
 }

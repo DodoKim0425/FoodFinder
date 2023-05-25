@@ -17,8 +17,10 @@ data class Order(
     val description: String?,
     val totalPrice: Int,
     val orderTime: String,
-    val orderStatus: OrderStatus,
+    var orderStatus: OrderStatus,
     var items: List<OrderCount>,
+    var customerPhone : String,
+    var ownerPhone : String,
 ) {
 
     fun getStatusText(): String {

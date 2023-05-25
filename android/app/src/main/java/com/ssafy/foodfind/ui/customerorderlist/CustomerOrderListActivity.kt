@@ -33,6 +33,10 @@ class CustomerOrderListActivity :
         binding.buttonBack.setOnClickListener {
             finish()
         }
+        binding.layoutSwipe.setOnRefreshListener {
+            initRecyclerView()
+            binding.layoutSwipe.isRefreshing = false
+        }
     }
 
     private fun initRecyclerView() {

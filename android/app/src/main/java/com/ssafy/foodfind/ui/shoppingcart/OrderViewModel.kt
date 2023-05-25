@@ -27,11 +27,20 @@ class OrderViewModel @Inject constructor(
     private val _orders = MutableLiveData<List<Order>>()
     val orders: LiveData<List<Order>> = _orders
 
+    private val _order = MutableLiveData<Order>()
+    val order: LiveData<Order> = _order
+
+    private val _orderPhoneInfo = MutableLiveData<Order>()
+    val orderPhoneInfo: LiveData<Order> = _orderPhoneInfo
+
     private val _orderItems = MutableLiveData<List<OrderItem>>()
     val orderItems: LiveData<List<OrderItem>> = _orderItems
 
-    private val _isCancel = MutableLiveData<Boolean>()
-    val isCancel: LiveData<Boolean> = _isCancel
+    private val _isCancel = MutableLiveData<Event<Boolean>>()
+    val isCancel: LiveData<Event<Boolean>> = _isCancel
+
+    private val _isChanged = MutableLiveData<Event<Boolean>>()
+    val isChanged: LiveData<Event<Boolean>> = _isChanged
 
 
     fun insertOrder(order: Order) {
@@ -42,6 +51,78 @@ class OrderViewModel @Inject constructor(
             when (response) {
                 is NetworkResponse.Success -> {
                     _orderId.postValue(response.body)
+                }
+                is NetworkResponse.ApiError -> {
+                    postValueEvent(0, type)
+                }
+                is NetworkResponse.NetworkError -> {
+                    postValueEvent(1, type)
+                }
+                is NetworkResponse.UnknownError -> {
+                    postValueEvent(2, type)
+                }
+            }
+            hideProgress()
+        }
+    }
+
+
+    fun updateOrder(order: Order) {
+        showProgress()
+        viewModelScope.launch {
+            val response = repository.updateOrderStatus(order)
+            val type = "주문을"
+            when (response) {
+                is NetworkResponse.Success -> {
+                    _isChanged.postValue(Event(response.body))
+                }
+                is NetworkResponse.ApiError -> {
+                    postValueEvent(0, type)
+                }
+                is NetworkResponse.NetworkError -> {
+                    postValueEvent(1, type)
+                }
+                is NetworkResponse.UnknownError -> {
+                    postValueEvent(2, type)
+                }
+            }
+            hideProgress()
+        }
+    }
+
+
+    fun selectOrder(orderId: Int) {
+        showProgress()
+        viewModelScope.launch {
+            val response = repository.selectOrder(orderId)
+            val type = "주문을"
+            when (response) {
+                is NetworkResponse.Success -> {
+                    _order.postValue(response.body)
+                }
+                is NetworkResponse.ApiError -> {
+                    postValueEvent(0, type)
+                }
+                is NetworkResponse.NetworkError -> {
+                    postValueEvent(1, type)
+                }
+                is NetworkResponse.UnknownError -> {
+                    postValueEvent(2, type)
+                }
+            }
+            hideProgress()
+        }
+    }
+
+
+    fun selectPhoneInfo(orderId: Int) {
+        showProgress()
+        viewModelScope.launch {
+            val response = repository.selectOrder(orderId)
+            val type = "주문을"
+            when (response) {
+                is NetworkResponse.Success -> {
+                    _orderPhoneInfo.postValue(response.body)
                 }
                 is NetworkResponse.ApiError -> {
                     postValueEvent(0, type)
@@ -137,7 +218,7 @@ class OrderViewModel @Inject constructor(
             val type = "주문 조회에"
             when (response) {
                 is NetworkResponse.Success -> {
-                    _isCancel.postValue(response.body)
+                    _isCancel.postValue(Event(response.body))
                 }
                 is NetworkResponse.ApiError -> {
                     postValueEvent(0, type)

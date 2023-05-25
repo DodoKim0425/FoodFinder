@@ -17,4 +17,8 @@ interface OrderRepository {
 
     suspend fun selectOrderByTruckId(truckId : Int): NetworkResponse<List<Order>, ErrorResponse>
 
+    suspend fun updateOrderStatus(order: Order): NetworkResponse<Boolean, ErrorResponse>
+
+    suspend fun selectOrder(orderId: Int): NetworkResponse<Order, ErrorResponse>
+
 }

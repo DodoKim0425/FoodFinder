@@ -1,8 +1,10 @@
 package com.ssafy.foodfind.ui.home
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
@@ -24,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var timer: Timer
     private lateinit var user: User
     private var currentPage = 0
+    val PERMISSIONS_REQUEST_CODE = 100
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -32,6 +35,17 @@ class MainActivity : AppCompatActivity() {
         initViewPager()
         initButton()
         initUser()
+
+        if (!checkRunTimePermission()) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+                ),
+                PERMISSIONS_REQUEST_CODE
+            )
+        }
     }
 
     private fun initButton() {
@@ -105,5 +119,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun stopAutoScroll() {
         timer.cancel()
+    }
+
+    private fun checkRunTimePermission(): Boolean {
+        val requiredPermissions = arrayOf(
+            android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+        for (permission in requiredPermissions) {
+            if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+                return false
+            }
+        }
+        return true
     }
 }

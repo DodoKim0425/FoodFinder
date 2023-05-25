@@ -9,13 +9,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.UiThread
-import androidx.constraintlayout.motion.widget.Debug.getLocation
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.location.*
 import com.naver.maps.geometry.LatLng
@@ -90,7 +86,6 @@ class ManageTruckItemActivity :
     }
 
     private fun startLocationUpdates() {
-        // 위치서비스 활성화 여부 check
         if (!checkLocationServicesStatus()) {
             showToast("GPS 기능을 켜고 다시 시도해 주세요")
             finish()
@@ -102,7 +97,6 @@ class ManageTruckItemActivity :
                     null
                 )
             }
-
         }
     }
 
