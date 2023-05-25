@@ -58,6 +58,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(R.layout.activity_login
                     SharedPrefs.saveUserInfo(it)
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     startActivity(intent)
+                    binding.editTextPassword.setText("")
+                    binding.editTextPhoneNumber.setText("")
+                    binding.editTextPhoneNumber.clearFocus()
+                    binding.editTextPassword.clearFocus()
+                } else {
+                    showToast("로그인에 실패했습니다.")
                 }
             }
         }

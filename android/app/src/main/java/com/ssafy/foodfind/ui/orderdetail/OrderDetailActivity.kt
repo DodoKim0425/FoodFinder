@@ -109,7 +109,6 @@ class OrderDetailActivity :
                     if (order.orderStatus == OrderStatus.DONE) {
                         binding.orderStart.text = "조리 완료"
                         binding.orderStart.isEnabled = false
-                        binding.orderComment.isEnabled = false
                     }
                     if (order.orderStatus == OrderStatus.COOKING) {
                         binding.orderStart.text = "조리 완료"
