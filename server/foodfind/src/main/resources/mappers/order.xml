@@ -7,10 +7,21 @@
 		values (#{userId}, #{truckId}, #{description}, #{totalPrice}, now(), "RECEIVED");
 	</insert>
 	
-	<select id="selectOrderByUser" parameterType="String" resultType="Order">
-		select * 
-		from food_find.order
-		where userId = #{userId};
+	<select id="selectOrderByUser" parameterType="String" resultType="Map">
+		select 
+			o.orderId,
+            o.userId,
+            o.truckId,
+            o.description,
+            o.totalPrice,
+            o.orderTime,
+            o.orderStatus,
+            t.name
+		from food_find.order o
+		join foodtruck t
+        on t.truckId = o.truckId
+        where userId = #{userId}
+		order by orderTime desc;
 	</select>
 	
 	<select id="selectOrderItemDetailByOrderId" parameterType="String" resultType="UserOrderItemDetail">
@@ -47,8 +58,20 @@
 		where orderId = #{orderId};
 	</update>
 	
-	<select id="selectOrder" parameterType="String" resultType="Order">
-		select * from food_find.order where orderId = #{orderId};
+	<select id="selectOrder" parameterType="String" resultType="Map">
+		select 
+			o.orderId,
+            o.userId,
+            o.truckId,
+            o.description,
+            o.totalPrice,
+            o.orderTime,
+            o.orderStatus,
+            t.name
+        from food_find.order o
+        join foodtruck t
+        on t.truckId = o.truckId
+        where orderId =#{orderId} ;
 	</select>
 	
 	<update id="updateOrderStatus" parameterType="Order">

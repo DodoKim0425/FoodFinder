@@ -1,6 +1,7 @@
 package com.ssafy.foodfind.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,15 +38,16 @@ public class OrderServiceRestController {
     }
     
     @GetMapping("/selectOrderByUserId")
-    @ApiOperation(value = "사용자의 주문 목록(order)을 반환한다.")
-    public List<Order> selectOrderByUserId(String userId){
+    @ApiOperation(value = "사용자의 주문 목록(order)을 반환한다. 트럭 이름을 name으로 보낸다")
+    public List<Map<String, Object>> selectOrderByUserId(String userId){
     	return oService.getOrderByUser(userId);
     }
     
     @PutMapping("/updateOrderToCancel")
     @ApiOperation(value = "orderId로 주문을 취소한다.")
     public boolean updateOrderToCancel(String orderId) {
-    	String orderStatus = oService.selectOrder(orderId).getOrderStatus();
+    	String orderStatus = (String) oService.selectOrder(orderId).get("orderStatus");
+    	
     	if(orderStatus.equals("RECEIVED")) {
     		return oService.updateOrderToCancel(orderId);
     	}else {
@@ -55,8 +57,8 @@ public class OrderServiceRestController {
     }
     
     @GetMapping("/selectOrder")
-    @ApiOperation(value = "orderId로 Order를 반환한다.")
-    public Order selectOrder(String orderId) {
+    @ApiOperation(value = "orderId로 Order를 반환한다. 트럭 이름은 name으로 보낸다")
+    public Map<String, Object> selectOrder(String orderId) {
     	return oService.selectOrder(orderId);
     }
     

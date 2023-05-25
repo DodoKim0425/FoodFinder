@@ -17,7 +17,7 @@
             android:id="@+id/tvFoodName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{orderDetail.name}"
+            android:text="@{orderDetail.item.name}"
             android:gravity="center"
             android:padding="5dp"
             android:textSize="18sp"
@@ -57,7 +57,7 @@
             android:id="@+id/tvTotalPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{String.format(`%,d원`, orderDetail.count * Integer.parseInt(orderDetail.price))}"
+            android:text="@{String.format(`%,d원`, orderDetail.count * orderDetail.item.price)}"
             tools:text="3,000원"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
@@ -70,6 +70,7 @@
             android:layout_height="60dp"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
+            android:textColor="@color/white"
             android:backgroundTint="@color/main_color5"/>
 
     </LinearLayout>

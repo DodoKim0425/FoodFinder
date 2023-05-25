@@ -24,6 +24,7 @@ class MapActivity : BaseActivity<ActivityMapBinding>(R.layout.activity_map),
     OnMapReadyCallback, Overlay.OnClickListener {
     private val viewModel by viewModels<MapViewModel>()
     private lateinit var naverMap: NaverMap
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

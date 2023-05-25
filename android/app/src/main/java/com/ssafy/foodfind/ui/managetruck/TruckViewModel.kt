@@ -20,13 +20,12 @@ import javax.inject.Inject
 import kotlin.math.log
 
 private const val TAG = "TruckViewModel_싸피"
+
 @HiltViewModel
 class TruckViewModel @Inject constructor(
-
     private val truckRepository: TruckRepository,
-    private val foodItemRepository: FoodItemRepository
-
-) : BaseViewModel() {
+    private val foodItemRepository: FoodItemRepository,
+    ) : BaseViewModel() {
 
     private val _msg = MutableLiveData<Event<String>>()
     val errorMsg: LiveData<Event<String>> = _msg
@@ -35,10 +34,10 @@ class TruckViewModel @Inject constructor(
     val truck: LiveData<Truck> = _truck
 
     private val _foodItemList = MutableLiveData<Event<List<FoodItem>>>()
-    val foodItemList : LiveData<Event<List<FoodItem>>> = _foodItemList
+    val foodItemList: LiveData<Event<List<FoodItem>>> = _foodItemList
 
     private val _newTruckId = MutableLiveData<Int>()
-    val newTruckId : LiveData<Int> = _newTruckId
+    val newTruckId: LiveData<Int> = _newTruckId
 
     private val _truckItem = MutableLiveData<List<FoodItem>>()
     val truckItems: LiveData<List<FoodItem>> = _truckItem
@@ -115,7 +114,7 @@ class TruckViewModel @Inject constructor(
         }
     }
 
-    fun getFoodItem(truckId : Int){
+    fun getFoodItem(truckId: Int) {
         showProgress()
         viewModelScope.launch {
             val response = foodItemRepository.getFoodItemResponseByTruckId(truckId)
@@ -137,12 +136,13 @@ class TruckViewModel @Inject constructor(
             hideProgress()
         }
     }
-    fun updateTruck(truck:Truck){
+
+    fun updateTruck(truck: Truck) {
         showProgress()
         viewModelScope.launch {
             val response = truckRepository.updateTruckRequest(truck)
             val type = "업데이트에"
-            when(response){
+            when (response) {
                 is NetworkResponse.Success -> {
                     //_newTruckId.postValue(response.body)
                 }
@@ -160,12 +160,12 @@ class TruckViewModel @Inject constructor(
         }
     }
 
-    fun registTruck(truck : Truck){
+    fun registTruck(truck: Truck) {
         showProgress()
-        viewModelScope.launch{
+        viewModelScope.launch {
             val response = truckRepository.insertTruckRequest(truck)
             val type = "추가에"
-            when(response){
+            when (response) {
                 is NetworkResponse.Success -> {
                     _newTruckId.postValue(response.body)
                 }
@@ -279,6 +279,7 @@ class TruckViewModel @Inject constructor(
             hideProgress()
         }
     }
+
     private fun postValueEvent(value: Int, type: String) {
         val msgArrayList = arrayOf(
             "Api 오류 : $type 실패했습니다.",
